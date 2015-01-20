@@ -1,0 +1,20 @@
+<phpunit
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     bootstrap="tests/boot.php"
+     colors="true"
+     convertErrorsToExceptions="true"
+     convertNoticesToExceptions="true"
+     convertWarningsToExceptions="true"
+     stopOnFailure="true">
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
+    <testsuites>
+        <testsuite name="U">
+            <directory>tests/src/unit</directory>
+        </testsuite>
+        <testsuite name="F">
+            <directory>tests/src/functional</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
