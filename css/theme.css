@@ -8203,6 +8203,9 @@ button.close {
 .fa-meanpath:before {
   content: "\f20c";
 }
+body {
+  overflow-x: hidden;
+}
 #wrapper {
   padding-left: 0;
   -webkit-transition: all 0.5s ease;
@@ -8321,28 +8324,6 @@ button.close {
   padding: 15px;
 }
 @media (min-width: 768px) {
-  #wrapper {
-    padding-left: 300px;
-  }
-  #wrapper.toggled {
-    padding-left: 0;
-  }
-  #wrapper.toggled #sidebar-wrapper {
-    width: 0;
-  }
-  #wrapper.toggled #page-content-wrapper {
-    position: relative;
-    margin-right: 0;
-  }
-  #wrapper.toggled #menu-toggle {
-    left: 0;
-  }
-  #wrapper #menu-toggle {
-    left: 300px;
-  }
-  #wrapper #sidebar-wrapper {
-    width: 300px;
-  }
   #wrapper #page-content-wrapper {
     padding: 20px;
     position: relative;
@@ -8381,15 +8362,9 @@ pre {
 #content .page-header {
   margin-bottom: 40px;
 }
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  margin-bottom: 41px;
-}
 footer.footer {
-  position: absolute;
+  position: fixed;
+  z-index: 9999;
   bottom: 0;
   width: 100%;
   height: 40px;
@@ -8417,21 +8392,29 @@ footer.footer .socials a {
 #back-top {
   position: fixed;
   bottom: 60px;
-  right: 30px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  line-height: 40px;
   display: block;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
   text-align: center;
   color: #f7f7f7;
   background: #ee811c;
   opacity: 0.5;
   filter: alpha(opacity=50);
-  font-size: 36px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
+}
+@media (min-width: 1200px) {
+  #back-top {
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+    line-height: 60px;
+  }
 }
 /* Tomorrow Night Theme */
 /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
