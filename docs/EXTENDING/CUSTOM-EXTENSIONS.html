@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Extending Foil / Custom Foil Extensions. Foil: PHP Template Engine</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link href="http://giuseppe-mazzapica.github.io/Foil/css/theme.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+          <ul class="sidebar-nav">
+                                                  <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/INSTALLATION.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/ENGINE.html">
+                                      Engine
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FOLDERS.html">
+                                      Folders
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FILE-EXTENSIONS.html">
+                                      File Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Templates</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/OVERVIEW.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/INHERITANCE.html">
+                                      Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/PARTIALS.html">
+                                      Partials
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/PASS-DATA.html">
+                                      Pass Data To Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/CONTEXT-API.html">
+                                      Context API
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/RETRIEVE-DATA.html">
+                                      Retrieve Data Inside Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/HELPERS.html">
+                                      Data Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/FILTERS.html">
+                                      Data Filters
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/ARRAIZATION.html">
+                                      Arraization
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LOOP-HELPERS.html">
+                                      Loop Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/ARRAY-HELPERS.html">
+                                      Array Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LINK-HELPERS.html">
+                                      Link Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/URI-HELPERS.html">
+                                      Uri Helpers
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
+                                      Custom Functions and Filters
+                                  </a>
+                              </li>
+                                                        <li class="active">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/CUSTOM-EXTENSIONS.html">
+                                      Custom Foil Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Integrate Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/OVERVIEW.html">
+                                      Overview
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/API.html">
+                                      API Functions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                        </ul>
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="content" class="col-lg-11">
+                                                <ol class="breadcrumb">
+                          <li><a href="http://giuseppe-mazzapica.github.io/Foil">Foil</a></li>
+                          <li class="active">Extending Foil</li>
+                        </ol>
+                                                <!--
+currentMenu: "extensions"
+currentSection: "Extending Foil"
+title: "Custom Foil Extensions"
+-->
+<h1>Custom Foil Extensions</h1>
+<p>A Foil extension is a class that is used to register functions and filters.</p>
+<p>Technically speaking it's a class that implements <code>Foil\Contracts\ExtensionInterface</code>.</p>
+<p>It has just 3 methods:</p>
+<ul>
+<li><code>provideFilters()</code> this method must return an array where keys are filter names and values are filter callbacks.
+You need to return an empty array if an extension does not register any filter.</li>
+<li><code>provideFunctions()</code> this method must return an array where keys are function names and values are function callbacks.
+You need to return an empty array if an extension does not register any function.</li>
+<li><code>setup(array $args)</code> this method is called when the extension is loaded and receives the array of arguments that is passed as 2nd argument for <code>loadExtension()</code></li>
+</ul>
+<p>So, basically, an extension is a way to register more filters and functions at once and has the additional benefit to be configured via arguments.</p>
+<p>This is how a basic Foil extension looks like:</p>
+<pre><code class="language-php">namespace MyApp;
+
+use Foil\Contracts\ExtensionInterface;
+
+class FooExtension implements ExtensionInterface
+{
+    private $args;
+
+    public function setup(array $args)
+    {
+        $this-&gt;args = $args;
+    }
+
+    public function provideFilters()
+    {
+        return [
+          'foo' =&gt; [$this, 'foo'],
+        ];
+    }
+
+    public function provideFunctions()
+    {
+        return [
+          'bar' =&gt; [$this, 'bar']
+        ];
+    }
+
+    public function foo($input)
+    {
+        return $input.'Foo';
+    }
+
+    public function bar()
+    {
+      return isset($this-&gt;args['bar']) ? $this-&gt;args['bar'] : 'Bar!';
+    }
+}</code></pre>
+<p>Note that there is nothing that forces you to register extension own methods as functions and filters, in fact any valid PHP callback can be used.</p>
+<p>Once the extension class is available is possible to load it using <code>loadExtension()</code> engine method. Something like:</p>
+<pre><code class="language-php">$engine-&gt;loadExtension(new MyApp\FooExtension(), ['bar' =&gt; 'Bar! Bar!']);</code></pre>
+<p>Second argument passed to <code>loadExtension()</code> is the array that will passed to <code>setup()</code> method.</p>
+<h2>Safe Functions</h2>
+<p>As better explained in the <em>"Extending Foil / Custom Functions &amp; Filters"</em> Foil functions by default can't output HTML content, because their output is HTML-encoded.</p>
+<p>When you register a single functions via <code>$engine-&gt;registerfunction()</code> is possible to pass <code>true</code> as 3rd argument to mark the function as <em>safe</em> so that it is allowed to output HTML.</p>
+<p>When you load an extension that provides functions that needs to output HTML, you need to register those function as safe as well.</p>
+<p>That can be done using 3rd argument for <code>loadExtension()</code>. It can be:</p>
+<ul>
+<li><code>true</code>, to mark as safe all the functions provided by the extension</li>
+<li>an array of function names, to mark as safe only the explicitly passed functions</li>
+</ul>
+<p>What said above only apply if the engine has autoescape turned on (default).</p>
+<h2>Template Aware Extensions</h2>
+<p>It may be desirable to access the template object inside an extension.
+In fact, having access to template object is possible to call on it any of the methods that you can call on <code>$this</code> inside a template file, including other extensions functions and filters.</p>
+<p>To write an extension that is aware of template object you need to implement <code>Foil\Contracts\TemplateAwareInterface</code> interface.
+You can write custom implementation for that interface methods, but Foil provides a trait: <code>Foil\Traits\TemplateAwareTrait</code> that contains an implementation for all interface methods, doing the work for you.</p>
+<p>The <em>skeleton</em> of a template-aware extension looks like so:</p>
+<pre><code class="language-php">namespace MyApp;
+
+use Foil\Contracts\ExtensionInterface;
+use Foil\Contracts\TemplateAwareInterface;
+use Foil\Traits\TemplateAwareTrait;
+
+class FooExtension implements ExtensionInterface, TemplateAwareInterface
+{
+    use TemplateAwareTrait;
+
+    public function setup(array $args)
+    {
+    }
+
+    public function provideFilters()
+    {
+    }
+
+    public function provideFunctions()
+    {
+    }
+
+}</code></pre>
+<p>In a template-aware extension, like the one above, <strong><code>$this-&gt;template()</code></strong> gives access to current template object.</p>
+<h2>Finder Aware Extensions</h2>
+<p>Several Foil methods accept template names and internally <em>translate</em> them into real full file paths.
+That is done via a finder service that appends default file extension if no one is provided and then searches file into registered folders.
+(See <em>"Templates / Folders"</em> for more info).</p>
+<p>It may be desirable to do same thing inside an extension class.
+That can be done by making the extension class aware of the finder service.</p>
+<p>To do that you need to implement the <code>Foil\Contracts\FinderAwareInterface</code> and implement its methods.</p>
+<p>The simplest way to to that is to use the <code>Foil\Traits\FinderAwareTrait</code>.</p>
+<p>The <em>skeleton</em> of a finder-aware extension looks like so:</p>
+<pre><code class="language-php">namespace MyApp;
+
+use Foil\Contracts\ExtensionInterface;
+use Foil\Contracts\FinderAwareInterface;
+use Foil\Traits\FinderAwareTrait;
+
+class FooExtension implements ExtensionInterface, FinderAwareInterface
+{
+    use FinderAwareTrait;
+
+    public function setup(array $args)
+    {
+    }
+
+    public function provideFilters()
+    {
+    }
+
+    public function provideFunctions()
+    {
+    }
+
+}</code></pre>
+<p>In a finder-aware extension, like the one above, is possible to use <strong><code>$this-&gt;find($template)</code></strong> to find templates by their names,
+in the exact same way you can call <code>$engine-&gt;find($template)</code> when you have access to engine object.</p>
+<h2>API Aware Extensions</h2>
+<p>Foil ships with a powerful tool: an API object that helps to integrate Foil in any system, giving access to <strong>all</strong> Foil features.</p>
+<p>If you need to develop an extension that interacts very deep with Foil internal objects,
+you can build an extension that is aware of that API object, obtaining access to all Foil features.</p>
+<p>To do that you need to implement the <code>Foil\Contracts\APIAwareInterface</code> and implement its methods.</p>
+<p>The simplest way to to that is to use the <code>Foil\Traits\APIAwareTrait</code>.</p>
+<p>The <em>skeleton</em> of an API-aware extension looks like so:</p>
+<pre><code class="language-php">namespace MyApp;
+
+use Foil\Contracts\ExtensionInterface;
+use Foil\Contracts\APIAwareInterface;
+use Foil\Traits\APIAwareTrait;
+
+class FooExtension implements ExtensionInterface, APIAwareInterface
+{
+    use APIAwareTrait;
+
+    public function setup(array $args){
+    }
+
+    public function provideFilters(){
+    }
+
+    public function provideFunctions()
+    {
+    }
+
+}</code></pre>
+<p>In an API-aware extension, like the one above, is possible to use <strong><code>$this-&gt;api()</code></strong> to get the API object and call on it all supported methods,
+see <em>"Integrate Foil"</em> docs section to know which they are what they do.</p>
+<h2>The Base Extension Class</h2>
+<p>To speed-up extension development, instead of implementing one or more <em>*Aware</em> interfaces, is possible to extend the <code>Foil\Extensions\Base</code> abstract class.</p>
+<p>That class:</p>
+<ul>
+<li>is API aware, so you can use API object in it to access all Foil features</li>
+<li>
+<p>implements all the 3 methods of <code>ExtensionInterface</code>:</p>
+<ul>
+<li><code>setup()</code> is implemented just saving the arguments received in the <code>$args</code> object property</li>
+<li><code>provideFilters()</code> is implemented by returning an empty array</li>
+<li><code>provideFunctions()</code> is implemented by returning an empty array</li>
+</ul>
+<p>In this way is possible to write extensions that provide only filters (or only functions) overriding only the related method</p>
+</li>
+<li>has a method <code>option()</code> that lets you access to Engine options, e.g. current setting for autoescape, template folders, default file extension and so on</li>
+</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+                    <a href="https://github.com/Giuseppe-Mazzapica/Foil">
+                <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+        
+        <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
+
+    </div>
+    <!-- /#wrapper -->
+
+    <a href="#wrapper" id="back-top" title="Back to top"><i class="fa fa-long-arrow-up"></i></a>
+
+    <footer class="footer">
+      Made by hands by
+      <a href="http://gm.zoomlab.it/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
+      <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
+      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
+      <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
+
+      <span class="socials">
+        <a href="https://github.com/Giuseppe-Mazzapica" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
+        <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
+      </span>
+
+    </footer>
+
+    <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+    <script src="http://giuseppe-mazzapica.github.io/Foil/js/theme.min.js"></script>
+
+
+</body>
+
+</html>

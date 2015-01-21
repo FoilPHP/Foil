@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Templates / Overview. Foil: PHP Template Engine</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link href="http://giuseppe-mazzapica.github.io/Foil/css/theme.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+          <ul class="sidebar-nav">
+                                                  <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/INSTALLATION.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/ENGINE.html">
+                                      Engine
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FOLDERS.html">
+                                      Folders
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FILE-EXTENSIONS.html">
+                                      File Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Templates</a>
+                      <ul>
+                                                        <li class="active">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/OVERVIEW.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/INHERITANCE.html">
+                                      Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/PARTIALS.html">
+                                      Partials
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/PASS-DATA.html">
+                                      Pass Data To Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/CONTEXT-API.html">
+                                      Context API
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/RETRIEVE-DATA.html">
+                                      Retrieve Data Inside Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/HELPERS.html">
+                                      Data Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/FILTERS.html">
+                                      Data Filters
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/ARRAIZATION.html">
+                                      Arraization
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LOOP-HELPERS.html">
+                                      Loop Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/ARRAY-HELPERS.html">
+                                      Array Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LINK-HELPERS.html">
+                                      Link Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/URI-HELPERS.html">
+                                      Uri Helpers
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
+                                      Custom Functions and Filters
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/CUSTOM-EXTENSIONS.html">
+                                      Custom Foil Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Integrate Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/OVERVIEW.html">
+                                      Overview
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/API.html">
+                                      API Functions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                        </ul>
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="content" class="col-lg-11">
+                                                <ol class="breadcrumb">
+                          <li><a href="http://giuseppe-mazzapica.github.io/Foil">Foil</a></li>
+                          <li class="active">Templates</li>
+                        </ol>
+                                                <!--
+currentMenu: "templatesoverview"
+currentSection: "Templates"
+title: "Overview"
+-->
+<h1>Templates</h1>
+<p>In this documentation the word "templates" is used to refer to <em>template files</em>, that are the PHP files that contain markup.</p>
+<p>Internally, Foil also has a class named "Template" but in your code you might never need to <em>directly</em> interact with that class.
+As better explained in the <em>"Integrate Foil"</em> docs section, you can integrate Foil with your code passing around Foil engine object and/or Foil API object.</p>
+<p>It worth to say here that template files are included in the context of templates objects.</p>
+<p>To better understand this concept, look at the following pseudo-code:</p>
+<pre><code class="language-php">namespace Foil\Template;
+
+class Template {
+
+  function __construct($template_path)
+  {
+    $this-&gt;path = $template_path;
+  }
+
+  function render()
+  {
+    return include($this-&gt;path);
+  }
+}</code></pre>
+<p>Pseudo-code above is an over-semplification of what happen internally in Foil when a template is rendered.
+I shown it to better explain some basic concepts of Foil templates:</p>
+<ul>
+<li>templates are just regular PHP files, treated as regular PHP files, you can and should use any PHP code: it will just work</li>
+<li>the variable <code>$this</code> inside template files refers to an instance of Foil template class.
+However, template data you can access with <code>$this-&gt;variable_name</code> or template functions like <code>$this-&gt;function_name()</code> are <strong>not</strong> real object properties or methods, but they are handled using PHP overloading methods <a href="http://php.net/manual/en/language.oop5.overloading.php#object.get"><code>__get</code></a> and <a href="http://php.net/manual/en/language.oop5.overloading.php#object.call"><code>__call</code></a></li>
+</ul>
+<p>A note on <strong>namespaces</strong>. In PHP every file has its own namespace, so even if template files are included in the context of template objects don't assume <code>Foil\Template</code> as current namespace inside templates: if you don't define any namespace in template files (and you probably shouldn't) namespace will be the root one.</p>
+<h2>Get Templates Path (inside a template)</h2>
+<p>If inside a template you need to know the <em>real</em> absolute path of the file you can just use <strong><code>$this-&gt;path()</code></strong>.</p>
+<p>Any template can have a layout (see <em>"Templates / Inheritance"</em>).
+<strong><code>$this-&gt;layoutPath()</code></strong> inside a template file returns the real absolute path of template layout.</p>
+<h2>Get Templates Path (outside any template)</h2>
+<p>Having access to the Foil engine instance, is possible to get a template path using <code>find()</code> engine method that takes a template name and return the absolute path of template file.</p>
+<pre><code class="language-php">$engine-&gt;find('a-template'); // returns: /path/to/templates/a-template.php</code></pre>
+<p>Same method can be used to check if a template file exists: it returns <code>false</code> if template doesn't exist.</p>
+<p><code>find()</code> follows all the rules for Foil methods that accept template names:</p>
+<ul>
+<li>to pass the template file extension is optional, if not provided default extension will be used</li>
+<li>if there are more templates with same name, but in different folders, the absolute path of the first template found is returned, where folders are searched in registration order</li>
+<li>
+<p>to search a template in a specific folder is possible to use the <em>double colon syntax</em>:</p>
+<pre><code class="language-php"> $engine-&gt;find('folder-id::template-name');</code></pre>
+<p>to do that, the folder have to be registered into the engine using folder ID.</p>
+</li>
+</ul>
+<p>See  <em>"Getting Started / File Extensions"</em> to know more about default extension and  <em>"Getting Started / Folders"</em> to know more about folder IDs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+                    <a href="https://github.com/Giuseppe-Mazzapica/Foil">
+                <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+        
+        <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
+
+    </div>
+    <!-- /#wrapper -->
+
+    <a href="#wrapper" id="back-top" title="Back to top"><i class="fa fa-long-arrow-up"></i></a>
+
+    <footer class="footer">
+      Made by hands by
+      <a href="http://gm.zoomlab.it/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
+      <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
+      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
+      <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
+
+      <span class="socials">
+        <a href="https://github.com/Giuseppe-Mazzapica" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
+        <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
+      </span>
+
+    </footer>
+
+    <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+    <script src="http://giuseppe-mazzapica.github.io/Foil/js/theme.min.js"></script>
+
+
+</body>
+
+</html>

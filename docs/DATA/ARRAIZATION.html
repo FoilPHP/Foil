@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Data / Arraization. Foil: PHP Template Engine</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link href="http://giuseppe-mazzapica.github.io/Foil/css/theme.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+          <ul class="sidebar-nav">
+                                                  <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/INSTALLATION.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/ENGINE.html">
+                                      Engine
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FOLDERS.html">
+                                      Folders
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FILE-EXTENSIONS.html">
+                                      File Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Templates</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/OVERVIEW.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/INHERITANCE.html">
+                                      Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/PARTIALS.html">
+                                      Partials
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/PASS-DATA.html">
+                                      Pass Data To Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/CONTEXT-API.html">
+                                      Context API
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/RETRIEVE-DATA.html">
+                                      Retrieve Data Inside Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/HELPERS.html">
+                                      Data Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/FILTERS.html">
+                                      Data Filters
+                                  </a>
+                              </li>
+                                                        <li class="active">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/ARRAIZATION.html">
+                                      Arraization
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LOOP-HELPERS.html">
+                                      Loop Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/ARRAY-HELPERS.html">
+                                      Array Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LINK-HELPERS.html">
+                                      Link Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/URI-HELPERS.html">
+                                      Uri Helpers
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
+                                      Custom Functions and Filters
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/CUSTOM-EXTENSIONS.html">
+                                      Custom Foil Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Integrate Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/OVERVIEW.html">
+                                      Overview
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/API.html">
+                                      API Functions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                        </ul>
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="content" class="col-lg-11">
+                                                <ol class="breadcrumb">
+                          <li><a href="http://giuseppe-mazzapica.github.io/Foil">Foil</a></li>
+                          <li class="active">Data</li>
+                        </ol>
+                                                <!--
+currentMenu: "arraization"
+currentSection: "Data"
+title: "Arraization"
+-->
+<h1>Arraization</h1>
+<p>With "Arraization" I mean the process to convert to array all the objects that are passed to a template.</p>
+<p>There is a benefit unrelated with Foil on doing this: templates becomes decoupled from internal data objects and at any time you can change internal data layer implementation.</p>
+<p>However, benefits of arraization in Foil are more than this, you also get:</p>
+<ul>
+<li><strong>automatic escape</strong> for everything: the function Foil uses to escape data is capable to escape strings and arrays (even deeply nested) containing strings,
+so if objects are converted to arrays there's nothing that Foil can't escape</li>
+<li><strong>dot syntax</strong> to access nested data</li>
+<li>there are Foil <strong>helpers</strong> specifically designed to work with arrays</li>
+</ul>
+<p>See <em>"Data / Retrieve Data in Templates"</em> to know more on automatic escape and dot syntax.</p>
+<p>Of course, you can use <strong>any method</strong> and <strong>any library</strong> you like to convert data into array (maybe you know <a href="http://fractal.thephpleague.com/">Fractal</a>),
+but Foil comes with a function that can worthily do the trick.</p>
+<h1><code>arraize()</code></h1>
+<p>The only function that handles arraization is <code>Foil\arraize()</code>.</p>
+<p>This function recursively convert arrays and <em>traversable</em> objects into nested arrays.</p>
+<p>All the strings contained in the data can be optionally HTML-encoded.</p>
+<p>Graph below resumes how this function works:</p>
+<hr />
+<p><a href="http://zoomlab.it/public/arraizebig.png"><img alt="Arraize graph" src="http://zoomlab.it/public/arraize.png" /></a></p>
+<hr />
+<p>What you don't see from graph is that final obtained value is casted to array, it means that even if you pass a single scalar value (a string, an integer) it is converted in an array with one element.</p>
+<p>Aside that, graph make clear that <strong>whatever data you pass to the function at the end of the process, you get an array that contains no objects</strong>, because:</p>
+<ul>
+<li>traversable objects are looped and each item is saved into an array and eventually recursively processed</li>
+<li>
+<p>non-traversable objects are converted using the first available in a set of 5 methods:</p>
+<ol>
+<li>if a transformer (in form of callback, object or class) was passed to <code>arraize()</code> it is used. More on transformer later in this page.</li>
+<li>if the object has a method <code>toArray()</code> it is called (and result is casted to array, just in case). This brings out-of-the-box support to Eloquent models.</li>
+<li>if the object has a method <code>asArray()</code> it is called (result is casted to array)</li>
+<li>if the object implements <code>JsonSerializable</code> interface, the method <code>jsonSerialize()</code> is called and result is casted to array</li>
+<li>if none of the previous is available <code>get_object_vars()</code> is called to obtain an array of object properties</li>
+</ol>
+</li>
+</ul>
+<p>Note that the array obtained is recursively processed.</p>
+<h2>Transformers</h2>
+<p>If your models don't support none of the method used by default by <code>arraize()</code>, is always possible to add a <code>toArray()</code> or an <code>asArray</code> method.</p>
+<p>But if you don't want or you can't edit your models, <code>arraize()</code> supports transformers: they are callbacks to convert object into arrays.</p>
+<p>To use transformers you need to pass to <code>arraize()</code> an associative array where</p>
+<ul>
+<li>keys are the fully-qualified class names of the objects to be transformed</li>
+<li>values are the tranformers to apply</li>
+</ul>
+<p>Tranformers (the array values) can be passed in 3 ways:</p>
+<ul>
+<li>as callbacks that receive the object and have to return an array</li>
+<li>as object instances, that don't need to implement any interface or extend any class, they just need a method <code>transform()</code> that receives the object and has to return an array</li>
+<li>as fully-qualified class names whose instances are created by <code>arraize()</code> before calling on them <code>transform()</code> method.</li>
+</ul>
+<h2>Example</h2>
+<p>Below there are some examples for the usage of transformers.</p>
+<p>The <code>Product</code> class that will be used in all examples is very simple:</p>
+<pre><code class="language-php">namespace My\App;
+
+class Product
+{
+  private $name;
+  private $price;
+
+  public function __construct($name, $price) {
+    $this-&gt;name = $name;
+    $this-&gt;price = $price;
+  }
+
+  public function getName() {
+    return $this-&gt;name;
+  }
+
+  public function getPrice() {
+    return $this-&gt;price;
+  }  
+}</code></pre>
+<p>And this is the array of products I'll use for the examples:</p>
+<pre><code class="language-php">$products = [
+  'samsungs516'  =&gt; new My\App\Product('Samsung S5 16GB', 580),
+  'iphone6p128'  =&gt; new My\App\Product('iPhone 6 Plus 128GB', 949),
+  'xiaominote64' =&gt; new My\App\Product('Xiaomi Mi Note 64GB', 450),
+];</code></pre>
+<p>Note that even if in your application you use some sort of <code>Collection</code> class instead of arrays, it will not be a problem if
+that collection object is traversable, and very likely it is.</p>
+<h3>Example With Transformer Callback</h3>
+<p>Assuming <code>arraize()</code> is called like so:</p>
+<pre><code class="language-php">$transformers = [
+  'My\App\Product' =&gt; function($product) {
+    return [
+      'model' =&gt; 'Model: '.$product-&gt;getName(),
+      'price' =&gt; 'Price: &lt;b&gt;'.number_format($product-&gt;getPrice(), 2).' $&lt;/b&gt;',
+    ];
+  }
+];
+
+$arraized = Foil\arraize($products, true, $transformers);</code></pre>
+<p>the <code>$arraized</code> array will be equal to:</p>
+<pre><code class="language-php">[
+    'samsungs516' =&gt; [
+        'model' =&gt; 'Model: Samsung S5 16GB',
+        'price' =&gt; 'Price: &amp;lt;b&amp;gt;580.00 $&amp;lt;/b&amp;gt;'
+    ],
+    'iphone6p128' =&gt; [
+        'model' =&gt; 'Model: iPhone 6 Plus 128GB',
+        'price' =&gt; 'Price: &amp;lt;b&amp;gt;949.00 $&amp;lt;/b&amp;gt;'
+    ],
+    'xiaominote64' =&gt; [
+        'model' =&gt; 'Model: Xiaomi Mi Note 64GB',
+        'price' =&gt; 'Price: &amp;lt;b&amp;gt;450.00 $&amp;lt;/b&amp;gt;'
+    ]
+]</code></pre>
+<p>So the callback passed in <code>$transformers</code> array, using as key the product objects class name, has been used to covert all objects into arrays.</p>
+<p>Note that:</p>
+<ul>
+<li>if the array of products would be passed in a deeply nested array the conversion had be performed in exactly same way</li>
+<li>all strings have been HTML encoded, that happen because I used <code>true</code> as 2nd argument for <code>arraize()</code>, setting it to <code>false</code> no encoding happen</li>
+<li>I used an anonymous function, but you can also pass any other kind of callback</li>
+</ul>
+<h3>Example With Transformer Object</h3>
+<p>The same result of above could be obtained using a transformer object, i.e. an object that has a public <code>transform()</code> method.</p>
+<pre><code class="language-php">namespace My\App;
+
+class ProductTransformer
+{
+  public function transform(Product $product)
+  {
+    return [
+      'model' =&gt; 'Model: '.$product-&gt;getName(),
+      'price' =&gt; 'Price: &lt;b&gt;'.number_format($product-&gt;getPrice(), 2).' $&lt;/b&gt;',
+    ];
+  }
+}</code></pre>
+<p>Calling <code>arraize()</code> like so:</p>
+<pre><code class="language-php">$arraized = $Foil\arraize($products, true, ['My\App\Product'=&gt; new My\App\ProductTransformer()]);</code></pre>
+<p>the output would be the same.</p>
+<h3>Example With Transformer Class</h3>
+<p>If you don't need any specific configuration for transformer objects (e.g. any arguments to pass to constructor), you can pass a transformer class name instead of
+a transformer object, and <code>arraize()</code> will instantiate the class for you.</p>
+<p>e.g. previous example could be wrote like so:</p>
+<pre><code class="language-php">$arraized = $Foil\arraize($products, true, ['My\App\Product'=&gt; 'My\App\ProductTransformer']);</code></pre>
+<h1>Usage for <code>render()</code></h1>
+<p>A nice usage case for <code>arraize()</code> is to covert all (or part of) the data to pass to Foil engine <code>render()</code> method.</p>
+<p>Below an example in a trivial controller class:</p>
+<pre><code class="language-php">use Foil;
+
+class MyController
+{
+  private $foil;
+
+  function __construct(Foil\Engine $foil)
+  {
+    $this-&gt;foil = $foil;
+  }
+
+  function getProducts(ProductsRepository $products)
+  {
+    $data = $products-&gt;getAll();
+
+    return $this-&gt;foil-&gt;render('product-archive', ['products' =&gt; Foil\arraize($data, true)]);
+  }
+};</code></pre>
+<p>Note that if you use <code>arraize()</code> to convert the whole data passed to templates, can be a good idea set Foil autoescape option to <code>false</code> and pass <code>true</code> as second argument
+to <code>arraize()</code>: all data will escaped anyway and it will be more performant.</p>
+<p>However, in that way <strong>all</strong> data will be HTML-encoded, so that's not recommended if your data contain HTML content that you want to preserve, unless there is just one (or a few)
+variable that contains trusted HTML content.</p>
+<p>In such case, probably best choice is keep escaping everything then only decode trusted content using the <code>d()</code> data helper or the <code>decode()</code> function.</p>
+<p>Also remember that if autoescape is turned off, you can register custom functions that output raw HTML content.</p>
+<hr />
+<p>If you want to avoid direct calls to <code>Foil\arraize()</code> to decouple your application classes from Foil,
+you can make use of the Foil API object. See <em>Integrate Foil / Overview</em> to know more on the topic.</p>
+<h2>Notes For <code>a()</code> And <code>araw()</code> Data Helpers</h2>
+<p>The data helpers <code>a()</code> and <code>araw()</code>, internally make use of <code>arraize()</code> function, so they can be used to convert specific template variables.</p>
+<p>However, when using that helpers you have less control on how the function is used, keep in mind that:</p>
+<ul>
+<li><code>$escape</code> argument for the function is always set to false when you use <code>araw()</code>, and is set to <code>true</code> for <code>a()</code> when autoescape engine option is set to true</li>
+<li>you <strong>can't</strong> pass transformers to <code>arraize()</code> when using data helpers. You you have that need pass converted data to <code>render()</code> or, as alternative, use Context API.</li>
+</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+                    <a href="https://github.com/Giuseppe-Mazzapica/Foil">
+                <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+        
+        <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
+
+    </div>
+    <!-- /#wrapper -->
+
+    <a href="#wrapper" id="back-top" title="Back to top"><i class="fa fa-long-arrow-up"></i></a>
+
+    <footer class="footer">
+      Made by hands by
+      <a href="http://gm.zoomlab.it/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
+      <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
+      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
+      <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
+
+      <span class="socials">
+        <a href="https://github.com/Giuseppe-Mazzapica" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
+        <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
+      </span>
+
+    </footer>
+
+    <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+    <script src="http://giuseppe-mazzapica.github.io/Foil/js/theme.min.js"></script>
+
+
+</body>
+
+</html>

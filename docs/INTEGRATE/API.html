@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Integrate Foil / API Functions. Foil: PHP Template Engine</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link href="http://giuseppe-mazzapica.github.io/Foil/css/theme.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+          <ul class="sidebar-nav">
+                                                  <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/INSTALLATION.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/ENGINE.html">
+                                      Engine
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FOLDERS.html">
+                                      Folders
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/GETTING-STARTED/FILE-EXTENSIONS.html">
+                                      File Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Templates</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/OVERVIEW.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/INHERITANCE.html">
+                                      Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/TEMPLATES/PARTIALS.html">
+                                      Partials
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/PASS-DATA.html">
+                                      Pass Data To Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/CONTEXT-API.html">
+                                      Context API
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/RETRIEVE-DATA.html">
+                                      Retrieve Data Inside Templates
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/HELPERS.html">
+                                      Data Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/FILTERS.html">
+                                      Data Filters
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/DATA/ARRAIZATION.html">
+                                      Arraization
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LOOP-HELPERS.html">
+                                      Loop Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/ARRAY-HELPERS.html">
+                                      Array Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/LINK-HELPERS.html">
+                                      Link Helpers
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/FUNCTIONS/URI-HELPERS.html">
+                                      Uri Helpers
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
+                                      Custom Functions and Filters
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/EXTENDING/CUSTOM-EXTENSIONS.html">
+                                      Custom Foil Extensions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Integrate Foil</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/OVERVIEW.html">
+                                      Overview
+                                  </a>
+                              </li>
+                                                        <li class="active">
+                                  <a href="http://giuseppe-mazzapica.github.io/Foil/docs/INTEGRATE/API.html">
+                                      API Functions
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                        </ul>
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="content" class="col-lg-11">
+                                                <ol class="breadcrumb">
+                          <li><a href="http://giuseppe-mazzapica.github.io/Foil">Foil</a></li>
+                          <li class="active">Integrate Foil</li>
+                        </ol>
+                                                <!--
+currentMenu: "api"
+currentSection: "Integrate Foil"
+title: "API Functions"
+-->
+<h1>API Functions</h1>
+<h3>Note On Function Names</h3>
+<p>API functions can be called as namespaced functions, e.g. <code>Foil\engine()</code> or as methods of Foil API object.</p>
+<p>Function names with more than one word are written using snake_case and you can call them in that way as API object methods,
+but for consistence with PSR-1 coding style you can also call them using camelCase.</p>
+<p>For example, the function <code>Foil\render_template()</code> can also be ran with <code>$api-&gt;renderTemplate()</code>.</p>
+<hr />
+<h1><code>foil()</code></h1>
+<pre><code class="language-php">/**
+ * @param  string|void $which            Service id
+ * @param  array       $options          Engine options
+ * @param  array       $custom_providers Custom service provider classes
+ *
+ * @return mixed       The container or the service whose id has been passed in $which
+ */
+
+function foil($which = null, array $options = [], array $custom_providers = [])</code></pre>
+<p>You should very rarely (close to never) use this function directly. In fact, it is used by all the functions to access
+Foil DI container, that is a <a href="http://pimple.sensiolabs.org/">Pimple</a> instance or any service registered in it.</p>
+<p>The only case in which you need to use this function is when you want to add additional service providers to be registered
+in Foil container.</p>
+<p>That can be done by passing to the function an array of service provider class names as 3rd argument.
+Note that in that way you can also override default Foil service providers, but it implies you know what you are doing or sky will fall on your head.</p>
+<p>Only in such case, you can get a Foil engine instance with <code>$engine = Foil\foil('engine', $options, $custom_providers)</code> instead of using the
+<code>engine()</code> function.</p>
+<hr />
+<h1><code>engine()</code></h1>
+<pre><code class="language-php">/**
+ * @param  array        $options Options: autoescape, default extension, folders...
+ *
+ * @return \Foil\Engine
+ */
+
+function engine(array $options = [])</code></pre>
+<p>This function is the preferred way to obtain an instance of Foil engine that can be used to render templates and access to most of Foil features.</p>
+<p><code>$options</code> argument is used to configure Foil behavior, see <em>"Getting Started"</em> section to know more.</p>
+<p>When called more than once the function returns always the same instance of the engine. Also note that you need to pass engine options only first time the function is called.</p>
+<hr />
+<h1><code>render_template()</code></h1>
+<pre><code class="language-php">/**
+ * @param  string $path    Full path for the template
+ * @param  array  $data    Template context
+ * @param  array  $options Options for the engine
+ *
+ * @return string
+ */
+
+function render_template($path, array $data = [], array $options = [])</code></pre>
+<p>This is an alternative to call <code>render()</code> method on Foil engine instance, but there is a difference:
+this function needs a template full file path, whereas <code>render()</code> needs just template name.</p>
+<p>Using this function is possible to quickly render a template and you don't need to set any template folder for the engine.</p>
+<p>If in your application you have a custom method to retrieve template file paths, this function will be handy.</p>
+<p>It worth noting that <code>renderTemplate()</code> can be called on a Foil engine instance too.</p>
+<hr />
+<h1><code>option()</code></h1>
+<pre><code class="language-php">/**
+ * @param  string $which Option name
+ *
+ * @return mixed
+ */
+
+function option($which = null)</code></pre>
+<p>This function can be used to retrieve any option that was passed when Foil engine was instantiated.</p>
+<p>It is pretty useful in API-aware extensions (see <em>"Extending Foil / Custom Extensions"</em>) to create configurable custom functions and filters.</p>
+<hr />
+<h1><code>add_context()</code></h1>
+<pre><code class="language-php">/**
+ * @param array   $data     Data to be passed to matching templates
+ * @param string  $needle   String to compare template name to
+ * @param boolean $is_regex If true template name will be compared using $needle as a regex
+ */
+
+function add_context(array $data, $needle, $is_regex = false)</code></pre>
+<p>This function is equivalent to <code>$engine-&gt;useContext()</code> method when used to pass data to groups of templates based on a string search (optionally regex) against their names.</p>
+<p>See <em>"Data / Context API"</em> for more information.</p>
+<hr />
+<h1><code>add_global_context()</code></h1>
+<pre><code class="language-php">/**
+ * @param array $data Data to be passed to **all** templates
+ */
+
+function add_global_context(array $data)</code></pre>
+<p>Adds some data to all templates. Is equivalent to <code>$engine-&gt;useData()</code>.</p>
+<p>See <em>"Data / Context API"</em> for more information.</p>
+<hr />
+<h1><code>add_context_using()</code></h1>
+<pre><code class="language-php">/**
+ * @param ContextInterface $context Context class to add
+ */
+
+function add_context_using(Foil\Contracts\ContextInterface $context)</code></pre>
+<p>This function is equivalent to <code>$engine-&gt;useContext()</code> when used to pass data to groups of templates using a <strong>custom context class</strong>.</p>
+<p>See <em>"Data / Context API"</em> for more information.</p>
+<hr />
+<h1><code>run()</code></h1>
+<pre><code class="language-php">/**
+ * @param string $function Function name
+ *
+ * @return mixed
+ */
+
+function run($function)</code></pre>
+<p>Custom functions registered to extends Foil features can be ran inside template files as methods of template object (accessed via <code>$this</code>).</p>
+<p>This function allows to run any registered custom function outside template files.</p>
+<p>Additional arguments that the registered function might take can be passed as additional arguments to this function, e.g. <code>Foil\run('func_name', $arg1, $arg2)</code></p>
+<hr />
+<h1><code>entities()</code></h1>
+<pre><code class="language-php">/**
+ * @param  mixed $data Data to HTML-encode
+ *
+ * @return mixed
+ */
+
+function entities($data)</code></pre>
+<p>This function allows to perform on any data, and outside of template files, the same routine Foil uses to escape content with automatic escape or with escape helpers.</p>
+<p>This routine is capable to HTML-encode strings and arrays (even deeply nested) that contain strings. Any other data type will be returned unchanged.</p>
+<hr />
+<h1><code>decode()</code></h1>
+<pre><code class="language-php">/**
+* @param  mixed $data Data to HTML-decode
+*
+* @return mixed
+*/
+
+function decode($data)</code></pre>
+<p>This function is the counterpart for <code>entities()</code>. It is capable to HTML-dencode strings and arrays (even deeply nested) that contain strings.
+Any other data type will be returned unchanged.</p>
+<hr />
+<h1><code>arraize()</code></h1>
+<pre><code class="language-php">/**
+* @param  mixed $data        Data to convert
+* @param  bool  $escape      Should strings in data be HTML-encoded?
+* @param  array $trasformers Transformers: full qualified class names, objects or callables
+* @param  bool  $tostring    Should all scalar items be casted to strings?
+* @return array
+*/
+
+function arraize($data = [], $escape = false, array $trasformers = [], $tostring = false)</code></pre>
+<p>This function allow to recursively convert to array any kind of data. It is a powerful tool, and there is an entire doc page that explain how it work and how to use it.</p>
+<p>See <em>"Data / Arraization"</em>.</p>
+<hr />
+<h1><code>fire()</code></h1>
+<pre><code class="language-php">/**
+ * @param string $event Event name
+ */
+
+function fire($event)</code></pre>
+<p>Internally Foil uses an events emit / subscribe system to implements most of its features.</p>
+<p>Foil uses the awesome <a href="https://github.com/igorw/evenement">Evenement</a> package to implement it.</p>
+<p>This function allows to emit a custom event, and to do that you only need to pass the event name as 1st argument.</p>
+<p>Additional arguments passed to function will be passed in same order to subscribing callbacks.</p>
+<p>This function can be used in API-aware extensions to emit custom events that can be subscribed by yourself or by 3rd parties.</p>
+<hr />
+<h1><code>on()</code></h1>
+<pre><code class="language-php">/**
+ * @param string   $event    Event name
+ * @param callable $callback Callback called when event is emitted
+ * @param boolean  $once     Should the callback run only once?
+ */
+
+function on($event, callable $callback, $once = false)</code></pre>
+<p>This function is part of the events emit / subscribe system used by Foil and allows to subscribe an event using a callback.</p>
+<p>This function can be used in API-aware extensions to subscribe events emitted by Foil (there are quite a lot), or by code you or a 3rd party wrote.</p>
+<hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+                    <a href="https://github.com/Giuseppe-Mazzapica/Foil">
+                <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+        
+        <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
+
+    </div>
+    <!-- /#wrapper -->
+
+    <a href="#wrapper" id="back-top" title="Back to top"><i class="fa fa-long-arrow-up"></i></a>
+
+    <footer class="footer">
+      Made by hands by
+      <a href="http://gm.zoomlab.it/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
+      <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
+      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
+      <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
+
+      <span class="socials">
+        <a href="https://github.com/Giuseppe-Mazzapica" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
+        <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
+      </span>
+
+    </footer>
+
+    <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+    <script src="http://giuseppe-mazzapica.github.io/Foil/js/theme.min.js"></script>
+
+
+</body>
+
+</html>
