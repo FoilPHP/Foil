@@ -9,7 +9,7 @@ class StackTest extends TestCase
     public function testFactory()
     {
         $api = Mockery::mock('Foil\API');
-        $api->shouldReceive('template')->andReturnValues(['foo', 'bar', 'baz']);
+        $api->shouldReceive('foil->factory')->andReturnValues(['foo', 'bar', 'baz']);
         $s = new Stack($api);
         $s->factory('/path/to/foo');
         $s->factory('/path/to/bar');

@@ -12,6 +12,11 @@ class API extends BaseAPI
         $this->container = $container;
     }
 
+    public function foil($which = null)
+    {
+        return $this->container[$which];
+    }
+
     public function engine()
     {
         return $this->container['engine'];
@@ -25,16 +30,6 @@ class API extends BaseAPI
     public function on($event, callable $callback)
     {
         $this->container['events']->on($event, $callback);
-    }
-
-    public function command()
-    {
-        return $this->container['command'];
-    }
-
-    public function template($path, $class = null)
-    {
-        return $this->container['template.factory']->factory($path, $class);
     }
 
     public function option($which = null)

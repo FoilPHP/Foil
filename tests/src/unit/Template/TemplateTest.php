@@ -25,7 +25,7 @@ class TemplateTest extends TestCase
     public function testFilter()
     {
         $api = $this->getAPI();
-        $api->shouldReceive('command->filter')
+        $api->shouldReceive('foil->filter')
             ->with(Mockery::type('string'), Mockery::any(), [])
             ->andReturnValues(['foo', 'bar', null, 'baz']);
         $template = $this->getTemplate('path', $api);

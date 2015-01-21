@@ -35,7 +35,7 @@ class Stack implements Countable, APIAware
      */
     public function factory($path, $class = null)
     {
-        $template = $this->api()->template($path, $class);
+        $template = $this->api()->foil('template.factory')->factory($path, $class);
         $this->stack->push($template);
 
         return $template;

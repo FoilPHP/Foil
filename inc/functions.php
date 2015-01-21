@@ -290,17 +290,3 @@ if (! function_exists('Foil\arrayze')) {
         return (new Arraize())->run($data, $escape, $trasformers, $tostring);
     }
 }
-
-if (! function_exists('Foil\template')) {
-    function template($path, $class = null)
-    {
-        return foil('template.factory')->factory($path, $class);
-    }
-}
-
-if (! function_exists('Foil\command')) {
-    function command()
-    {
-        return foil('command');
-    }
-}

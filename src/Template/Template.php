@@ -73,7 +73,7 @@ class Template implements TemplateInterface, APIAware
             throw new InvalidArgumentException('Args array must contain as many sub-arrays as filters number.');
         }
         array_walk($filters, function ($filter, $i, $args) use (&$input) {
-            $input = $this->api()->command()->filter($filter, $input, $args[$i]);
+            $input = $this->api()->foil('command')->filter($filter, $input, $args[$i]);
         }, $args);
 
         return $input;
@@ -81,7 +81,7 @@ class Template implements TemplateInterface, APIAware
 
     public function run($function)
     {
-        return call_user_func_array([$this->api()->command(), 'run'], func_get_args());
+        return call_user_func_array([$this->api()->foil('command'), 'run'], func_get_args());
     }
 
     public function supply($section, $default = '')
