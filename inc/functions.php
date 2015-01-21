@@ -267,7 +267,7 @@ if (! function_exists('Foil\decode')) {
     }
 }
 
-if (! function_exists('Foil\arrayze')) {
+if (! function_exists('Foil\arraize')) {
     /**
      * Stateless class that recursively convert an array or a traversable object into a nested array.
      * Optionally convert all "atomic" items to strings and optionally HTML-encode all strings.
