@@ -5,6 +5,10 @@ FOIL
 
 -------
 
+![travis-ci status](https://travis-ci.org/Giuseppe-Mazzapica/Foil.svg?branch=master)
+
+-------
+
 **Foil** brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.
 
 # Key Features
