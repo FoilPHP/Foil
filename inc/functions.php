@@ -82,6 +82,19 @@ if (! function_exists('Foil\engine')) {
     }
 }
 
+if (! function_exists('Foil\template')) {
+    /**
+     *
+     * @param  string                  $path
+     * @param  string|void             $class
+     * @return \Foil\Template\Template
+     */
+    function template($path, $class = null)
+    {
+        return $this->container['template.factory']->factory($path, $class);
+    }
+}
+
 if (! function_exists('Foil\render_template')) {
     /**
      * Render a template using a full template file path and some data.
