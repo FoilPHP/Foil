@@ -91,7 +91,7 @@ if (! function_exists('Foil\template')) {
      */
     function template($path, $class = null)
     {
-        return $this->container['template.factory']->factory($path, $class);
+        return foil('template.factory')->factory($path, $class);
     }
 }
 
