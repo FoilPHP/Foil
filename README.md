@@ -37,7 +37,7 @@ Then I discovered [Plates](http://platesphp.com/), and it was love at first sigh
 
 Trying to do something *serious* with Plates, I encountered several problems which I had not when using compiled template engines.
 
-I wrote a blog post to explain why I am not happy with Plates anymore and so I decided to write Foil.
+I wrote [a blog post](http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/) to explain why I am not happy with Plates anymore and so I decided to write Foil.
 
 # Requirements
 
