@@ -103,7 +103,7 @@ class Finder
             $template_name .= ".{$this->ext}";
         }
 
-        return [ 'dir' => $dir, 'file' => $template_name];
+        return [ 'dir' => $dir, 'file' => $this->normalize($template_name)];
     }
 
     /**

@@ -35,11 +35,11 @@
         </div>
 
         <div>
-            <?= $this->insert('partials\partial', ['a_partial_var' => '"I am a partial var!"']) ?>
+            <?= $this->insert('partials/partial', ['a_partial_var' => '"I am a partial var!"']) ?>
         </div>
 
         <div>
-            <?= $this->raw('i_do_not_exist', $this->insert('partials\partial-2', ['a_partial_var' => '"I am a partial var too."'])) ?>
+            <?= $this->raw('i_do_not_exist', $this->insert('partials/partial-2', ['a_partial_var' => '"I am a partial var too."'])) ?>
         </div>
 
         <div>

@@ -20,6 +20,6 @@
 
 <?php $this->replace() // another-section  ?>
 
-<?= $this->insert('partials\partial-2', ['a_partial_var' => '"!!!"'], ['test_me']) ?>
+<?= $this->insert('partials/partial-2', ['a_partial_var' => '"!!!"'], ['test_me']) ?>
 
 <p>FINAL TEMPLATE, Out of any section, ouput a var <?= $this->v('test_me') ?></p>
