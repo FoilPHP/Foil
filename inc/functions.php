@@ -82,19 +82,6 @@ if (! function_exists('Foil\engine')) {
     }
 }
 
-if (! function_exists('Foil\template')) {
-    /**
-     *
-     * @param  string                  $path
-     * @param  string|void             $class
-     * @return \Foil\Template\Template
-     */
-    function template($path, $class = null)
-    {
-        return foil('template.factory')->factory($path, $class);
-    }
-}
-
 if (! function_exists('Foil\render_template')) {
     /**
      * Render a template using a full template file path and some data.
@@ -301,5 +288,19 @@ if (! function_exists('Foil\arrayze')) {
     function arraize($data = [], $escape = false, array $trasformers = [], $tostring = false)
     {
         return (new Arraize())->run($data, $escape, $trasformers, $tostring);
+    }
+}
+
+if (! function_exists('Foil\template')) {
+    function template($path, $class = null)
+    {
+        return foil('template.factory')->factory($path, $class);
+    }
+}
+
+if (! function_exists('Foil\command')) {
+    function command()
+    {
+        return foil('command');
     }
 }
