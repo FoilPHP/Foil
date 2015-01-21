@@ -8323,10 +8323,32 @@ body {
   position: absolute;
   padding: 15px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
+  #wrapper {
+    padding-left: 300px;
+  }
+  #wrapper #menu-toggle {
+    left: 300px;
+  }
   #wrapper #page-content-wrapper {
     padding: 20px;
     position: relative;
+  }
+  #wrapper #sidebar-wrapper {
+    width: 300px;
+  }
+  #wrapper #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+  #wrapper.toggled #menu-toggle {
+    left: 0;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
   }
 }
 code {
