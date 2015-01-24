@@ -102,6 +102,13 @@ class Template implements TemplateInterface, APIAware
         return $partial;
     }
 
+    public function insertif($template, array $data = [], array $only = null)
+    {
+        if ($this->api()->engine()->find($template)) {
+            return $this->insert($template, $data, $only);
+        }
+    }
+
     public function layout($layout, array $data = [], array $only = null)
     {
         $layout_file = $this->api()->engine()->find($layout);

@@ -28,6 +28,25 @@ So you need to echo what is returned by `insert()` to make the content visible.
 Partials are searched in all registered folders, just like standard templates. All the rules that apply to Foil engine methods `render()` and `find()` are valid for `insert()` too: default extension, specific folders targeting, and so on.
 See *"Templates / Overview"* to know more on the topic.
 
+## Conditional Insertion
+
+When you call `insert()` with a non-existent template name an exception is thrown.
+
+Sometimes may be desirable to insert a partial only if it exists, without any error if it isn't there.
+That can be done with `insertif()` that accepts exact same arguments of `insert()`.
+
+Once `insertif()` returns nothing if template is not found, it can be easily used to output a default content when the partial doesn't exist:
+
+```php
+<?= $this->insertif('header') ?: 'Default Header' ?>
+```
+
+Note that another partial can be used as default:
+
+```php
+<?= $this->insertif('header') ?: $this->insertif('default-header') ?>
+```
+
 ## Sections Definition in Partials
 
 Foil supports sections definition in partials (See *"Templates / Inheritance"* to know more about sections).
