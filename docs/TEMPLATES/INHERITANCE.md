@@ -128,6 +128,7 @@ $engine = Foil\engine([
  - **`layout()`** is used to assign a layout to a template. By default a layout has access to all the
  template variables, but is possible limit or completely disable access to templates variables.
  Is also possible pass layout-specific variables. See *"Data / Pass Data to Templates"* to know more.
+ Accepts as first arugument either a template name (with or withor file extension) to be searched in registered folder or a full path of a layout file.
 
  - **`section()`** is used to start a section definition.
 

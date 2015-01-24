@@ -111,7 +111,7 @@ class Template implements TemplateInterface, APIAware
 
     public function layout($layout, array $data = [], array $only = null)
     {
-        $layout_file = $this->api()->engine()->find($layout);
+        $layout_file = file_exists($layout) ? $layout : $this->api()->engine()->find($layout);
         if (! $layout_file) {
             throw new InvalidArgumentException('Layout must be a valid file name.');
         }
