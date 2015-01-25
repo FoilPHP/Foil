@@ -192,7 +192,7 @@ title: "Template Inheritance"
     &lt;head&gt;
         &lt;?php $this-&gt;section('head') ?&gt;
           &lt;link rel="stylesheet" href="style.css" /&gt;
-          &lt;title&gt;&lt;?php $this-&gt;section('title') ?&gt;My Webpage&lt;?php $this-&gt;stop() ?&gt;&lt;/title&gt;
+          &lt;title&gt;&lt;?php $this-&gt;section('title') ?&gt;My Home Page&lt;?php $this-&gt;stop() ?&gt;&lt;/title&gt;
         &lt;?php $this-&gt;stop() ?&gt;
     &lt;/head&gt;
     &lt;body&gt;
@@ -228,7 +228,7 @@ title: "Template Inheritance"
 <p>E.g. if the child template above is rendered, <code>&lt;head&gt;</code> tag will contain:</p>
 <pre><code class="language-html">&lt;head&gt;
   &lt;link rel="stylesheet" href="style.css" /&gt;
-  &lt;title&gt;My Webpage&lt;/title&gt;
+  &lt;title&gt;My Home Page&lt;/title&gt;
   &lt;style type="text/css"&gt;
     .important { color: #336699; }
   &lt;/style&gt;

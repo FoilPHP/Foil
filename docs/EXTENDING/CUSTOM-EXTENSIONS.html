@@ -232,7 +232,7 @@ class FooExtension implements ExtensionInterface
 <p>Second argument passed to <code>loadExtension()</code> is the array that will passed to <code>setup()</code> method.</p>
 <h2>Safe Functions</h2>
 <p>As better explained in the <em>"Extending Foil / Custom Functions &amp; Filters"</em> Foil functions by default can't output HTML content, because their output is HTML-encoded.</p>
-<p>When you register a single functions via <code>$engine-&gt;registerfunction()</code> is possible to pass <code>true</code> as 3rd argument to mark the function as <em>safe</em> so that it is allowed to output HTML.</p>
+<p>When you register a single functions via <code>$engine-&gt;registerFunction()</code> is possible to pass <code>true</code> as 3rd argument to mark the function as <em>safe</em> so that it is allowed to output HTML.</p>
 <p>When you load an extension that provides functions that needs to output HTML, you need to register those function as safe as well.</p>
 <p>That can be done using 3rd argument for <code>loadExtension()</code>. It can be:</p>
 <ul>
