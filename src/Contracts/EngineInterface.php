@@ -16,10 +16,10 @@ interface EngineInterface
     const STATUS_IN_PARTIAL = 16;
 
     /**
-     * Find a template fullpath for a given template name.
+     * Find a template full path for a given template name.
      * Templates will be searched in all registered folders.
      * If extension is not given default one is added.
-     * File with matching names but not accepeted exceptions will be skipped.
+     * File with matching names but not accepted exceptions will be skipped.
      *
      * @param string $template
      */
@@ -79,8 +79,7 @@ interface EngineInterface
     /**
      * Get engine status
      *
-     * @param  string $status
-     * @return int    One of the statues constants
+     * @return int One of the statues constants
      */
     public function status();
 }

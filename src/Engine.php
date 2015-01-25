@@ -117,10 +117,10 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      * call templates from there.
      *
      * @param  string       $path
-     * @param  string       $name
+     * @param  string|void  $name
      * @return \Foil\Engine
      */
-    public function addFolder($path, $name = 0)
+    public function addFolder($path, $name = null)
     {
         $this->finder()->in([$name => $path]);
 

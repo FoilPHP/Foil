@@ -82,9 +82,9 @@ class Finder
     }
 
     /**
-     * Takes a template name and looks for directory name passed in Foil convenction, that is
+     * Takes a template name and looks for directory name passed in Foil convention, that is
      * folder_name::file_name.
-     * If file name as no extension, defauld estension is appendended if available.
+     * If file name as no extension, default extension is appended if available.
      *
      * @param  string $template_name
      * @return array
@@ -109,8 +109,8 @@ class Finder
     /**
      * Find a template when a specific directory name is required
      *
-     * @param  type    $dir
-     * @param  type    $template_name
+     * @param  string  $dir
+     * @param  string  $template_name
      * @return boolean
      */
     private function findInDir($dir, $template_name)

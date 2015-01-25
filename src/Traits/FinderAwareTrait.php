@@ -11,11 +11,18 @@ trait FinderAwareTrait
 {
     private $finder;
 
+    /**
+     * @return Finder
+     */
     public function finder()
     {
         return $this->finder;
     }
 
+    /**
+     * @param  string      $template
+     * @return bool|string
+     */
     public function find($template)
     {
         return $this->finder()->find($template);

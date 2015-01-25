@@ -64,7 +64,7 @@ To use transformers you need to pass to `arraize()` an associative array where
  - keys are the fully-qualified class names of the objects to be transformed
  - values are the tranformers to apply
 
-Tranformers (the array values) can be passed in 3 ways:
+Transformers (the array values) can be passed in 3 ways:
 
  - as callbacks that receive the object and have to return an array
  - as object instances, that don't need to implement any interface or extend any class, they just need a method `transform()` that receives the object and has to return an array

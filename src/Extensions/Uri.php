@@ -56,9 +56,9 @@ class Uri implements ExtensionInterface
     public function is($url = '', $if_true = true, $if_false = "")
     {
         if (is_array($url) && isset($url[0]) && is_int($url[0]) && $url[0] <= count($this->chunks)) {
-            $chunch = isset($url[1]) && is_string($url[1]) ? $this->clean($url[1]) : '';
+            $chunk = isset($url[1]) && is_string($url[1]) ? $this->clean($url[1]) : '';
 
-            return $this->clean($this->chunks[($url[0] - 1)]) === $chunch ? $if_true : $if_false;
+            return $this->clean($this->chunks[($url[0] - 1)]) === $chunk ? $if_true : $if_false;
         }
 
         return $this->clean($this->path) === $this->clean($url) ? $if_true : $if_false;

@@ -6,7 +6,7 @@ use Foil;
 
 /**
  * Class that holds all the functions and filters registered in extensions.
- * It handle all unexistent methods called on temmplate objects inside template files.
+ * It handle all non-existent methods called on template objects inside template files.
  *
  * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil

@@ -29,7 +29,7 @@ class Arraize
     /**
      * @param  mixed $data     Data to convert
      * @param  bool  $escape   Should strings in data be HTML-encoded?
-     * @param  array $trasf    Transformes: full qualified class names, objects or callables
+     * @param  array $trasf    Transformers: full qualified class names, objects or callables
      * @param  bool  $tostring Should all scalar items in data be casted to strings?
      * @return array
      */
@@ -93,7 +93,7 @@ class Arraize
      */
     private function transform($var, $class, $trasf)
     {
-        $cb = $this->trasformer(isset($trasf[trim($class, '\\')]) ? $trasf[$class] : false);
+        $cb = $this->transformer(isset($trasf[trim($class, '\\')]) ? $trasf[$class] : false);
 
         if (is_object($cb) && method_exists($cb, 'transform')) {
             $cb = [$cb, 'transform'];
@@ -103,16 +103,16 @@ class Arraize
     }
 
     /**
-     * @param  mixed                $trasformer
+     * @param  mixed                $transformer
      * @return callable|object|bool
      */
-    private function trasformer($trasformer)
+    private function transformer($transformer)
     {
-        if (is_string($trasformer) && class_exists($trasformer)) {
-            $trasformer = new $trasformer();
+        if (is_string($transformer) && class_exists($transformer)) {
+            $transformer = new $transformer();
         }
 
-        return is_object($trasformer) || is_callable($trasformer) ? $trasformer : false;
+        return is_object($transformer) || is_callable($transformer) ? $transformer : false;
     }
 
     /**

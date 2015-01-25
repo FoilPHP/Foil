@@ -34,7 +34,7 @@ class Factory
      * Factory a section instance (if it was not already factored) and return it.
      *
      * @param  string                           $name       Section name
-     * @param  int                              $mode       Section mode, one of the mode const
+     * @param  int|bool                         $mode       Section mode, one of the mode const
      * @param  string                           $class_name Full qualified section class name
      * @return \Foil\Contracts\SectionInterface
      * @throws InvalidArgumentException

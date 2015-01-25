@@ -217,14 +217,14 @@ Any other data type will be returned unchanged.
 
 ```php
 /**
-* @param  mixed $data        Data to convert
-* @param  bool  $escape      Should strings in data be HTML-encoded?
-* @param  array $trasformers Transformers: full qualified class names, objects or callables
-* @param  bool  $tostring    Should all scalar items be casted to strings?
+* @param  mixed $data         Data to convert
+* @param  bool  $escape       Should strings in data be HTML-encoded?
+* @param  array $transformers Transformers: full qualified class names, objects or callables
+* @param  bool  $tostring     Should all scalar items be casted to strings?
 * @return array
 */
 
-function arraize($data = [], $escape = false, array $trasformers = [], $tostring = false)
+function arraize($data = [], $escape = false, array $transformers = [], $tostring = false)
 ```
 
 This function allow to recursively convert to array any kind of data. It is a powerful tool, and there is an entire doc page that explain how it work and how to use it.

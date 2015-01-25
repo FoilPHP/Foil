@@ -43,29 +43,35 @@ class Kernel implements BootableServiceProviderInterface
     public function boot(Container $container)
     {
         // register an extension
-        $container['events']->on('f.extension.load', function (Extension $extension, array $options, $safe) use ($container) {
-            $extension->setup($options);
-            $container['command']->registerFunctions($extension->provideFunctions(), $safe);
-            $container['command']->registerFilters($extension->provideFilters());
-            if ($extension instanceof TemplateAware) {
-                $extension->setStack($container['template.stack']);
+        $container['events']->on(
+            'f.extension.load',
+            function (Extension $extension, array $options, $safe) use ($container) {
+                $extension->setup($options);
+                $container['command']->registerFunctions($extension->provideFunctions(), $safe);
+                $container['command']->registerFilters($extension->provideFilters());
+                if ($extension instanceof TemplateAware) {
+                    $extension->setStack($container['template.stack']);
+                }
+                if ($extension instanceof FinderAware) {
+                    $extension->setFinder($container['template.finder']);
+                }
+                if ($extension instanceof APIAware) {
+                    $extension->setAPI($container['api']);
+                }
+                if ($extension instanceof EngineAware) {
+                    $extension->setEngine($container['engine']);
+                }
+                $container['events']->fire('f.extension.registered', $extension);
             }
-            if ($extension instanceof FinderAware) {
-                $extension->setFinder($container['template.finder']);
-            }
-            if ($extension instanceof APIAware) {
-                $extension->setAPI($container['api']);
-            }
-            if ($extension instanceof EngineAware) {
-                $extension->setEngine($container['engine']);
-            }
-            $container['events']->fire('f.extension.registered', $extension);
-        });
+        );
 
         // register an function
-        $container['events']->on('f.function.register', function ($function, callable $callback, $safe) use ($container) {
-            $container['command']->registerFunctions([$function => $callback], $safe);
-        });
+        $container['events']->on(
+            'f.function.register',
+            function ($function, callable $callback, $safe) use ($container) {
+                $container['command']->registerFunctions([$function => $callback], $safe);
+            }
+        );
 
         // register a filter
         $container['events']->on('f.filter.register', function ($filter, callable $callback) use ($container) {

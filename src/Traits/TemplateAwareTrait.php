@@ -11,6 +11,9 @@ trait TemplateAwareTrait
 {
     private $stack;
 
+    /**
+     * @return Stack
+     */
     public function stack()
     {
         return $this->stack;
@@ -21,6 +24,9 @@ trait TemplateAwareTrait
         $this->stack = $stack;
     }
 
+    /**
+     * @return \Foil\Contracts\TemplateInterface
+     */
     public function template()
     {
         return $this->stack()->template();

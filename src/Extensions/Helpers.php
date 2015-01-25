@@ -65,7 +65,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  string       $var     Variable name
      * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separed list of filters
+     * @param  string|array $filter  Array or pipe-separated list of filters
      * @return mixed
      */
     public function variable($var, $default = '', $filter = null)
@@ -81,7 +81,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  string       $var     Variable name
      * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separed list of filters
+     * @param  string|array $filter  Array or pipe-separated list of filters
      * @return mixed
      */
     public function escape($var, $default = '', $filter = null)
@@ -95,7 +95,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  string       $var     Variable name
      * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separed list of filters
+     * @param  string|array $filter  Array or pipe-separated list of filters
      * @return mixed
      */
     public function decode($var, $default = '', $filter = null)
@@ -108,7 +108,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  string       $var     Variable name
      * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separed list of filters
+     * @param  string|array $filter  Array or pipe-separated list of filters
      * @return mixed
      */
     public function raw($var, $default = '', $filter = null)
@@ -153,7 +153,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  string       $var     Variable name
      * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separed list of filters
+     * @param  string|array $filter  Array or pipe-separated list of filters
      * @return mixed
      */
     public function asArrayRaw($var, $default = [], $filter = null)

@@ -32,7 +32,7 @@ class Template implements TemplateInterface, APIAware
     }
 
     /**
-     * Proxies inexistent methods to command to call registered extensions functions
+     * Proxies non-existent methods to command to call registered extensions functions
      *
      * @param  string $name
      * @param  array  $arguments
@@ -124,7 +124,8 @@ class Template implements TemplateInterface, APIAware
         while ($this->layoutPath()) {
             $layout = $this->layoutPath();
             $this->setData($this->buildContext(
-                    $this->layout_data[$layout]['data'], $this->layout_data[$layout]['only']
+                $this->layout_data[$layout]['data'],
+                $this->layout_data[$layout]['only']
             ));
             $this->layout = null;
             // listener for this event makes sections work in output mode

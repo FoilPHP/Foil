@@ -49,9 +49,9 @@ class Links implements ExtensionInterface
      * Return a relative (or absolute if a host is set) url for a file whose directory has been
      * set via setup arguments. Allow to easily output long urls with few chars.
      *
-     * @param  string  $file
-     * @param  string  $subdir_url
-     * @param  boolean $use_scheme
+     * @param  string      $file
+     * @param  string|bool $subdir_url
+     * @param  boolean     $use_scheme
      * @return string
      */
     public function link($file, $subdir_url = false, $use_scheme = null)

@@ -11,6 +11,9 @@ trait EngineAwareTrait
 {
     private $engine;
 
+    /**
+     * @return EngineInterface
+     */
     public function engine()
     {
         return $this->engine;

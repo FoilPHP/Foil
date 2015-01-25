@@ -65,7 +65,7 @@ class Context implements BootableServiceProviderInterface
     private function engineAddContext(ContextCollection $collection, $args)
     {
         if ($args[0] instanceof ContextInterface) {
-            return $collection->add($args[0]);
+            $collection->add($args[0]);
         }
         if (is_string($args[0]) && isset($args[1]) && is_array($args[1])) {
             $is_regex = isset($args[2]) && ! empty($args[2]);

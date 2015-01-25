@@ -11,6 +11,9 @@ trait APIAwareTrait
 {
     private $api;
 
+    /**
+     * @return API
+     */
     public function api()
     {
         return $this->api;

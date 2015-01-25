@@ -38,7 +38,7 @@ class Factory implements APIAware
     /**
      * Factory and/or returns template objects.
      *
-     * @param  string                            $path       Fullpath to template file
+     * @param  string                            $path       Full path to template file
      * @param  string                            $class_name A custom template class name
      * @return \Foil\Contracts\TemplateInterface
      * @throws InvalidArgumentException

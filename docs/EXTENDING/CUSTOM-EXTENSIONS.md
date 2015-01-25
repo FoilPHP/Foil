@@ -76,7 +76,7 @@ Second argument passed to `loadExtension()` is the array that will passed to `se
 
 As better explained in the *"Extending Foil / Custom Functions & Filters"* Foil functions by default can't output HTML content, because their output is HTML-encoded.
 
-When you register a single functions via `$engine->registerfunction()` is possible to pass `true` as 3rd argument to mark the function as *safe* so that it is allowed to output HTML.
+When you register a single functions via `$engine->registerFunction()` is possible to pass `true` as 3rd argument to mark the function as *safe* so that it is allowed to output HTML.
 
 When you load an extension that provides functions that needs to output HTML, you need to register those function as safe as well.
 

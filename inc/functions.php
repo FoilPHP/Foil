@@ -25,7 +25,9 @@ namespace Foil;
 use Foil\Context\SearchContext;
 use Foil\Context\RegexContext;
 use Foil\Context\GlobalContext;
+use Foil\Contracts\ContextInterface;
 use Foil\Kernel\Arraize;
+use Traversable;
 use LogicException;
 use InvalidArgumentException;
 
@@ -88,7 +90,7 @@ if (! function_exists('Foil\render_template')) {
      * When used before any engine() call, is possible to set engine options.
      *
      * @param  string $path    Full path for the template
-     * @param  array  $data    Template contex
+     * @param  array  $data    Template context
      * @param  array  $options Options for the engine
      * @return string
      */
@@ -196,6 +198,7 @@ if (! function_exists('Foil\on')) {
      *
      * @param string   $event
      * @param callable $callback
+     * @param bool     $once
      */
     function on($event, callable $callback, $once = false)
     {
@@ -279,14 +282,14 @@ if (! function_exists('Foil\arraize')) {
      *  - if the is an instance of JsonSerializable it is JSON-encoded then decoded
      *  - calling get_object_vars()
      *
-     * @param  mixed $data        Data to convert
-     * @param  bool  $escape      Should strings in data be HTML-encoded?
-     * @param  array $trasformers Transformers: full qualified class names, objects or callables
-     * @param  bool  $tostring    Should all scalar items in data be casted to strings?
+     * @param  mixed $data         Data to convert
+     * @param  bool  $escape       Should strings in data be HTML-encoded?
+     * @param  array $transformers Transformers: full qualified class names, objects or callables
+     * @param  bool  $tostring     Should all scalar items in data be casted to strings?
      * @return array
      */
-    function arraize($data = [], $escape = false, array $trasformers = [], $tostring = false)
+    function arraize($data = [], $escape = false, array $transformers = [], $tostring = false)
     {
-        return (new Arraize())->run($data, $escape, $trasformers, $tostring);
+        return (new Arraize())->run($data, $escape, $transformers, $tostring);
     }
 }

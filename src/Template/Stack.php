@@ -64,7 +64,6 @@ class Stack implements Countable, APIAware
     /**
      * Returns the count of templates in the stack.
      *
-     * @param  string $mode
      * @return int
      */
     public function count()

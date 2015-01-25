@@ -32,7 +32,7 @@ Let's define a base layout, `main.php`, which defines a simple HTML skeleton doc
     <head>
         <?php $this->section('head') ?>
           <link rel="stylesheet" href="style.css" />
-          <title><?php $this->section('title') ?>My Webpage<?php $this->stop() ?></title>
+          <title><?php $this->section('title') ?>My Home Page<?php $this->stop() ?></title>
         <?php $this->stop() ?>
     </head>
     <body>
@@ -81,7 +81,7 @@ E.g. if the child template above is rendered, `<head>` tag will contain:
 ```html
 <head>
   <link rel="stylesheet" href="style.css" />
-  <title>My Webpage</title>
+  <title>My Home Page</title>
   <style type="text/css">
     .important { color: #336699; }
   </style>
