@@ -5,7 +5,7 @@ $RECYCLE.BIN/
 .DS_Store
 .coverage
 .tox
-.idea
+.idea/
 vendor/
 composer.lock
 phpunit.xml
