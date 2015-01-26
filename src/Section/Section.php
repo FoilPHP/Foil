@@ -42,6 +42,7 @@ class Section implements SectionInterface
         if (!$this->started()) {
             throw new LogicException('You need to start a section before to end it.');
         }
+        $this->started = false;
         if (empty($this->mode)) {
             $this->mode = self::MODE_REPLACE;
         }
@@ -62,6 +63,7 @@ class Section implements SectionInterface
         if (!$this->started()) {
             throw new LogicException('You need to start a section before to end it.');
         }
+        $this->started = false;
         if (empty($this->mode)) {
             $this->mode = self::MODE_APPEND;
         }
