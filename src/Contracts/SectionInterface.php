@@ -26,6 +26,13 @@ interface SectionInterface
     public function replace();
 
     /**
+     * Ends a section definition and append section content to layout content
+     *
+     * @return string|void
+     */
+    public function append();
+
+    /**
      * Ends a section definition.
      *
      * @return string|void
