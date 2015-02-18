@@ -190,6 +190,14 @@ See <em>"Data / Pass Data to Templates"</em> to know more on the topic.</p>
 So you need to echo what is returned by <code>insert()</code> to make the content visible.</p>
 <p>Partials are searched in all registered folders, just like standard templates. All the rules that apply to Foil engine methods <code>render()</code> and <code>find()</code> are valid for <code>insert()</code> too: default extension, specific folders targeting, and so on.
 See <em>"Templates / Overview"</em> to know more on the topic.</p>
+<h2>Conditional Insertion</h2>
+<p>When you call <code>insert()</code> with a non-existent template name an exception is thrown.</p>
+<p>Sometimes may be desirable to insert a partial only if it exists, without any error if it isn't there.
+That can be done with <code>insertif()</code> that accepts exact same arguments of <code>insert()</code>.</p>
+<p>Once <code>insertif()</code> returns nothing if template is not found, it can be easily used to output a default content when the partial doesn't exist:</p>
+<pre><code class="language-php">&lt;?= $this-&gt;insertif('header') ?: 'Default Header' ?&gt;</code></pre>
+<p>Note that another partial can be used as default:</p>
+<pre><code class="language-php">&lt;?= $this-&gt;insertif('header') ?: $this-&gt;insertif('default-header') ?&gt;</code></pre>
 <h2>Sections Definition in Partials</h2>
 <p>Foil supports sections definition in partials (See <em>"Templates / Inheritance"</em> to know more about sections).</p>
 <p>For example, let's assume in a layout, named <code>home.php</code>, there's the following code:</p>
