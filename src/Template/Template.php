@@ -102,9 +102,16 @@ class Template implements TemplateInterface, APIAware
         return $partial;
     }
 
+    public function insertif($template, array $data = [], array $only = null)
+    {
+        if ($this->api()->engine()->find($template)) {
+            return $this->insert($template, $data, $only);
+        }
+    }
+
     public function layout($layout, array $data = [], array $only = null)
     {
-        $layout_file = $this->api()->engine()->find($layout);
+        $layout_file = file_exists($layout) ? $layout : $this->api()->engine()->find($layout);
         if (! $layout_file) {
             throw new InvalidArgumentException('Layout must be a valid file name.');
         }

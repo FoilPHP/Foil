@@ -1,6 +1,7 @@
 <?php namespace Foil\Section;
 
 use Foil\Contracts\SectionInterface;
+use LogicException;
 
 /**
  * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -12,6 +13,7 @@ class Section implements SectionInterface
     private $content = '';
     private $mode;
     private $default_mode;
+    private $started = false;
     private static $modes = [self::MODE_APPEND, self::MODE_OUTPUT, self::MODE_REPLACE];
 
     public function __construct($output_mode = false, $default_mode = null)
@@ -27,6 +29,7 @@ class Section implements SectionInterface
 
     public function start()
     {
+        $this->started = true;
         ob_start();
     }
 
@@ -36,6 +39,10 @@ class Section implements SectionInterface
      */
     public function replace()
     {
+        if (!$this->started()) {
+            throw new LogicException('You need to start a section before to end it.');
+        }
+        $this->started = false;
         if (empty($this->mode)) {
             $this->mode = self::MODE_REPLACE;
         }
@@ -53,6 +60,10 @@ class Section implements SectionInterface
      */
     public function append()
     {
+        if (!$this->started()) {
+            throw new LogicException('You need to start a section before to end it.');
+        }
+        $this->started = false;
         if (empty($this->mode)) {
             $this->mode = self::MODE_APPEND;
         }
@@ -90,5 +101,10 @@ class Section implements SectionInterface
     public function mode()
     {
         return $this->mode;
+    }
+
+    public function started()
+    {
+        return $this->started;
     }
 }
