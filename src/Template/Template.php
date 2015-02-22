@@ -91,8 +91,11 @@ class Template implements TemplateInterface, APIAware
         if ($this->sections->offsetExists($section)) {
             return $this->sections[$section]->content();
         }
+        while (is_callable($default)) {
+            $default = $default($section, $this);
+        }
 
-        return $default;
+        return is_string($default) ? $default : '';
     }
 
     public function insert($template, array $data = [], array $only = null)
