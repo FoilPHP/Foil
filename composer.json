@@ -1,9 +1,12 @@
 {
     "name": "foil/foil",
     "description": "PHP template engine for native PHP templates",
-    "keywords" : ["templates", "template engine"],
+    "keywords": [
+        "templates",
+        "template engine"
+    ],
     "homepage": "https://github.com/Giuseppe-Mazzapica/Foil",
-    "type" : "library",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -17,7 +20,7 @@
         "psr-4": {
             "Foil\\": "src/"
         },
-        "files" : ["inc/functions.php"]
+        "files": [ "inc/functions.php" ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -41,7 +44,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2.x-dev"
+            "dev-master": "0.3.x-dev"
         }
     }
 }
