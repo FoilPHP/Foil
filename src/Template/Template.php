@@ -8,7 +8,7 @@ use Foil\Traits;
 use InvalidArgumentException;
 
 /**
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -65,7 +65,9 @@ class Template implements TemplateInterface, APIAware
     {
         $filters = is_string($filter) ? explode('|', $filter) : array_values((array) $filter);
         if (func_num_args() > 2 && is_array(func_get_arg(2))) {
-            $args = count($filters) === 1 ? [func_get_arg(2)] : array_filter(func_get_arg(2), 'is_array');
+            $args = count($filters) === 1
+                ? [func_get_arg(2)]
+                : array_filter(func_get_arg(2), 'is_array');
         } else {
             $args = array_fill(0, count($filters), []);
         }
@@ -184,7 +186,9 @@ class Template implements TemplateInterface, APIAware
 
     private function buildContext(array $data = [], array $only = null)
     {
-        $now = is_null($only) ? $this->data() : array_intersect_key($this->data(), array_flip($only));
+        $now = is_null($only)
+            ? $this->data()
+            : array_intersect_key($this->data(), array_flip($only));
 
         return array_merge($now, $data);
     }

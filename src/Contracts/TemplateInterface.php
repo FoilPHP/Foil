@@ -5,7 +5,7 @@
  * Function in template files are executed in the context of this object:
  * in template files `$this` refers to a `TemplateInterface` object.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -41,8 +41,8 @@ interface TemplateInterface
     /**
      * Return the content for a given section, or a default text if section is not present
      *
-     * @param  string $section Section identifier
-     * @param  string $default Default content
+     * @param  string          $section Section identifier
+     * @param  string|callable $default Default content
      * @return string
      */
     public function supply($section, $default = '');
