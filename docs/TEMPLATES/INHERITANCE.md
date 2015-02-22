@@ -241,6 +241,8 @@ A better way to do the trick is to use the `supply()` method: it accepts a secti
 <?php $this->supply('foo') // Outputs the content of 'foo' section if it is defined ?>
 ```
 
+### Supply with Default
+
 `supply()` accepts as second argument a **default content** to be used if the section is not defined.
 
 ```php
@@ -249,6 +251,28 @@ A better way to do the trick is to use the `supply()` method: it accepts a secti
 
 This is a comfortable and readable way to obtain template inheritance when the default content can be contained in one line,
 for multi-line section content (way more common in real world applications) the `section()` / `stop()` method is the suggested way to go.
+
+### Supply with Callback Default
+
+Another interesting feature of `supply()` is that its default can be set using a callback: in that case, only if section is not defined
+the callback runs and the result is used as `supply()` result. This allows *deferred* default content.
+
+Example:
+
+```php
+$callback = function($section, $template) {
+  return $template->insert($section.'-default');
+}
+<?php $this->supply('a-section-name', $callback) ?>
+```
+
+As shown in example above, callback passed as default argument will receive as first argument the section name, and as second argument the template object.
+
+This allows powerful routine for default, e.g. in the example above, if a section is not defined, a partial named `"{$section}-default.php"` is loaded.
+
+Note that if I'd *directly* used `$template->insert('a-section-name-default')` as default argument the partial fetching
+had happened immediately, even if section was actually defined. By using callback default argument, the partial fetching happen only if needed.
+
 
 
 ## Template Buffer
