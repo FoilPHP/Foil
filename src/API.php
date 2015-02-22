@@ -3,9 +3,22 @@
 /**
  * YOLO
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
+ * @method mixed foil()
+ * @method Engine engine()
+ * @method string renderTemplate()
+ * @method mixed option()
+ * @method void addContext()
+ * @method void addGlobalContext()
+ * @method void addContextUsing()
+ * @method mixed run()
+ * @method void fire()
+ * @method void on()
+ * @method mixed entities()
+ * @method mixed decode()
+ * @method array arraize()
  */
 class API
 {
