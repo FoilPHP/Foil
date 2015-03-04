@@ -10,6 +10,7 @@ class AdvRenderTest extends TestCaseFunctional
     public function setUp()
     {
         parent::setUp();
+        $this->initFoil();
         $base = preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH);
         $this->templates_path = $base.implode(DIRECTORY_SEPARATOR, ['', '_files', 'templates']);
         $this->engine->addFolder($this->templates_path);

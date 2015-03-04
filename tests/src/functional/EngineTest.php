@@ -6,6 +6,12 @@ use Mockery;
 
 class EngineTest extends TestCaseFunctional
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->initFoil();
+    }
+
     public function testInit()
     {
         // $this->engine is set in `TestCaseFunctional::setUp()`

@@ -7,17 +7,16 @@ class TestCaseFunctional extends TestCase
     protected $engine;
     protected $container;
 
-    public function setUp()
+    public function initFoil(array $options = [])
     {
-        parent::setUp();
         $base = dirname(preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH));
         $bootstrapper = new Bootstrapper();
-        $options = [
+        $options = array_merge([
             'folders' => [
                 'foo' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'foo']),
                 'bar' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'bar']),
             ],
-        ];
+        ], $options);
         $providers = [
             '\\Foil\\Providers\\Kernel',
             '\\Foil\\Providers\\Core',
