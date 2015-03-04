@@ -17,7 +17,7 @@ $engine = Foil\engine([
   'folders' => ['path/to/templates']
 ]);
 
-$engine->render('a-template', $some_data);
+echo $engine->render('a-template', $some_data);
 ```
 
 The code above is a very simple (and working) example on how to instantiate Foil engine and use it to render a template with some data.

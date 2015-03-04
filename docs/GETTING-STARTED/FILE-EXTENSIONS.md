@@ -12,7 +12,7 @@ To change default extension is possible to use `"ext"` engine option:
 
 ```php
 $engine = Foil\engine([
-  'ext' => ['phtml']
+  'ext' => 'phtml'
 ]);
 ```
 
