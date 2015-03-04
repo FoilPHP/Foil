@@ -180,7 +180,7 @@ title: "File Extensions"
 <p>Template names can be passed to all methods that accept template names, e.g. <code>render()</code>, without file extension and default extension, that is <code>.php</code>, will be added by Foil.</p>
 <p>To change default extension is possible to use <code>"ext"</code> engine option:</p>
 <pre><code class="language-php">$engine = Foil\engine([
-  'ext' =&gt; ['phtml']
+  'ext' =&gt; 'phtml'
 ]);</code></pre>
 <h2>Manually set extension</h2>
 <p>Default file extension is not the only one that can be used for templates. In facts, is possible to pass template names with an extension, Foil will load the template even if it has not the default extension:</p>
