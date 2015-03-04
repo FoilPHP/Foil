@@ -24,7 +24,8 @@ class FinderTest extends TestCase
         $f2 = new Finder();
         $named_dirs = $this->fooDirs(true);
         $f2->in($named_dirs);
-        assertSame(['_files.foo' => $unnamed_dirs[0], '_files.bar' => $unnamed_dirs[1]], $f1->dirs());
+        $expected = ['_files.foo' => $unnamed_dirs[0], '_files.bar' => $unnamed_dirs[1]];
+        assertSame($expected, $f1->dirs());
         assertSame($named_dirs, $f2->dirs());
     }
 
@@ -44,5 +45,12 @@ class FinderTest extends TestCase
         $f->in($this->fooDirs());
         assertSame('bar.inc', basename($f->find('bar.inc')));
         assertSame('foo.php', basename($f->find('foo')));
+    }
+
+    public function testFindWithExt()
+    {
+        $f = new Finder('tpl.php');
+        $f->in($this->fooDirs());
+        assertSame('double.tpl.php', basename($f->find('double')));
     }
 }
