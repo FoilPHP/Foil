@@ -111,7 +111,7 @@ class Command
      *
      * @param  string                   $callback
      * @param  array                    $which    functions or filters
-     * @param  array                    $args     exectiuon arguments
+     * @param  array                    $args     execution arguments
      * @return mixed
      * @throws InvalidArgumentException If callback is not a valid registered callback name
      */
