@@ -6,12 +6,13 @@ use Foil\Contracts\APIAwareInterface as APIAware;
 use Foil\Traits;
 use igorw;
 use Closure;
+use RuntimeException;
 
 /**
  * Extension that provides very short functions names to be used in template files to run common
  * tasks, mainly get, escape and filter variables.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -21,10 +22,16 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         Traits\APIAwareTrait;
 
     private $autoescape;
+    private $strict;
 
     public function __construct(array $options)
     {
         $this->autoescape = ! isset($options['autoescape']) || ! empty($options['autoescape']);
+        if (isset($options['strict_variables'])) {
+            $this->strict = strtolower((string) $options['strict_variables']) === 'notice'
+                ? 'notice'
+                : ! empty($options['strict_variables']);
+        }
     }
 
     public function setup(array $args = [])
@@ -70,9 +77,9 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      */
     public function variable($var, $default = '', $filter = null)
     {
-        return $this->autoescape ?
-            $this->escape($var, $default, $filter) :
-            $this->raw($var, $default, $filter);
+        return $this->autoescape
+            ? $this->escape($var, $default, $filter)
+            : $this->raw($var, $default, $filter);
     }
 
     /**
@@ -135,7 +142,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  string       $var       Variable name
      * @param  mixed        $default   Default
-     * @param  string|array $filter    Array or pipe-separed list of filters
+     * @param  string|array $filter    Array or pipe-separated list of filters
      * @param  boolean      $force_raw Should use raw variable?
      * @return mixed
      */
@@ -166,7 +173,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  string       $var     Variable name
      * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separed list of filters
+     * @param  string|array $filter  Array or pipe-separated list of filters
      * @return mixed
      */
     public function ifNot($var, $default = '', $filter = null)
@@ -196,17 +203,26 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      *
      * @param  mixed        $data
      * @param  string|array $where
-     * @return type
+     * @param  bool         $strict
+     * @return mixed
      */
-    public function getIn($data, $where)
+    public function getIn($data, $where, $strict = false)
     {
         if (is_object($data)) {
             $data = $this->api()->arraize($data, $this->autoescape);
         } elseif (! is_array($data)) {
             return $this->autoescape ? $this->api()->entities($data) : $data;
         }
-
-        return igorw\get_in($data, is_string($where) ? explode('.', $where) : (array) $where);
+        $where = is_string($where) ? explode('.', $where) : (array) $where;
+        $get = igorw\get_in($data, $where);
+        if (! $strict || ! $this->strict || ! is_null($get)) {
+            return $get;
+        }
+        $name = implode('.', $where);
+        if ($this->strict === 'notice') {
+            return trigger_error("{$name} is not defined.");
+        }
+        throw new RuntimeException("{$name} is not defined.");
     }
 
     /**
@@ -223,12 +239,12 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     {
         $data = $this->template()->data();
         if (empty($data)) {
-            return [ 'data' => null, 'filters' => []];
+            return ['data' => null, 'filters' => []];
         }
         $filters = explode('|', $var);
         $where = explode('.', array_shift($filters));
 
-        return [ 'data' => igorw\get_in($data, $where), 'filters' => $filters];
+        return ['data' => $this->getIn($data, $where, true), 'filters' => $filters];
     }
 
     private function returnDefault($default)

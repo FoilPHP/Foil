@@ -8,9 +8,9 @@ use SplQueue;
 
 /**
  * Instantiates and store services by instantiating Pimple container and service providers.
- * Bootable provider are booted too.
+ * Bootable providers are booted too.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -18,6 +18,7 @@ class Bootstrapper
 {
     private static $defaults = [
         'autoescape'       => true,
+        'strict_variables' => false,
         'ext'              => 'php',
         'folders'          => [],
         'section_def_mode' => SectionInterface::MODE_APPEND,
