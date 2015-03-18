@@ -145,7 +145,7 @@ Just **be sure to sanitize any content possibly coming from users** when using t
 
 ## Strict Variables
 
-As of 0.3 Foil supports `strict_variables` engine option. By setting it is possible to trow an exception or a notice when a non-defined variable is used.
+As of 0.3 Foil supports `strict_variables` engine option. By setting it is possible to throw an exception or a notice when a non-defined variable is used.
 That might be useful for debug because default behavior that silently ignores undefined variables can make hard to find code issues.
 
 Option supported values are:
