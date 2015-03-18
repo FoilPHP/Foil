@@ -63,6 +63,24 @@ class HelpersTest extends TestCase
         assertSame('Deep! + f1,f2', $h2->raw('foo.bar.baz.some|f1|f2', 'foo'));
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testStrictVariablesException()
+    {
+        $helpers = new Helpers(['strict_variables' => true]);
+        $helpers->getIn(['foo' => 'bar'], 'bar.baz', true);
+    }
+
+    /**
+     * @expectedException \PHPUnit_Framework_Error_Notice
+     */
+    public function testStrictVariablesNotice()
+    {
+        $helpers = new Helpers(['strict_variables' => 'notice']);
+        $helpers->getIn(['foo' => 'bar'], 'bar.baz', true);
+    }
+
     public function testAsArray()
     {
         $helper = $this->getHelpersMocked(['string' => 'foo', 'object' => (object) ['id' => 'foo']]);
