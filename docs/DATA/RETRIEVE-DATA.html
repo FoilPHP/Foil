@@ -257,6 +257,22 @@ you need to be sure <strong>all</strong> strings you output are escaped. For the
 <p>Code above will return the string saved in <code>$this-&gt;some_html_content</code> with non-escaped HTML tags.</p>
 <p>Just <strong>be sure to sanitize any content possibly coming from users</strong> when using this function.</p>
 <p><code>raw()</code> is one of the Foil template helpers, there are some and all are documented in <em>"Data / Helpers"</em> section.</p>
+<h2>Strict Variables</h2>
+<p>As of 0.3 Foil supports <code>strict_variables</code> engine option. By setting it is possible to throw an exception or a notice when a non-defined variable is used.
+That might be useful for debug because default behavior that silently ignores undefined variables can make hard to find code issues.</p>
+<p>Option supported values are:</p>
+<ul>
+<li><code>false</code>: default behavior, undefined variables are ignored</li>
+<li><code>true</code>: if an undefined variable is required, Foil throws an exception</li>
+<li><code>'notice'</code> if an undefined variable is required, Foil triggers a notice (execution is not halted)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-php">
+$engine = Foil\engine([
+  'strict_variables' =&gt; true
+]);
+
+echo $engine-&gt;render('a-template', $some_data);</code></pre>
                     </div>
                 </div>
             </div>
