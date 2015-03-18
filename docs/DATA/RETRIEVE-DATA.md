@@ -141,3 +141,24 @@ Code above will return the string saved in `$this->some_html_content` with non-e
 Just **be sure to sanitize any content possibly coming from users** when using this function.
 
 `raw()` is one of the Foil template helpers, there are some and all are documented in *"Data / Helpers"* section.
+
+
+## Strict Variables
+
+As of 0.3 Foil supports `strict_variables` engine option. By setting it is possible to trow an exception or a notice when a non-defined variable is used.
+That might be useful for debug because default behavior that silently ignores undefined variables can make hard to find code issues.
+
+Option supported values are:
+
+ - `false`: default behavior, undefined variables are ignored
+ - `true`: if an undefined variable is required, Foil throws an exception
+ - `'notice'` if an undefined variable is required, Foil triggers a notice (execution is not halted)
+ 
+Example:
+ 
+```php
+$engine = Foil\engine([
+  'strict_variables' => true
+]);
+
+echo $engine->render('a-template', $some_data);
