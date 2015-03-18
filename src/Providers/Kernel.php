@@ -35,7 +35,7 @@ class Kernel implements BootableServiceProviderInterface
     }
 
     /**
-     * Register events to allow registeration of extensions, filters and actions.
+     * Register events to allow registration of extensions, filters and actions.
      * Events are triggered by Engine.
      *
      * @param Container $container
@@ -65,7 +65,7 @@ class Kernel implements BootableServiceProviderInterface
             }
         );
 
-        // register an function
+        // register a function
         $container['events']->on(
             'f.function.register',
             function ($function, callable $callback, $safe) use ($container) {
@@ -74,9 +74,12 @@ class Kernel implements BootableServiceProviderInterface
         );
 
         // register a filter
-        $container['events']->on('f.filter.register', function ($filter, callable $callback) use ($container) {
-            $container['command']->registerFilters([$filter => $callback]);
-        });
+        $container['events']->on(
+            'f.filter.register',
+            function ($filter, callable $callback) use ($container) {
+                $container['command']->registerFilters([$filter => $callback]);
+            }
+        );
 
         $container['events']->on('f.bootstrapped', function () use ($container) {
             $container['command']->lock();

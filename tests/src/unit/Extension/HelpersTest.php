@@ -1,5 +1,6 @@
 <?php namespace Foil\Tests\Extension;
 
+use Foil\Extensions\Helpers;
 use Foil\Tests\TestCase;
 use Foil\API;
 use Mockery;
@@ -11,9 +12,9 @@ class HelpersTest extends TestCase
         $template = Mockery::mock('Foil\Contracts\TemplateInterface');
         $template->shouldReceive('data')->andReturn($data);
         $template->shouldReceive('filter')->with(Mockery::type('array'), Mockery::any())
-            ->andReturnUsing(function (array $filters, $data) {
-                return $data.' + '.implode(',', $filters);
-            });
+                 ->andReturnUsing(function (array $filters, $data) {
+                     return $data.' + '.implode(',', $filters);
+                 });
         $helpers = Mockery::mock('Foil\Extensions\Helpers')->makePartial();
         $helpers->shouldReceive('template')->withNoArgs()->andReturn($template);
         $helpers->shouldReceive('api')->withNoArgs()->andReturn(new API());

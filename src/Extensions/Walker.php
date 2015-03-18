@@ -2,7 +2,7 @@
 
 /**
  * Extension that provides very short functions names to be used in template files to walk arrays
- * and output string in a very sistetic way
+ * and output string in a very concise way
  *
  * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
