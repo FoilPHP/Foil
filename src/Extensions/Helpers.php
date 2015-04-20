@@ -18,6 +18,7 @@ use RuntimeException;
  */
 class Helpers implements ExtensionInterface, TemplateAware, APIAware
 {
+
     use Traits\TemplateAwareTrait,
         Traits\APIAwareTrait;
 
@@ -28,7 +29,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     {
         $this->autoescape = ! isset($options['autoescape']) || ! empty($options['autoescape']);
         if (isset($options['strict_variables'])) {
-            $this->strict = strtolower((string) $options['strict_variables']) === 'notice'
+            $this->strict = strtolower((string)$options['strict_variables']) === 'notice'
                 ? 'notice'
                 : ! empty($options['strict_variables']);
         }
@@ -52,6 +53,9 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         return [
             'v'      => [$this, 'variable'],
             'e'      => [$this, 'escape'],
+            'ejs'    => [$this, 'escapeJs'],
+            'eattr'  => [$this, 'escapeAttr'],
+            'ecss'   => [$this, 'escapeCss'],
             'escape' => 'Foil\entities',
             'ee'     => 'Foil\entities',
             'd'      => [$this, 'decode'],
@@ -84,16 +88,60 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
 
     /**
      * Return a value from template context, optionally set a default and filter.
-     * Strings are escaped for html entities.
+     * Strings are escaped using AuraPHP Web library that supports 4 "strategies":
+     * 'html', 'js', 'attr' and 'css'.
+     *
+     * @param  string       $var      Variable name
+     * @param  mixed        $default  Default
+     * @param  string|array $filter   Array or pipe-separated list of filters
+     * @param  string       $strategy Escape strategy, one of 'html', 'js', 'attr', 'css'
+     * @return mixed
+     */
+    public function escape($var, $default = '', $filter = null, $strategy = 'html')
+    {
+        return $this->api()->entities($this->raw($var, $default, $filter), $strategy);
+    }
+
+    /**
+     * Return a value from template context, optionally set a default and filter.
+     * Strings are escaped for javascript using AuraPHP Web library.
      *
      * @param  string       $var     Variable name
      * @param  mixed        $default Default
      * @param  string|array $filter  Array or pipe-separated list of filters
      * @return mixed
      */
-    public function escape($var, $default = '', $filter = null)
+    public function escapeJs($var, $default = '', $filter = null)
     {
-        return $this->api()->entities($this->raw($var, $default, $filter));
+        return $this->escape($var, $default, $filter, 'js');
+    }
+
+    /**
+     * Return a value from template context, optionally set a default and filter.
+     * Strings are escaped to be safely used inside HTML attributes using AuraPHP Web library.
+     *
+     * @param  string       $var     Variable name
+     * @param  mixed        $default Default
+     * @param  string|array $filter  Array or pipe-separated list of filters
+     * @return mixed
+     */
+    public function escapeAttr($var, $default = '', $filter = null)
+    {
+        return $this->escape($var, $default, $filter, 'attr');
+    }
+
+    /**
+     * Return a value from template context, optionally set a default and filter.
+     * Strings are escaped to be safely used inside CSS code using AuraPHP Web library.
+     *
+     * @param  string       $var     Variable name
+     * @param  mixed        $default Default
+     * @param  string|array $filter  Array or pipe-separated list of filters
+     * @return mixed
+     */
+    public function escapeCss($var, $default = '', $filter = null)
+    {
+        return $this->escape($var, $default, $filter, 'css');
     }
 
     /**
@@ -127,7 +175,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         if (is_string($filter)) {
             $filter = explode('|', $filter);
         }
-        $filters = array_merge($data['filters'], (array) $filter);
+        $filters = array_merge($data['filters'], (array)$filter);
         if (empty($filters)) {
             return $data['data'];
         }
@@ -148,7 +196,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      */
     public function asArray($var, $default = [], $filter = null, $force_raw = false)
     {
-        $raw = $this->raw($var, (array) $default, $filter);
+        $raw = $this->raw($var, (array)$default, $filter);
 
         return $this->api()->arraize($raw, ($this->autoescape && ! $force_raw));
     }
@@ -210,12 +258,12 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     {
         if (is_object($data)) {
             $data = $this->api()->arraize($data, $this->autoescape);
-        } elseif (! is_array($data)) {
+        } elseif ( ! is_array($data)) {
             return $this->autoescape ? $this->api()->entities($data) : $data;
         }
-        $where = is_string($where) ? explode('.', $where) : (array) $where;
+        $where = is_string($where) ? explode('.', $where) : (array)$where;
         $get = igorw\get_in($data, $where);
-        if (! $strict || ! $this->strict || ! is_null($get)) {
+        if ( ! $strict || ! $this->strict || ! is_null($get)) {
             return $get;
         }
         $name = implode('.', $where);

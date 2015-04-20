@@ -16,7 +16,7 @@
  * camelCase, e.g. the function `Foil\add_global_context($data)` can be called using
  * `$api->addGlobalContext($data)`.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -27,6 +27,7 @@ use Foil\Context\RegexContext;
 use Foil\Context\GlobalContext;
 use Foil\Contracts\ContextInterface;
 use Foil\Kernel\Arraize;
+use Aura\Html\HelperLocatorFactory;
 use Traversable;
 use LogicException;
 use InvalidArgumentException;
@@ -129,9 +130,9 @@ if (! function_exists('Foil\add_context')) {
      */
     function add_context(array $data, $needle, $is_regex = false)
     {
-        $context = empty($is_regex) ?
-            new SearchContext($needle, $data) :
-            new RegexContext($needle, $data);
+        $context = empty($is_regex)
+            ? new SearchContext($needle, $data)
+            : new RegexContext($needle, $data);
         foil('context')->add($context);
     }
 }
@@ -188,7 +189,7 @@ if (! function_exists('Foil\fire')) {
         if (! is_string($event)) {
             throw new InvalidArgumentException('Event name must be in a string.');
         }
-        call_user_func_array([ foil('events'), 'fire'], func_get_args());
+        call_user_func_array([foil('events'), 'fire'], func_get_args());
     }
 }
 
@@ -212,15 +213,25 @@ if (! function_exists('Foil\on')) {
 
 if (! function_exists('Foil\entities')) {
     /**
-     * Escape strings and array for htmlentities
+     * Escape strings and array using AuraPHP Web library.
      *
-     * @param  mixed $data
+     * @param  mixed  $data
+     * @param  string $strategy
      * @return mixed
+     * @see https://github.com/auraphp/Aura.Html
      */
-    function entities($data)
+    function entities($data, $strategy = 'html')
     {
+        static $sanitizer;
+        is_null($sanitizer) and $sanitizer = (new HelperLocatorFactory())->newInstance()->escape();
         if (is_string($data)) {
-            return htmlentities($data, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+            return call_user_func(
+                [
+                    $sanitizer,
+                    in_array($strategy, ['html', 'attr', 'js', 'cs'], true) ? $strategy : 'html',
+                ],
+                $data
+            );
         } elseif (is_array($data)) {
             foreach ($data as $i => $val) {
                 $data[$i] = entities($val);
@@ -229,7 +240,7 @@ if (! function_exists('Foil\entities')) {
             $convert = [];
             $n = 0;
             foreach ($data as $i => $val) {
-                $n ++;
+                $n++;
                 $key = is_string($i) ? $i : $n;
                 $convert[$key] = entities($val);
             }
@@ -259,7 +270,7 @@ if (! function_exists('Foil\decode')) {
             $convert = [];
             $n = 0;
             foreach ($data as $i => $val) {
-                $n ++;
+                $n++;
                 $key = is_string($i) ? $i : $n;
                 $convert[$key] = decode($val);
             }
