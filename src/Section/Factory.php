@@ -1,4 +1,13 @@
-<?php namespace Foil\Section;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Section;
 
 use Foil\Contracts\SectionInterface;
 use InvalidArgumentException;
@@ -7,14 +16,14 @@ use ArrayAccess;
 /**
  * Factory and holds section object instances.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Factory
 {
     const DEFAULT_CONTRACT = '\\Foil\\Contracts\\SectionInterface';
-    const DEFAULT_CLASS = '\\Foil\\Section\\Section';
+    const DEFAULT_CLASS    = '\\Foil\\Section\\Section';
 
     private $contract;
     private $sections;
@@ -56,7 +65,8 @@ class Factory
     }
 
     /**
-     * Checks that a given class name implements factory contract and returns it (or default if not).
+     * Checks that a given class name implements factory contract and returns it (or default if
+     * not).
      *
      * @param  string $class
      * @return string

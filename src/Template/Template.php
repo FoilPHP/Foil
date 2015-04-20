@@ -1,4 +1,13 @@
-<?php namespace Foil\Template;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Template;
 
 use Foil\Contracts\TemplateInterface;
 use Foil\API;
@@ -109,7 +118,8 @@ class Template implements TemplateInterface, APIAware
 
     public function insertif($template, array $data = [], array $only = null)
     {
-        return $this->api()->engine()->find($template) ? $this->insert($template, $data, $only) : '';
+        return $this->api()->engine()->find($template) ? $this->insert($template, $data,
+            $only) : '';
     }
 
     public function layout($layout, array $data = [], array $only = null)

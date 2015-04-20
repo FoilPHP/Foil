@@ -1,19 +1,28 @@
-<?php namespace Foil\Contracts;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Contracts;
 
 /**
  * Engine object is the object to be mainly used to interact with client code.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
 interface EngineInterface
 {
-    const STATUS_IDLE = 1;
-    const STATUS_IN_LAYOUT = 2;
+    const STATUS_IDLE        = 1;
+    const STATUS_IN_LAYOUT   = 2;
     const STATUS_IN_TEMPLATE = 4;
-    const STATUS_RENDERED = 8;
-    const STATUS_IN_PARTIAL = 16;
+    const STATUS_RENDERED    = 8;
+    const STATUS_IN_PARTIAL  = 16;
 
     /**
      * Find a template full path for a given template name.

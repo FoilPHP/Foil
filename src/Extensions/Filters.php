@@ -1,4 +1,13 @@
-<?php namespace Foil\Extensions;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Extensions;
 
 use Foil\Contracts\ExtensionInterface;
 use InvalidArgumentException;
@@ -7,7 +16,7 @@ use InvalidArgumentException;
  * Inspired by the Assets extension on Plates http://platesphp.com/extensions/asset/
  * Allow to output regular and "cache busted" assets urls using relative paths.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */

@@ -1,4 +1,13 @@
-<?php namespace Foil\Kernel;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Kernel;
 
 use InvalidArgumentException;
 use Foil\Contracts\ExtensionInterface as Extension;
@@ -8,7 +17,7 @@ use Foil;
  * Class that holds all the functions and filters registered in extensions.
  * It handle all non-existent methods called on template objects inside template files.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -101,7 +110,8 @@ class Command
         }
         $this->$which = array_merge($this->$which, $filtered);
         if ($which === 'functions' && ! empty($safe)) {
-            $are_safe = is_array($safe) ? array_intersect($safe, array_keys($filtered)) : array_keys($filtered);
+            $are_safe = is_array($safe) ? array_intersect($safe,
+                array_keys($filtered)) : array_keys($filtered);
             $this->safe = array_merge($this->safe, $are_safe);
         }
     }

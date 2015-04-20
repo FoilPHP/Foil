@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 /**
  * This file contain API function that can be used to run packages tasks without dealing with
  * internal objects, container and so on.

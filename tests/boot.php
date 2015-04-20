@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 $autoload_path = dirname(dirname(__FILE__)).'/vendor/autoload.php';
 if (! file_exists($autoload_path)) {
     die('Please install via composer before running tests.');

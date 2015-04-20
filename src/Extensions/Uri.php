@@ -1,4 +1,13 @@
-<?php namespace Foil\Extensions;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Extensions;
 
 use Foil\Contracts\ExtensionInterface;
 
@@ -6,7 +15,7 @@ use Foil\Contracts\ExtensionInterface;
  * Inspired by the URI extension on Plates http://platesphp.com/extensions/uri/
  * Allow to do conditional tasks based on current url.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -17,7 +26,8 @@ class Uri implements ExtensionInterface
 
     public function setup(array $args = [])
     {
-        $path = isset($args['pathinfo']) ? $args['pathinfo'] : filter_input(INPUT_SERVER, 'PATH_INFO');
+        $path = isset($args['pathinfo']) ? $args['pathinfo']
+            : filter_input(INPUT_SERVER, 'PATH_INFO');
         $this->path = $this->clean($path);
         $home = isset($args['home']) && ! is_null($args['home']) ? $this->clean($args['home']) : false;
         if ($home && strpos($this->path, $home) === 0) {

@@ -1,4 +1,13 @@
-<?php namespace Foil;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil;
 
 use Pimple\Container;
 use Foil\Contracts\BootableServiceProviderInterface as Bootable;

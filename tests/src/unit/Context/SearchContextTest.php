@@ -1,8 +1,22 @@
-<?php namespace Foil\Tests\Context;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Tests\Context;
 
 use Foil\Tests\TestCase;
 use Foil\Context\SearchContext;
 
+/**
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @package foil\foil
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class SearchContextTest extends TestCase
 {
     public function testAccept()

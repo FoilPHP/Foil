@@ -1,10 +1,19 @@
-<?php namespace Foil\Extensions;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Extensions;
 
 /**
  * Extension that provides very short functions names to be used in template files to walk arrays
  * and output string in a very concise way
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -39,7 +48,7 @@ class Walker extends Base
 
     public function walkIf($var, $condition, $format = '%s')
     {
-        $should = is_callable($condition) ? call_user_func($condition) :  ! empty($condition);
+        $should = is_callable($condition) ? call_user_func($condition) : ! empty($condition);
         $out = '';
         if ($should) {
             $args = array_merge([$var, $format], $this->args(func_get_args(), 3));
@@ -66,7 +75,7 @@ class Walker extends Base
 
     public function walkWrapIf($var, $condition, $wrap, $format = '%s')
     {
-        $should = is_callable($condition) ? call_user_func($condition) :  ! empty($condition);
+        $should = is_callable($condition) ? call_user_func($condition) : ! empty($condition);
         $out = '';
         if ($should) {
             $args = array_merge([$var, $wrap, $format], $this->args(func_get_args(), 4));

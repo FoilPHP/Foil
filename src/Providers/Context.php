@@ -1,4 +1,13 @@
-<?php namespace Foil\Providers;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Providers;
 
 use Foil\Contracts\BootableServiceProviderInterface;
 use Pimple\Container;
@@ -11,7 +20,7 @@ use Foil\Context\GlobalContext;
  * Provider for template context objects.
  * Holds main collection and setup/listen to events that allow data to be passed to templates.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -36,12 +45,13 @@ class Context implements BootableServiceProviderInterface
      */
     public function boot(Container $container)
     {
-        $container['events']->on('f.template.prerender', function (Template $template) use ($container) {
-            if ($container['context']->accept($template->path())) {
-                $template->setData($container['context']->provide());
-                $container['context']->disallow();
-            }
-        });
+        $container['events']->on('f.template.prerender',
+            function (Template $template) use ($container) {
+                if ($container['context']->accept($template->path())) {
+                    $template->setData($container['context']->provide());
+                    $container['context']->disallow();
+                }
+            });
 
         $container['events']->on('f.engine.call', function ($func, array $args) use ($container) {
             switch ($func) {

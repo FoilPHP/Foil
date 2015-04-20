@@ -1,4 +1,13 @@
-<?php namespace Foil\Template;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Template;
 
 use ArrayAccess as AA;
 use Foil\API;
@@ -9,7 +18,7 @@ use InvalidArgumentException;
 /**
  * Factory and holds templates object instances.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -18,7 +27,7 @@ class Factory implements APIAware
     use Traits\APIAwareTrait;
 
     const DEFAULT_CONTRACT = '\\Foil\\Contracts\\TemplateInterface';
-    const DEFAULT_CLASS = '\\Foil\\Template\\Template';
+    const DEFAULT_CLASS    = '\\Foil\\Template\\Template';
 
     private $contract;
     private $templates;
@@ -57,7 +66,8 @@ class Factory implements APIAware
     }
 
     /**
-     * Checks that a given class name implements factory contract and returns it (or default if not).
+     * Checks that a given class name implements factory contract and returns it (or default if
+     * not).
      *
      * @param  string $class
      * @return string

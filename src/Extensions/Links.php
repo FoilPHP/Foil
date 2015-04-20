@@ -1,4 +1,13 @@
-<?php namespace Foil\Extensions;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Extensions;
 
 use Foil\Contracts\ExtensionInterface;
 
@@ -8,7 +17,7 @@ use Foil\Contracts\ExtensionInterface;
  * assets urls.
  * Both kind of urls can be relative or absolute, setting a domain.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -79,7 +88,9 @@ class Links implements ExtensionInterface
     {
         $suffix = false;
         $ext = strtolower(pathinfo($asset, PATHINFO_EXTENSION));
-        if (is_array($this->cache_bust) && in_array($ext, $this->cache_bust, true) && is_string($this->asset_path)) {
+        if (is_array($this->cache_bust) && in_array($ext, $this->cache_bust,
+                true) && is_string($this->asset_path)
+        ) {
             $path = $this->asset_path.DIRECTORY_SEPARATOR.$this->normalize($asset);
             $suffix = is_readable($path) ? @filemtime($path) : false;
         }
@@ -142,7 +153,8 @@ class Links implements ExtensionInterface
         if ($args['cache_bust'] === true || $args['cache_bust'] === 'all') {
             $this->cache_bust = array_merge($def['images'], $def['styles'], $def['scripts']);
         } elseif (is_array($args['cache_bust'])) {
-            $this->cache_bust = array_map([$this, 'cleanExt'], array_filter($args['cache_bust'], 'is_string'));
+            $this->cache_bust = array_map([$this, 'cleanExt'],
+                array_filter($args['cache_bust'], 'is_string'));
         } elseif (
             is_string($args['cache_bust'])
             && array_key_exists(strtolower($args['cache_bust']), $def)
@@ -153,20 +165,25 @@ class Links implements ExtensionInterface
 
     private function setupAssetPaths($args)
     {
-        $this->asset_url = isset($args['assets_url']) && is_string($args['assets_url']) ?
-            '/'.$this->clean($args['assets_url']).'/' :
+        $this->asset_url = isset($args['assets_url']) && is_string($args['assets_url'])
+            ?
+            '/'.$this->clean($args['assets_url']).'/'
+            :
             '/';
         if (! is_array($this->cache_bust)) {
             return;
         }
-        $this->asset_path = isset($args['assets_path']) ?
-            rtrim($this->normalize($args['assets_path']), '/\\') :
+        $this->asset_path = isset($args['assets_path'])
+            ?
+            rtrim($this->normalize($args['assets_path']), '/\\')
+            :
             false;
     }
 
     private function normalize($path)
     {
-        return preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, filter_var($path, FILTER_SANITIZE_URL));
+        return preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR,
+            filter_var($path, FILTER_SANITIZE_URL));
     }
 
     private function clean($url, $lower = true)

@@ -1,4 +1,13 @@
-<?php namespace Foil\Extensions;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Extensions;
 
 use Foil\Contracts\ExtensionInterface;
 use Foil\Contracts\TemplateAwareInterface as TemplateAware;
@@ -18,7 +27,6 @@ use RuntimeException;
  */
 class Helpers implements ExtensionInterface, TemplateAware, APIAware
 {
-
     use Traits\TemplateAwareTrait,
         Traits\APIAwareTrait;
 
@@ -29,7 +37,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     {
         $this->autoescape = ! isset($options['autoescape']) || ! empty($options['autoescape']);
         if (isset($options['strict_variables'])) {
-            $this->strict = strtolower((string)$options['strict_variables']) === 'notice'
+            $this->strict = strtolower((string) $options['strict_variables']) === 'notice'
                 ? 'notice'
                 : ! empty($options['strict_variables']);
         }
@@ -175,7 +183,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         if (is_string($filter)) {
             $filter = explode('|', $filter);
         }
-        $filters = array_merge($data['filters'], (array)$filter);
+        $filters = array_merge($data['filters'], (array) $filter);
         if (empty($filters)) {
             return $data['data'];
         }
@@ -196,7 +204,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      */
     public function asArray($var, $default = [], $filter = null, $force_raw = false)
     {
-        $raw = $this->raw($var, (array)$default, $filter);
+        $raw = $this->raw($var, (array) $default, $filter);
 
         return $this->api()->arraize($raw, ($this->autoescape && ! $force_raw));
     }
@@ -258,12 +266,12 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     {
         if (is_object($data)) {
             $data = $this->api()->arraize($data, $this->autoescape);
-        } elseif ( ! is_array($data)) {
+        } elseif (! is_array($data)) {
             return $this->autoescape ? $this->api()->entities($data) : $data;
         }
-        $where = is_string($where) ? explode('.', $where) : (array)$where;
+        $where = is_string($where) ? explode('.', $where) : (array) $where;
         $get = igorw\get_in($data, $where);
-        if ( ! $strict || ! $this->strict || ! is_null($get)) {
+        if (! $strict || ! $this->strict || ! is_null($get)) {
             return $get;
         }
         $name = implode('.', $where);

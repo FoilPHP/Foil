@@ -1,4 +1,13 @@
-<?php namespace Foil\Kernel;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Kernel;
 
 use Traversable;
 use JsonSerializable;
@@ -9,21 +18,23 @@ use JsonSerializable;
  * Array and traversable objects are all recursively converted.
  * Non-traversable objects are converted to array, in 1st available among following methods:
  *  - if a transformer callback is provided, than it's called with object as param
- *  - if a transformer class is provided, than its transform() method is called with object as param
- *  - if a transformer object is provided, than its transform() method is called with object as param
+ *  - if a transformer class is provided, than its transform() method is called with object as
+ *  param
+ *  - if a transformer object is provided, than its transform() method is called with object as
+ *  param
  *  - if the object has a method toArray() it is called
  *  - if the object has a method asArray() it is called
  *  - if the object is an instance of JsonSerializable then jsonSerialize() is called
  *  - get_object_vars() is called
  * The obtained array is recursively parsed.
  *
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Arraize
 {
-    const CAST = 64;
+    const CAST   = 64;
     const ESCAPE = 128;
 
     /**
@@ -48,8 +59,10 @@ class Arraize
      */
     private function collect($var, $flags, $trasf)
     {
-        return $this->traversable($var) ?
-            $this->walk($var, $flags, $trasf) :
+        return $this->traversable($var)
+            ?
+            $this->walk($var, $flags, $trasf)
+            :
             $this->atomic($var, $flags, $trasf);
     }
 
@@ -61,8 +74,10 @@ class Arraize
      */
     private function atomic($var, $flags, $trasf)
     {
-        return is_object($var) ?
-            $this->collect($this->transform($var, get_class($var), $trasf), $flags, $trasf) :
+        return is_object($var)
+            ?
+            $this->collect($this->transform($var, get_class($var), $trasf), $flags, $trasf)
+            :
             $this->escape($var, $flags);
     }
 
@@ -77,8 +92,10 @@ class Arraize
     {
         $output = [];
         foreach ($var as $index => $item) {
-            $output[$index] = $this->traversable($item) ?
-                $this->collect($item, $flags, $trasf) :
+            $output[$index] = $this->traversable($item)
+                ?
+                $this->collect($item, $flags, $trasf)
+                :
                 $this->atomic($item, $flags, $trasf);
         }
 
@@ -99,7 +116,8 @@ class Arraize
             $cb = [$cb, 'transform'];
         }
 
-        return is_callable($cb) ? $this->vars(call_user_func($cb, $var), false) : $this->convert($var);
+        return is_callable($cb) ? $this->vars(call_user_func($cb, $var),
+            false) : $this->convert($var);
     }
 
     /**
@@ -168,8 +186,10 @@ class Arraize
      */
     private function escape($var, $flags)
     {
-        return ($flags & self::ESCAPE) && is_string($var) ?
-            htmlentities($var, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') :
+        return ($flags & self::ESCAPE) && is_string($var)
+            ?
+            htmlentities($var, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            :
             $this->scalar($var, $flags);
     }
 
@@ -180,8 +200,10 @@ class Arraize
      */
     private function scalar($var, $flags)
     {
-        return ($flags & self::CAST) && ! is_string($var) ?
-            $this->escape((string) $var, $flags) :
+        return ($flags & self::CAST) && ! is_string($var)
+            ?
+            $this->escape((string) $var, $flags)
+            :
             $var;
     }
 }

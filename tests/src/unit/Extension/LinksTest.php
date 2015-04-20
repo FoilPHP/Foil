@@ -1,8 +1,22 @@
-<?php namespace Foil\Tests\Extension;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Tests\Extension;
 
 use Foil\Tests\TestCase;
 use Foil\Extensions\Links;
 
+/**
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @package foil\foil
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class LinksTest extends TestCase
 {
     public function testLinkNoDomainNoDirs()
@@ -29,7 +43,7 @@ class LinksTest extends TestCase
     {
         $l = new Links();
         $l->setup([
-            'urls' => [ 'pdf' => '/url/to/pdf/', 'doc' => 'url/to/doc'],
+            'urls' => ['pdf' => '/url/to/pdf/', 'doc' => 'url/to/doc'],
         ]);
         assertSame('/url/to/pdf/foo.pdf', $l->link('foo.pdf', 'pdf'));
         assertSame('/url/to/doc/foo.doc', $l->link('foo.doc', 'doc'));
@@ -39,7 +53,7 @@ class LinksTest extends TestCase
     {
         $l = new Links();
         $l->setup([
-            'urls'        => [ 'pdf' => '/url/to/pdf/'],
+            'urls'        => ['pdf' => '/url/to/pdf/'],
             'host'        => 'example.com',
             'assets_host' => 'static.example.com',
         ]);

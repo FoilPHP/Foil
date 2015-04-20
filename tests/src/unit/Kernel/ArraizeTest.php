@@ -1,4 +1,13 @@
-<?php namespace Foil\Tests\Kernel;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Tests\Kernel;
 
 use Foil\Tests\TestCase;
 use Foil\Kernel\Arraize;
@@ -8,10 +17,19 @@ use Foil\Tests\Json;
 use Foil\Tests\Value;
 use Foil\Tests\Target;
 
+/**
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @package foil\foil
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class ArraizeTest extends TestCase
 {
-    private function arraize($data = [], $escape = false, array $trasformers = [], $tostring = false)
-    {
+    private function arraize(
+        $data = [],
+        $escape = false,
+        array $trasformers = [],
+        $tostring = false
+    ) {
         return (new Arraize())->run($data, $escape, $trasformers, $tostring);
     }
 
@@ -52,7 +70,11 @@ class ArraizeTest extends TestCase
             'lev1' => [
                 'lev1.1' => $this->e('<b>lev1.1</b>'),
                 'lev1.2' => true,
-                'lev1.3' => [$this->e('<b>foo</b>'), $this->e('<b>bar</b>'), $this->e('<b>baz</b>')],
+                'lev1.3' => [
+                    $this->e('<b>foo</b>'),
+                    $this->e('<b>bar</b>'),
+                    $this->e('<b>baz</b>'),
+                ],
             ],
             'lev2' => [
                 'lev2.2' => [
@@ -78,7 +100,11 @@ class ArraizeTest extends TestCase
             'lev1' => [
                 'lev1.1' => $this->e('<b>lev1.1</b>'),
                 'lev1.2' => '1',
-                'lev1.3' => [$this->e('<b>foo</b>'), $this->e('<b>bar</b>'), $this->e('<b>baz</b>')],
+                'lev1.3' => [
+                    $this->e('<b>foo</b>'),
+                    $this->e('<b>bar</b>'),
+                    $this->e('<b>baz</b>'),
+                ],
             ],
             'lev2' => [
                 'lev2.2' => [
@@ -120,7 +146,7 @@ class ArraizeTest extends TestCase
                 'lev1.1' => '<b>lev1.1</b>',
                 'lev1.2' => true,
                 'lev1.3' => ['<b>foo</b>', '<b>bar</b>', '<b>baz</b>'],
-                ]),
+            ]),
             'lev2'     => [
                 'lev2.2' => [
                     'lev2.2.1' => (object) ['a' => '<b>a</b>', 'b' => '<b>b</b>'],
@@ -138,7 +164,11 @@ class ArraizeTest extends TestCase
             'lev1'     => [
                 'lev1.1' => $this->e('<b>lev1.1</b>'),
                 'lev1.2' => '1',
-                'lev1.3' => [$this->e('<b>foo</b>'), $this->e('<b>bar</b>'), $this->e('<b>baz</b>')],
+                'lev1.3' => [
+                    $this->e('<b>foo</b>'),
+                    $this->e('<b>bar</b>'),
+                    $this->e('<b>baz</b>'),
+                ],
             ],
             'lev2'     => [
                 'lev2.2' => [

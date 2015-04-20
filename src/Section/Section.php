@@ -1,10 +1,19 @@
-<?php namespace Foil\Section;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Section;
 
 use Foil\Contracts\SectionInterface;
 use LogicException;
 
 /**
- * @author Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -39,7 +48,7 @@ class Section implements SectionInterface
      */
     public function replace()
     {
-        if (!$this->started()) {
+        if (! $this->started()) {
             throw new LogicException('You need to start a section before to end it.');
         }
         $this->started = false;
@@ -60,7 +69,7 @@ class Section implements SectionInterface
      */
     public function append()
     {
-        if (!$this->started()) {
+        if (! $this->started()) {
             throw new LogicException('You need to start a section before to end it.');
         }
         $this->started = false;

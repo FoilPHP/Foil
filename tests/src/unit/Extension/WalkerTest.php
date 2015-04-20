@@ -1,10 +1,24 @@
-<?php namespace Foil\Tests\Extension;
+<?php
+/*
+ * This file is part of the Foil package.
+ *
+ * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Foil\Tests\Extension;
 
 use Foil\Tests\TestCase;
 use Mockery;
 use Foil;
 use ArrayIterator;
 
+/**
+ * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * @package foil\foil
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class WalkerTest extends TestCase
 {
     private function getWalkerMocked()
@@ -66,25 +80,28 @@ class WalkerTest extends TestCase
         $w = $this->getWalkerMocked();
         $expected = '<li>A - foo</li><li>B - foo</li><li>C - foo</li>';
         assertSame($expected, $w->walkIf(['A', 'B', 'C'], function () {
-                return 1 === 1;
-            }, '<li>%s %s</li>', '- foo'));
+            return 1 === 1;
+        }, '<li>%s %s</li>', '- foo'));
         assertSame('', $w->walkIf(['A', 'B', 'C'], function () {
-                return 1 === 2;
-            }, '<li>%s %s</li>', '- foo'));
+            return 1 === 2;
+        }, '<li>%s %s</li>', '- foo'));
     }
 
     public function testWalkWrap()
     {
         $w = $this->getWalkerMocked();
         $expected = '<ul><li>A - foo</li><li>B - foo</li><li>C - foo</li></ul>';
-        assertSame($expected, $w->walkWrap(['A', 'B', 'C'], '<ul>%s</ul>', '<li>%s %s</li>', '- foo'));
+        assertSame($expected,
+            $w->walkWrap(['A', 'B', 'C'], '<ul>%s</ul>', '<li>%s %s</li>', '- foo'));
     }
 
     public function testWalkWrapIf()
     {
         $w = $this->getWalkerMocked();
         $expected = '<ul><li>A - foo</li><li>B - foo</li><li>C - foo</li></ul>';
-        assertSame($expected, $w->walkWrapIf(['A', 'B', 'C'], true, '<ul>%s</ul>', '<li>%s %s</li>', '- foo'));
-        assertSame('', $w->walkWrapIf(['A', 'B', 'C'], false, '<ul>%s</ul>', '<li>%s %s</li>', '- foo'));
+        assertSame($expected,
+            $w->walkWrapIf(['A', 'B', 'C'], true, '<ul>%s</ul>', '<li>%s %s</li>', '- foo'));
+        assertSame('',
+            $w->walkWrapIf(['A', 'B', 'C'], false, '<ul>%s</ul>', '<li>%s %s</li>', '- foo'));
     }
 }
