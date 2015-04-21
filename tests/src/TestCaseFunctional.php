@@ -10,6 +10,7 @@
 namespace Foil\Tests;
 
 use Foil\Bootstrapper;
+use Brain\Monkey\Functions;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -18,11 +19,32 @@ use Foil\Bootstrapper;
  */
 class TestCaseFunctional extends TestCase
 {
+    /**
+     * @var \Foil\Engine
+     */
     protected $engine;
+
+    /**
+     * @var \Pimple\Container
+     */
     protected $container;
 
     public function initFoil(array $options = [])
     {
+        Functions::when('Foil\entities')->alias(function ($var, $strategy = 'html') {
+            /** @var \Aura\Html\Escaper $escaper */
+            $escaper = $this->container['aura.html.escaper'];
+            if (is_array($var) || $var instanceof \Traversable) {
+                $return = [];
+                foreach ($var as $i => $val) {
+                    $return[$i] = $escaper->$strategy($val);
+                }
+
+                return $return;
+            }
+
+            return is_string($var) ? $escaper->$strategy($var) : $var;
+        });
         $base = dirname(preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH));
         $bootstrapper = new Bootstrapper();
         $options = array_merge([
@@ -33,7 +55,7 @@ class TestCaseFunctional extends TestCase
         ], $options);
         $providers = [
             '\\Foil\\Providers\\Kernel',
-            '\\Foil\\Providers\\AuraHtmlProvider',
+            '\\Foil\\Providers\\AuraHtml',
             '\\Foil\\Providers\\Core',
             '\\Foil\\Providers\\Context',
             '\\Foil\\Providers\\Extensions',

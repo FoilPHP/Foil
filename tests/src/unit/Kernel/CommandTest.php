@@ -11,6 +11,8 @@ namespace Foil\Tests\Kernel;
 
 use Foil\Tests\TestCase;
 use Foil\Kernel\Command;
+use Aura\Html\Escaper\HtmlEscaper;
+use Brain\Monkey\Functions;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -19,6 +21,16 @@ use Foil\Kernel\Command;
  */
 class CommandTest extends TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+        Functions::when('Foil\entities')->alias(function ($var) {
+            return is_array($var)
+                ? array_map(new HtmlEscaper(), $var)
+                : (new HtmlEscaper())->__invoke($var);
+        });
+    }
+
     public function testFunctionNoEcho()
     {
         $test = function ($str) {

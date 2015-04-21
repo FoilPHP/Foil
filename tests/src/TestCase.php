@@ -10,6 +10,7 @@
 namespace Foil\Tests;
 
 use PHPUnit_Framework_TestCase;
+use Brain\Monkey;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -18,4 +19,15 @@ use PHPUnit_Framework_TestCase;
  */
 class TestCase extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+        Monkey::setUp();
+    }
+
+    protected function tearDown()
+    {
+        Monkey::tearDown();
+        parent::tearDown();
+    }
 }
