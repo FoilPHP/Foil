@@ -35,7 +35,6 @@ use Foil\Context\RegexContext;
 use Foil\Context\GlobalContext;
 use Foil\Contracts\ContextInterface;
 use Foil\Kernel\Arraize;
-use Aura\Html\HelperLocatorFactory;
 use Traversable;
 use LogicException;
 use InvalidArgumentException;
@@ -62,6 +61,7 @@ if (! function_exists('Foil\foil')) {
             $bootstrapper = new Bootstrapper();
             $providers = [
                 'kernel'     => '\\Foil\\Providers\\Kernel',
+                'aura_html'  => '\\Foil\\Providers\\AuraHtmlProvider',
                 'core'       => '\\Foil\\Providers\\Core',
                 'context'    => '\\Foil\\Providers\\Context',
                 'extensions' => '\\Foil\\Providers\\Extensions',
@@ -225,34 +225,37 @@ if (! function_exists('Foil\entities')) {
      *
      * @param  mixed  $data
      * @param  string $strategy
+     * @param  string $encoding
      * @return mixed
      * @see https://github.com/auraphp/Aura.Html
      */
-    function entities($data, $strategy = 'html')
+    function entities($data, $strategy = 'html', $encoding = 'utf-8')
     {
-        static $sanitizer;
-        is_null($sanitizer) and $sanitizer = (new HelperLocatorFactory())->newInstance()->escape();
+        /** @var \Aura\Html\Escaper $escaper */
+        $escaper = foil('aura.html.escaper');
+        ($encoding !== 'utf-8') and $escaper->setEncoding($encoding);
         if (is_string($data)) {
-            return call_user_func(
+            $escaped = call_user_func(
                 [
-                    $sanitizer,
-                    in_array($strategy, ['html', 'attr', 'js', 'cs'], true) ? $strategy : 'html',
+                    $escaper,
+                    in_array($strategy, ['html', 'js', 'cs', 'attr'], true) ? $strategy : 'html',
                 ],
                 $data
             );
-        } elseif (is_array($data)) {
+            ($encoding !== 'utf-8') and $escaper->setEncoding('utf-8');
+
+            return $escaped;
+        } elseif (is_array($data) && $strategy === 'attr') {
+            $escaped = $escaper->attr($data);
+            ($encoding !== 'utf-8') and $escaper->setEncoding('utf-8');
+
+            return $escaped;
+        } elseif (is_array($data) || $data instanceof Traversable) {
             foreach ($data as $i => $val) {
-                $data[$i] = entities($val);
+                $data[$i] = entities($val, $strategy, $encoding);
             }
-        } elseif ($data instanceof Traversable) {
-            $convert = [];
-            $n = 0;
-            foreach ($data as $i => $val) {
-                $n++;
-                $key = is_string($i) ? $i : $n;
-                $convert[$key] = entities($val);
-            }
-            $data = $convert;
+        } elseif (is_object($data) && method_exists($data, '__toString')) {
+            return entities($data->__toString(), $strategy, $encoding);
         }
 
         return $data;
@@ -261,15 +264,16 @@ if (! function_exists('Foil\entities')) {
 
 if (! function_exists('Foil\decode')) {
     /**
-     * Decode strings and array from htmlentities
+     * Decode strings and array from HTML entities
      *
-     * @param  mixed $data
+     * @param  mixed  $data
+     * @param  string $encoding
      * @return mixed
      */
-    function decode($data)
+    function decode($data, $encoding = 'utf-8')
     {
         if (is_string($data)) {
-            return utf8_decode(html_entity_decode($data, ENT_QUOTES, 'UTF-8'));
+            return html_entity_decode($data, ENT_QUOTES, $encoding);
         } elseif (is_array($data)) {
             foreach ($data as $i => $val) {
                 $data[$i] = decode($val);
@@ -304,11 +308,11 @@ if (! function_exists('Foil\arraize')) {
      * @param  mixed $data         Data to convert
      * @param  bool  $escape       Should strings in data be HTML-encoded?
      * @param  array $transformers Transformers: full qualified class names, objects or callables
-     * @param  bool  $tostring     Should all scalar items in data be casted to strings?
+     * @param  bool  $toString     Should all scalar items in data be casted to strings?
      * @return array
      */
-    function arraize($data = [], $escape = false, array $transformers = [], $tostring = false)
+    function arraize($data = [], $escape = false, array $transformers = [], $toString = false)
     {
-        return (new Arraize())->run($data, $escape, $transformers, $tostring);
+        return (new Arraize())->run($data, $escape, $transformers, $toString);
     }
 }
