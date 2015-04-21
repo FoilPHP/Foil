@@ -15,7 +15,7 @@ use Foil\Extensions\Sections;
 use Foil\Extensions\Helpers;
 use Foil\Extensions\Walker;
 use Foil\Extensions\Filters;
-use Foil\Extensions\AuraHtml;
+use Foil\Extensions\AuraHtml as AuraHtmlExtension;
 
 /**
  * Core extensions service provider
@@ -50,7 +50,10 @@ class Extensions implements BootableServiceProvider
         };
 
         $container['extensions.aura_html'] = function ($c) {
-            return new AuraHtml($c['aura.html.locator'], $c['options']['html_tags_functions']);
+            return new AuraHtmlExtension(
+                $c['aura.html.locator'],
+                $c['options']['html_tags_functions']
+            );
         };
     }
 
