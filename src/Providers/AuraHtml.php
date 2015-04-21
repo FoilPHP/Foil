@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Providers;
+namespace Foil\Providers;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -19,7 +19,7 @@ use Aura\Html\HelperLocatorFactory;
  * @license http://opensource.org/licenses/MIT MIT
  * @package Foil
  */
-class AuraHtmlProvider implements ServiceProviderInterface
+class AuraHtml implements ServiceProviderInterface
 {
     /**
      * Registers AuraPHP/Html services on the container.
