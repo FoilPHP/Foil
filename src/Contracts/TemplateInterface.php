@@ -71,6 +71,14 @@ interface TemplateInterface
     public function data();
 
     /**
+     * Set data for the template
+     *
+     * @param  array  $data
+     * @return string
+     */
+    public function setData(array $data);
+
+    /**
      * Run a registered function. Methods may receive any number of argument.
      *
      * @param  string $function
