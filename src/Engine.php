@@ -23,16 +23,30 @@ use LogicException;
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
+ *
+ * @method Engine useData()
+ * @method Engine useContext()
  */
 class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
 {
     use Traits\TemplateAwareTrait;
     use Traits\FinderAwareTrait;
     use Traits\APIAwareTrait;
-
-    private $status;
+    /**
+     * @var array
+     */
     private static $safe_functions = ['useData', 'useContext'];
 
+    /**
+     * @var int
+     */
+    private $status;
+
+    /**
+     * @param \Foil\Template\Stack  $stack
+     * @param \Foil\Template\Finder $finder
+     * @param \Foil\API             $api
+     */
     public function __construct(Stack $stack, Finder $finder, API $api)
     {
         $this->setStack($stack);
