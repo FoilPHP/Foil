@@ -47,12 +47,15 @@ class TestCaseFunctional extends TestCase
         });
         $base = dirname(preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH));
         $bootstrapper = new Bootstrapper();
-        $options = array_merge([
-            'folders' => [
-                'foo' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'foo']),
-                'bar' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'bar']),
+        $options = array_merge(
+            [
+                'folders' => [
+                    'foo' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'foo']),
+                    'bar' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'bar']),
+                ],
             ],
-        ], $options);
+            $options
+        );
         $providers = [
             '\\Foil\\Providers\\Kernel',
             '\\Foil\\Providers\\AuraHtml',
