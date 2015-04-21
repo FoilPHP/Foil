@@ -23,14 +23,44 @@ use Foil\Contracts\ExtensionInterface;
  */
 class Links implements ExtensionInterface
 {
+    /**
+     * @var string
+     */
     private $asset_path = '';
+
+    /**
+     * @var string
+     */
     private $asset_url = '/';
+
+    /**
+     * @var array
+     */
     private $urls = [];
+
+    /**
+     * @var string
+     */
     private $host;
+
+    /**
+     * @var string
+     */
     private $assets_host;
+
+    /**
+     * @var string
+     */
     private $scheme = 'http://';
+
+    /**
+     * @var bool
+     */
     private $cache_bust = false;
 
+    /**
+     * @inheritdoc
+     */
     public function setup(array $args = [])
     {
         $this->setupHost($args);
@@ -41,11 +71,17 @@ class Links implements ExtensionInterface
         $this->setupAssetPaths($args);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFilters()
     {
         return [];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFunctions()
     {
         return [
@@ -101,7 +137,11 @@ class Links implements ExtensionInterface
         return $this->addHost($this->asset_url.$asset, $use_scheme, true);
     }
 
-    private function setupHost($args, $which = 'host')
+    /**
+     * @param array  $args
+     * @param string $which
+     */
+    private function setupHost(array $args, $which = 'host')
     {
         if (! isset($args[$which]) || is_null($args[$which])) {
             $this->$which = $which === 'host' ? false : null;
@@ -116,7 +156,10 @@ class Links implements ExtensionInterface
         }
     }
 
-    private function setupScheme($args)
+    /**
+     * @param array $args
+     */
+    private function setupScheme(array $args)
     {
         if (! isset($args['scheme']) || is_null($args['scheme'])) {
             $secure = filter_input(INPUT_SERVER, 'HTTPS', FILTER_SANITIZE_STRING);
@@ -128,7 +171,10 @@ class Links implements ExtensionInterface
         }
     }
 
-    private function setupUrls($args)
+    /**
+     * @param array $args
+     */
+    private function setupUrls(array $args)
     {
         if (! isset($args['urls']) || ! is_array($args['urls'])) {
             return;
@@ -140,6 +186,9 @@ class Links implements ExtensionInterface
         });
     }
 
+    /**
+     * @param array $args
+     */
     private function setupCache($args)
     {
         if (! isset($args['cache_bust']) || is_null($args['cache_bust'])) {
@@ -163,29 +212,40 @@ class Links implements ExtensionInterface
         }
     }
 
+    /**
+     * @param array $args
+     */
     private function setupAssetPaths($args)
     {
         $this->asset_url = isset($args['assets_url']) && is_string($args['assets_url'])
-            ?
-            '/'.$this->clean($args['assets_url']).'/'
-            :
-            '/';
+            ? '/'.$this->clean($args['assets_url']).'/'
+            : '/';
         if (! is_array($this->cache_bust)) {
             return;
         }
         $this->asset_path = isset($args['assets_path'])
-            ?
-            rtrim($this->normalize($args['assets_path']), '/\\')
-            :
-            false;
+            ? rtrim($this->normalize($args['assets_path']), '/\\')
+            : false;
     }
 
+    /**
+     * @param  string $path
+     * @return string
+     */
     private function normalize($path)
     {
-        return preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR,
-            filter_var($path, FILTER_SANITIZE_URL));
+        return preg_replace(
+            '|[\\/]+|',
+            DIRECTORY_SEPARATOR,
+            filter_var($path, FILTER_SANITIZE_URL)
+        );
     }
 
+    /**
+     * @param  string $url
+     * @param  bool   $lower
+     * @return string
+     */
     private function clean($url, $lower = true)
     {
         $trim = trim(filter_var((string) $url, FILTER_SANITIZE_URL), '/');
@@ -193,16 +253,30 @@ class Links implements ExtensionInterface
         return $lower ? strtolower($trim) : $trim;
     }
 
+    /**
+     * @param  string $ext
+     * @return string
+     */
     private function cleanExt($ext)
     {
         return strtolower(preg_replace('/[^a-zA-Z]/', '', $ext));
     }
 
+    /**
+     * @param  string $scheme
+     * @return bool
+     */
     private function isScheme($scheme)
     {
         return is_string($scheme) && in_array(strtolower($scheme), ['https', 'http'], true);
     }
 
+    /**
+     * @param  string $url
+     * @param  bool   $use_scheme
+     * @param  bool   $is_asset
+     * @return string
+     */
     private function addHost($url, $use_scheme, $is_asset)
     {
         $host = $is_asset && ! is_null($this->assets_host) ? $this->assets_host : $this->host;

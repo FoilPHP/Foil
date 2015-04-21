@@ -27,12 +27,15 @@ use RuntimeException;
  */
 class Helpers implements ExtensionInterface, TemplateAware, APIAware
 {
-    use Traits\TemplateAwareTrait,
-        Traits\APIAwareTrait;
+    use Traits\TemplateAwareTrait;
+    use Traits\APIAwareTrait;
 
     private $autoescape;
     private $strict;
 
+    /**
+     * @param array $options
+     */
     public function __construct(array $options)
     {
         $this->autoescape = ! isset($options['autoescape']) || ! empty($options['autoescape']);
@@ -43,11 +46,17 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function setup(array $args = [])
     {
         return $args;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFilters()
     {
         return [
@@ -56,6 +65,9 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFunctions()
     {
         return [
@@ -303,6 +315,10 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         return ['data' => $this->getIn($data, $where, true), 'filters' => $filters];
     }
 
+    /**
+     * @param $default
+     * @return mixed|string
+     */
     private function returnDefault($default)
     {
         if ($default instanceof Closure) {

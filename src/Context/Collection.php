@@ -25,13 +25,27 @@ use SplObjectStorage;
  */
 class Collection implements ContextCollectionInterface, APIAwareInterface
 {
-    use Traits\APIAwareTrait,
-        Traits\DataHandlerTrait;
+    use Traits\APIAwareTrait;
+    use Traits\DataHandlerTrait;
 
+    /**
+     * @var \SplObjectStorage
+     */
     private $storage;
+
+    /**
+     * @var string
+     */
     private $template;
+
+    /**
+     * @var bool
+     */
     private $allowed;
 
+    /**
+     * @param \Foil\API $api
+     */
     public function __construct(API $api)
     {
         $this->storage = new SplObjectStorage();
@@ -39,6 +53,9 @@ class Collection implements ContextCollectionInterface, APIAwareInterface
         $this->allow();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function accept($template)
     {
         if ($this->allowed() && is_string($template)) {
@@ -50,6 +67,9 @@ class Collection implements ContextCollectionInterface, APIAwareInterface
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function add(ContextInterface $context)
     {
         $this->storage->attach($context);
@@ -83,11 +103,17 @@ class Collection implements ContextCollectionInterface, APIAwareInterface
         return $data;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function has(ContextInterface $context)
     {
         $this->storage->contains($context);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function remove(ContextInterface $context)
     {
         $this->storage->detach($context);

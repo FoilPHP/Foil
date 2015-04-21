@@ -29,10 +29,27 @@ class Factory implements APIAware
     const DEFAULT_CONTRACT = '\\Foil\\Contracts\\TemplateInterface';
     const DEFAULT_CLASS    = '\\Foil\\Template\\Template';
 
+    /**
+     * @var string
+     */
     private $contract;
+
+    /**
+     * @var \ArrayAccess
+     */
     private $templates;
+
+    /**
+     * @var \ArrayAccess
+     */
     private $sections;
 
+    /**
+     * @param \ArrayAccess $templates
+     * @param \ArrayAccess $sections
+     * @param \Foil\API    $api
+     * @param null|string  $contract
+     */
     public function __construct(AA $templates, AA $sections, API $api, $contract = null)
     {
         if (! is_string($contract) || ! interface_exists($contract)) {

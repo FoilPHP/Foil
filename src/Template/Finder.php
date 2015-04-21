@@ -20,9 +20,19 @@ use InvalidArgumentException;
  */
 class Finder
 {
+    /**
+     * @var array
+     */
     private $dirs = [];
+
+    /**
+     * @var string
+     */
     private $ext = 'php';
 
+    /**
+     * @param string $ext
+     */
     public function __construct($ext = 'php')
     {
         $this->ext = $ext;

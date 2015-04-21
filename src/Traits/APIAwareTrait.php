@@ -18,6 +18,9 @@ use Foil\API;
  */
 trait APIAwareTrait
 {
+    /**
+     * @var \Foil\API
+     */
     private $api;
 
     /**
@@ -28,6 +31,9 @@ trait APIAwareTrait
         return $this->api;
     }
 
+    /**
+     * @param \Foil\API $api
+     */
     public function setAPI(API $api)
     {
         $this->api = $api;

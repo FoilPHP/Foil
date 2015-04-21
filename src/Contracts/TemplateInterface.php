@@ -48,7 +48,7 @@ interface TemplateInterface
     public function layout($layout, array $data = [], array $only = null);
 
     /**
-     * Return the content for a given section, or a default text if section is not present
+     * Returns the content for a given section, or a default text if section is not present
      *
      * @param  string          $section Section identifier
      * @param  string|callable $default Default content
@@ -57,7 +57,7 @@ interface TemplateInterface
     public function supply($section, $default = '');
 
     /**
-     * Return fullpath for template file
+     * Returns full path for template file
      *
      * @return string
      */

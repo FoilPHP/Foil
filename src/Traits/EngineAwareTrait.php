@@ -18,6 +18,9 @@ use Foil\Contracts\EngineInterface;
  */
 trait EngineAwareTrait
 {
+    /**
+     * @var \Foil\Contracts\EngineInterface
+     */
     private $engine;
 
     /**

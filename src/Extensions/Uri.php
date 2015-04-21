@@ -21,15 +21,28 @@ use Foil\Contracts\ExtensionInterface;
  */
 class Uri implements ExtensionInterface
 {
+    /**
+     * @var string
+     */
     private $path;
+
+    /**
+     * @var array
+     */
     private $chunks;
 
+    /**
+     * @inheritdoc
+     */
     public function setup(array $args = [])
     {
-        $path = isset($args['pathinfo']) ? $args['pathinfo']
+        $path = isset($args['pathinfo'])
+            ? $args['pathinfo']
             : filter_input(INPUT_SERVER, 'PATH_INFO');
         $this->path = $this->clean($path);
-        $home = isset($args['home']) && ! is_null($args['home']) ? $this->clean($args['home']) : false;
+        $home = isset($args['home']) && ! is_null($args['home'])
+            ? $this->clean($args['home'])
+            : false;
         if ($home && strpos($this->path, $home) === 0) {
             $this->path = $this->clean(substr($this->path, strlen($home)));
         }
@@ -39,11 +52,17 @@ class Uri implements ExtensionInterface
         $this->chunks = $this->path !== '/' ? explode('/', $this->path) : ['/'];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFilters()
     {
         return [];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFunctions()
     {
         return [
@@ -100,6 +119,10 @@ class Uri implements ExtensionInterface
         return preg_match("~{$regex}~", $this->path) === 1 ? $if_true : $if_false;
     }
 
+    /**
+     * @param  string $url
+     * @return string
+     */
     private function clean($url)
     {
         if (! is_string($url)) {

@@ -29,10 +29,24 @@ class Sections implements ExtensionInterface, EngineAwareInterface
 {
     use Traits\EngineAwareTrait;
 
+    /**
+     * @var \Foil\Section\Factory
+     */
     private $factory;
+
+    /**
+     * @var \SplStack
+     */
     private $stack;
+
+    /**
+     * @var \SplStack
+     */
     private $names;
 
+    /**
+     * @param \Foil\Section\Factory $factory
+     */
     public function __construct(Factory $factory)
     {
         $this->factory = $factory;
@@ -40,16 +54,25 @@ class Sections implements ExtensionInterface, EngineAwareInterface
         $this->names = new SplStack();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function setup(array $args = [])
     {
         return;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFilters()
     {
         return [];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFunctions()
     {
         return [

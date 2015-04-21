@@ -16,6 +16,9 @@ namespace Foil\Traits;
  */
 trait DataHandlerTrait
 {
+    /**
+     * @var array
+     */
     private $__data = [];
 
     /**

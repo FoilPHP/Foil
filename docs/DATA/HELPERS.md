@@ -53,7 +53,7 @@ This helper is used to get and escape a variable when autoescape is turned off.
 echo $this->e('a_var_with_html'); // echo &lt;strong&gt;I am &quot;bold&quot;&lt;/strong&gt;
 ```
 
-Note that the encode routine applied is the same Foil uses when autoescape is turned on, that is capable to encode strings and also arrays containing strings.
+Note that the encode routine applied is the same Foil uses when autoescape is turned on, that is capable to encode strings and also arrays containing strings. It is based on [AuraPhp/HTML](https://github.com/auraphp/Aura.Html) library.
 
 For example:
 

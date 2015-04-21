@@ -65,14 +65,22 @@ class Context implements BootableServiceProviderInterface
         });
     }
 
-    private function engineAddData(ContextCollection $collection, $args)
+    /**
+     * @param \Foil\Context\Collection $collection
+     * @param array                    $args
+     */
+    private function engineAddData(ContextCollection $collection, array $args)
     {
         if (is_array($args[0])) {
             $collection->add(new GlobalContext($args[0]));
         }
     }
 
-    private function engineAddContext(ContextCollection $collection, $args)
+    /**
+     * @param \Foil\Context\Collection $collection
+     * @param array                    $args
+     */
+    private function engineAddContext(ContextCollection $collection, array $args)
     {
         if ($args[0] instanceof ContextInterface) {
             $collection->add($args[0]);

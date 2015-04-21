@@ -27,7 +27,7 @@ use Foil\Extensions\AuraHtml;
 class Extensions implements BootableServiceProvider
 {
     /**
-     * Register extension services
+     * Register extension services.
      *
      * @param Container $container
      */
@@ -54,6 +54,9 @@ class Extensions implements BootableServiceProvider
         };
     }
 
+    /**
+     * @inheritdoc
+     */
     public function boot(Container $container)
     {
         // we must be sure all other providers have been booted before register extensions
@@ -63,7 +66,10 @@ class Extensions implements BootableServiceProvider
         });
     }
 
-    private function loadExtensions($container)
+    /**
+     * @param \Pimple\Container $container
+     */
+    private function loadExtensions(Container $container)
     {
         $extensions = ['sections', 'helpers', 'aura_html', 'walker', 'filters'];
         array_walk($extensions, function ($extension) use ($container) {

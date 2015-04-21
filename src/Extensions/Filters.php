@@ -22,13 +22,22 @@ use InvalidArgumentException;
  */
 class Filters implements ExtensionInterface
 {
+    /**
+     * @var array
+     */
     private $args;
 
+    /**
+     * @inheritdoc
+     */
     public function setup(array $args = [])
     {
         $this->args = $args;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFilters()
     {
         return [
@@ -38,6 +47,9 @@ class Filters implements ExtensionInterface
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provideFunctions()
     {
         return [
@@ -49,6 +61,10 @@ class Filters implements ExtensionInterface
         ];
     }
 
+    /**
+     * @param  string|array $data
+     * @return mixed|string
+     */
     public function first($data)
     {
         if (! is_array($data) && ! is_string($data)) {
@@ -61,6 +77,11 @@ class Filters implements ExtensionInterface
         return $data[0];
     }
 
+    /**
+     * @param  string|array $data
+     * @param  mixed        $which
+     * @return bool
+     */
     public function isFirst($data, $which)
     {
         if (! is_array($data) && ! is_string($data)) {
@@ -70,6 +91,10 @@ class Filters implements ExtensionInterface
         return $this->first($data) === $which;
     }
 
+    /**
+     * @param  string|array $data
+     * @return mixed|string
+     */
     public function last($data)
     {
         if (! is_array($data) && ! is_string($data)) {
@@ -79,6 +104,11 @@ class Filters implements ExtensionInterface
         return is_array($data) ? end($data) : substr($data, strlen($data) - 1);
     }
 
+    /**
+     * @param  string|array $data
+     * @param  mixed        $which
+     * @return bool
+     */
     public function isLast($data, $which)
     {
         if (! is_array($data) && ! is_string($data)) {
@@ -88,7 +118,13 @@ class Filters implements ExtensionInterface
         return $this->last($data) === $which;
     }
 
-    public function index($data, $value, $index = null)
+    /**
+     * @param  array           $data
+     * @param  mixed           $value
+     * @param  null|int|string $index
+     * @return bool|int|mixed
+     */
+    public function index(array $data, $value, $index = null)
     {
         $search = array_search($value, array_values($data));
         $i = $search !== false ? $search + 1 : -1;
@@ -96,7 +132,13 @@ class Filters implements ExtensionInterface
         return is_null($index) ? $i : $i === $index;
     }
 
-    public function index0($data, $value, $index = null)
+    /**
+     * @param  array           $data
+     * @param  mixed           $value
+     * @param  null|int|string $index
+     * @return bool|int|mixed
+     */
+    public function index0(array $data, $value, $index = null)
     {
         $search = array_search($value, array_values($data));
         $i = $search !== false ? $search : -1;
@@ -104,11 +146,14 @@ class Filters implements ExtensionInterface
         return is_null($index) ? $i : $i === $index;
     }
 
-    public function chunk($data, $number, $fill = null)
+    /**
+     * @param  array $data
+     * @param  int   $number
+     * @param  null  $fill
+     * @return array
+     */
+    public function chunk(array $data, $number, $fill = null)
     {
-        if (! is_array($data)) {
-            throw new InvalidArgumentException('Data to batch must me an array');
-        }
         if (! is_int($number)) {
             throw new InvalidArgumentException('You must provide a number of pieces to chunk the array');
         }

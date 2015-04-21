@@ -57,6 +57,9 @@ inside the template `$this->bold` will be equal to
 &lt;strong&gt;I am &quot;bold&quot;&lt;/strong&gt;
 ```
 
+The escaping is based on [AuraPhp/HTML](https://github.com/auraphp/Aura.Html) library.
+
+
 ## Automatic Escaping Gotchas
 
 Given that escape data that may possibly come from user input (even when saved in a database) **is really important** to avoid vulnerability to XSS attacks,

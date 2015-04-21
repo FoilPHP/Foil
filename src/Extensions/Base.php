@@ -24,6 +24,9 @@ abstract class Base implements ExtensionInterface, APIAware
 {
     use APIAwareTrait;
 
+    /**
+     * @var array
+     */
     private $args;
 
     public function setup(array $args = [])
@@ -31,16 +34,26 @@ abstract class Base implements ExtensionInterface, APIAware
         $this->args = $args;
     }
 
+    /**
+     * @return array
+     */
     public function provideFilters()
     {
         return [];
     }
 
+    /**
+     * @return array
+     */
     public function provideFunctions()
     {
         return [];
     }
 
+    /**
+     * @param  string|null $option
+     * @return mixed
+     */
     public function option($option = null)
     {
         return $this->api()->option($option);

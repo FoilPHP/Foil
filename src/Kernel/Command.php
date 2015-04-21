@@ -23,12 +23,34 @@ use Foil;
  */
 class Command
 {
+    /**
+     * @var bool
+     */
     private $autoescape;
+
+    /**
+     * @var array
+     */
     private $functions = [];
+
+    /**
+     * @var array
+     */
     private $filters = [];
+
+    /**
+     * @var array
+     */
     private $safe = [];
+
+    /**
+     * @var bool
+     */
     private $locked;
 
+    /**
+     * @param bool $autoescape
+     */
     public function __construct($autoescape = true)
     {
         $this->autoescape = ! empty($autoescape);

@@ -23,16 +23,25 @@ class GlobalContext implements ContextInterface
 {
     use Traits\DataHandlerTrait;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = [])
     {
         $this->setData($data);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function accept($template)
     {
         return is_string($template);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provide()
     {
         return $this->data();

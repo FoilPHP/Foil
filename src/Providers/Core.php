@@ -40,7 +40,10 @@ class Core implements ServiceProviderInterface
         $this->registerEngine($container);
     }
 
-    private function registerFinder($container)
+    /**
+     * @param \Pimple\Container $container
+     */
+    private function registerFinder(Container $container)
     {
         $container['template.finder'] = function ($c) {
             $ext = is_string($c['options']['ext']) ? $c['options']['ext'] : 'php';
@@ -53,7 +56,10 @@ class Core implements ServiceProviderInterface
         };
     }
 
-    private function registerSections($container)
+    /**
+     * @param \Pimple\Container $container
+     */
+    private function registerSections(Container $container)
     {
         $container['section.sections'] = function () {
             return new ArrayObject();
@@ -63,7 +69,10 @@ class Core implements ServiceProviderInterface
         };
     }
 
-    private function registerTemplate($container)
+    /**
+     * @param \Pimple\Container $container
+     */
+    private function registerTemplate(Container $container)
     {
         $container['template.templates'] = function () {
             return new ArrayObject();
@@ -76,7 +85,10 @@ class Core implements ServiceProviderInterface
         };
     }
 
-    private function registerEngine($container)
+    /**
+     * @param \Pimple\Container $container
+     */
+    private function registerEngine(Container $container)
     {
         $container['engine'] = function ($c) {
             return new Engine($c['template.stack'], $c['template.finder'], $c['api']);

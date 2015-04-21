@@ -18,6 +18,9 @@ use Foil\Template\Finder;
  */
 trait FinderAwareTrait
 {
+    /**
+     * @var \Foil\Template\Finder
+     */
     private $finder;
 
     /**
@@ -37,6 +40,9 @@ trait FinderAwareTrait
         return $this->finder()->find($template);
     }
 
+    /**
+     * @param \Foil\Template\Finder $finder
+     */
     public function setFinder(Finder $finder)
     {
         $this->finder = $finder;

@@ -27,8 +27,14 @@ class Stack implements Countable, APIAware
 {
     use Traits\APIAwareTrait;
 
+    /**
+     * @var \SplStack
+     */
     private $stack;
 
+    /**
+     * @param \Foil\API $api
+     */
     public function __construct(API $api)
     {
         $this->stack = new SplStack();

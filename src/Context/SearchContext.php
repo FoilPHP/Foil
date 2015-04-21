@@ -24,6 +24,9 @@ class SearchContext implements ContextInterface
 {
     use Traits\DataHandlerTrait;
 
+    /**
+     * @var string
+     */
     private $needle = '';
 
     /**

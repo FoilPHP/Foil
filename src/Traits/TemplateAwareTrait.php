@@ -18,6 +18,9 @@ use Foil\Template\Stack;
  */
 trait TemplateAwareTrait
 {
+    /**
+     * @var \Foil\Template\Stack
+     */
     private $stack;
 
     /**
@@ -28,6 +31,9 @@ trait TemplateAwareTrait
         return $this->stack;
     }
 
+    /**
+     * @param \Foil\Template\Stack $stack
+     */
     public function setStack(Stack $stack)
     {
         $this->stack = $stack;

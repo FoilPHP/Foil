@@ -25,10 +25,26 @@ class Factory
     const DEFAULT_CONTRACT = '\\Foil\\Contracts\\SectionInterface';
     const DEFAULT_CLASS    = '\\Foil\\Section\\Section';
 
+    /**
+     * @var string
+     */
     private $contract;
+
+    /**
+     * @var \ArrayAccess
+     */
     private $sections;
+
+    /**
+     * @var int
+     */
     private $default_mode;
 
+    /**
+     * @param \ArrayAccess $sections
+     * @param null|int     $default_mode
+     * @param null |string $contract
+     */
     public function __construct(ArrayAccess $sections, $default_mode = null, $contract = null)
     {
         if (! is_string($contract) || ! interface_exists($contract)) {

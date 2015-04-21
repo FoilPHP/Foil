@@ -25,6 +25,9 @@ use SplQueue;
  */
 class Bootstrapper
 {
+    /**
+     * @var array
+     */
     private static $defaults = [
         'autoescape'          => true,
         'strict_variables'    => false,
@@ -33,13 +36,25 @@ class Bootstrapper
         'section_def_mode'    => SectionInterface::MODE_APPEND,
         'html_tags_functions' => false,
     ];
+
+    /**
+     * @var \SplQueue
+     */
     private $boot_queue;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->boot_queue = new SplQueue();
     }
 
+    /**
+     * @param  array             $options
+     * @param  array             $providers
+     * @return \Pimple\Container
+     */
     public function init(array $options, array $providers)
     {
         $container = new Container(['options' => array_merge(self::$defaults, $options)]);
@@ -52,7 +67,10 @@ class Bootstrapper
         return $container;
     }
 
-    public function boot($container)
+    /**
+     * @param \Pimple\Container $container
+     */
+    public function boot(Container $container)
     {
         while (! $this->boot_queue->isEmpty()) {
             $this->boot_queue->dequeue()->boot($container);

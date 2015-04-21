@@ -26,15 +26,12 @@ use LogicException;
  */
 class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
 {
-    use Traits\TemplateAwareTrait,
-        Traits\FinderAwareTrait,
-        Traits\APIAwareTrait;
+    use Traits\TemplateAwareTrait;
+    use Traits\FinderAwareTrait;
+    use Traits\APIAwareTrait;
 
-    private static $safe_functions = [
-        'useData',
-        'useContext',
-    ];
     private $status;
+    private static $safe_functions = ['useData', 'useContext'];
 
     public function __construct(Stack $stack, Finder $finder, API $api)
     {
@@ -44,7 +41,12 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         $this->status = self::STATUS_IDLE;
     }
 
-    public function __call($name, $arguments)
+    /**
+     * @param  string       $name
+     * @param  array        $arguments
+     * @return \Foil\Engine Itself for fluent interface
+     */
+    public function __call($name, array $arguments)
     {
         if (! in_array($name, self::$safe_functions, true)) {
             throw new LogicException($name.' is not a valid engine method.');
@@ -127,7 +129,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      *
      * @param  string       $path
      * @param  string|void  $name
-     * @return \Foil\Engine
+     * @return \Foil\Engine Itself for fluent interface
      */
     public function addFolder($path, $name = null)
     {
@@ -164,6 +166,13 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         throw new RuntimeException($template.' is not a valid template name.');
     }
 
+    /**
+     * Render a template file given its full path and an array of data.
+     *
+     * @param  string $path
+     * @param  array  $data
+     * @return string
+     */
     public function renderTemplate($path, array $data = [])
     {
         if (file_exists($path)) {
@@ -172,6 +181,13 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         throw new RuntimeException(__METHOD__.' needs a valid template path as first argument.');
     }
 
+    /**
+     * Render a template file its name and an array of data.
+     *
+     * @param  string $path
+     * @param  array  $data
+     * @return string
+     */
     private function doRender($path, array $data = [])
     {
         if ($this->status() === self::STATUS_IDLE) {

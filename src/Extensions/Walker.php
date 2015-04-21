@@ -19,6 +19,9 @@ namespace Foil\Extensions;
  */
 class Walker extends Base
 {
+    /**
+     * @inheritdoc
+     */
     public function provideFunctions()
     {
         return [
@@ -33,6 +36,11 @@ class Walker extends Base
         ];
     }
 
+    /**
+     * @param  array|\Traversable $var
+     * @param  string             $format
+     * @return string
+     */
     public function walk($var, $format = '%s')
     {
         $out = '';
@@ -46,6 +54,12 @@ class Walker extends Base
         return $out;
     }
 
+    /**
+     * @param  array|\Traversable $var
+     * @param  callable|mixed     $condition
+     * @param  string             $format
+     * @return string
+     */
     public function walkIf($var, $condition, $format = '%s')
     {
         $should = is_callable($condition) ? call_user_func($condition) : ! empty($condition);
@@ -58,6 +72,12 @@ class Walker extends Base
         return $out;
     }
 
+    /**
+     * @param  array|\Traversable $var
+     * @param  string             $wrap
+     * @param  string             $format
+     * @return string
+     */
     public function walkWrap($var, $wrap, $format = '%s')
     {
         if (! is_string($wrap) || substr_count($wrap, '%s') !== 1) {
@@ -73,6 +93,13 @@ class Walker extends Base
         return $out;
     }
 
+    /**
+     * @param  array|\Traversable $var
+     * @param  callable|mixed     $condition
+     * @param  string             $wrap
+     * @param  string             $format
+     * @return string
+     */
     public function walkWrapIf($var, $condition, $wrap, $format = '%s')
     {
         $should = is_callable($condition) ? call_user_func($condition) : ! empty($condition);
@@ -85,7 +112,12 @@ class Walker extends Base
         return $out;
     }
 
-    private function args($func_args, $slice = 2)
+    /**
+     * @param  array $func_args
+     * @param  int   $slice
+     * @return array
+     */
+    private function args(array $func_args, $slice = 2)
     {
         $args = array_filter(array_slice($func_args, $slice), 'is_scalar');
 

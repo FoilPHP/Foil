@@ -24,9 +24,20 @@ class RegexContext implements ContextInterface
 {
     use Traits\DataHandlerTrait;
 
+    /**
+     * @var string
+     */
     private $regex;
+
+    /**
+     * @var bool
+     */
     private $accept_basename = false;
 
+    /**
+     * @param string $regex
+     * @param array  $data
+     */
     public function __construct($regex, array $data = [])
     {
         if (! is_string($regex)) {
@@ -36,6 +47,9 @@ class RegexContext implements ContextInterface
         $this->setData($data);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function accept($template)
     {
         if (! is_string($template)) {
@@ -46,6 +60,9 @@ class RegexContext implements ContextInterface
         return preg_match($this->regex, $match) === 1;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function provide()
     {
         return $this->data();

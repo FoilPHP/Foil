@@ -23,16 +23,44 @@ use InvalidArgumentException;
  */
 class Template implements TemplateInterface, APIAware
 {
-    use Traits\APIAwareTrait,
-        Traits\DataHandlerTrait;
+    use Traits\APIAwareTrait;
+    use Traits\DataHandlerTrait;
 
+    /**
+     * @var string
+     */
     private $path;
+
+    /**
+     * @var \ArrayAccess
+     */
     private $sections;
+
+    /**
+     * @var string
+     */
     private $layout;
+
+    /**
+     * @var array
+     */
     private $layout_data = [];
+
+    /**
+     * @var string
+     */
     private $buffer = '';
+
+    /**
+     * @var string
+     */
     private $last_buffer = '';
 
+    /**
+     * @param string       $path
+     * @param \ArrayAccess $sections
+     * @param \Foil\API    $api
+     */
     public function __construct($path, ArrayAccess $sections, API $api)
     {
         $this->path = $path;
@@ -65,11 +93,17 @@ class Template implements TemplateInterface, APIAware
         return $this->run('v', $name);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function path()
     {
         return $this->path;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function filter($filter, $input)
     {
         $filters = is_string($filter) ? explode('|', $filter) : array_values((array) $filter);
@@ -81,7 +115,9 @@ class Template implements TemplateInterface, APIAware
             $args = array_fill(0, count($filters), []);
         }
         if (count($args) !== count($filters)) {
-            throw new InvalidArgumentException('Args array must contain as many sub-arrays as filters number.');
+            throw new InvalidArgumentException(
+                'Args array must contain as many sub-arrays as filters number.'
+            );
         }
         array_walk($filters, function ($filter, $i, $args) use (&$input) {
             $input = $this->api()->foil('command')->filter($filter, $input, $args[$i]);
@@ -90,11 +126,17 @@ class Template implements TemplateInterface, APIAware
         return $input;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function run($function)
     {
         return call_user_func_array([$this->api()->foil('command'), 'run'], func_get_args());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function supply($section, $default = '')
     {
         if ($this->sections->offsetExists($section)) {
@@ -107,6 +149,9 @@ class Template implements TemplateInterface, APIAware
         return is_string($default) ? $default : '';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function insert($template, array $data = [], array $only = null)
     {
         $this->api()->fire('f.template.prepartial', $template, $data, $this);
@@ -116,12 +161,24 @@ class Template implements TemplateInterface, APIAware
         return $partial;
     }
 
+    /**
+     * Insert a partial only if exists.
+     *
+     * @param  string $template
+     * @param  array  $data
+     * @param  array  $only
+     * @return string
+     */
     public function insertif($template, array $data = [], array $only = null)
     {
-        return $this->api()->engine()->find($template) ? $this->insert($template, $data,
-            $only) : '';
+        return $this->api()->engine()->find($template)
+            ? $this->insert($template, $data, $only)
+            : '';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function layout($layout, array $data = [], array $only = null)
     {
         $layout_file = file_exists($layout) ? $layout : $this->api()->engine()->find($layout);
@@ -136,6 +193,9 @@ class Template implements TemplateInterface, APIAware
         return $this->layout;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function render(array $data = [])
     {
         $this->api()->fire('f.template.prerender', $this);
@@ -158,11 +218,17 @@ class Template implements TemplateInterface, APIAware
         return $output;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function buffer()
     {
         return $this->buffer;
     }
 
+    /**
+     * Return las buffer.
+     */
     public function lastBuffer()
     {
         return $this->last_buffer;
@@ -195,6 +261,11 @@ class Template implements TemplateInterface, APIAware
         return $this->buffer;
     }
 
+    /**
+     * @param  array $data
+     * @param  array $only
+     * @return array
+     */
     private function buildContext(array $data = [], array $only = null)
     {
         $now = is_null($only)

@@ -19,12 +19,32 @@ use LogicException;
  */
 class Section implements SectionInterface
 {
-    private $content = '';
-    private $mode;
-    private $default_mode;
-    private $started = false;
     private static $modes = [self::MODE_APPEND, self::MODE_OUTPUT, self::MODE_REPLACE];
 
+    /**
+     * @var string
+     */
+    private $content = '';
+
+    /**
+     * @var int
+     */
+    private $mode;
+
+    /**
+     * @var int
+     */
+    private $default_mode;
+
+    /**
+     * @var bool
+     */
+    private $started = false;
+
+    /**
+     * @param bool     $output_mode
+     * @param null|int $default_mode
+     */
     public function __construct($output_mode = false, $default_mode = null)
     {
         if ($output_mode !== false && ! in_array($output_mode, self::$modes, true)) {
@@ -36,6 +56,9 @@ class Section implements SectionInterface
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function start()
     {
         $this->started = true;
@@ -94,11 +117,17 @@ class Section implements SectionInterface
         $this->default_mode === self::MODE_REPLACE ? $this->replace() : $this->append();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function content()
     {
         return $this->content;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function setMode($mode, $merge = false)
     {
         if (! in_array($mode, self::$modes, true)) {
@@ -107,6 +136,9 @@ class Section implements SectionInterface
         $this->mode = $merge ? ($this->mode | $mode) : $mode;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function mode()
     {
         return $this->mode;
