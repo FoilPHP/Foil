@@ -26,11 +26,12 @@ use SplQueue;
 class Bootstrapper
 {
     private static $defaults = [
-        'autoescape'       => true,
-        'strict_variables' => false,
-        'ext'              => 'php',
-        'folders'          => [],
-        'section_def_mode' => SectionInterface::MODE_APPEND,
+        'autoescape'          => true,
+        'strict_variables'    => false,
+        'ext'                 => 'php',
+        'folders'             => [],
+        'section_def_mode'    => SectionInterface::MODE_APPEND,
+        'html_tags_functions' => false,
     ];
     private $boot_queue;
 

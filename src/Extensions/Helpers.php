@@ -61,9 +61,9 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
         return [
             'v'      => [$this, 'variable'],
             'e'      => [$this, 'escape'],
-            'ejs'    => [$this, 'escapeJs'],
-            'eattr'  => [$this, 'escapeAttr'],
-            'ecss'   => [$this, 'escapeCss'],
+            'eJs'    => [$this, 'escapeJs'],
+            'eCss'   => [$this, 'escapeCss'],
+            'eAttr'  => [$this, 'escapeAttr'],
             'escape' => 'Foil\entities',
             'ee'     => 'Foil\entities',
             'd'      => [$this, 'decode'],
@@ -126,20 +126,6 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
 
     /**
      * Return a value from template context, optionally set a default and filter.
-     * Strings are escaped to be safely used inside HTML attributes using AuraPHP Web library.
-     *
-     * @param  string       $var     Variable name
-     * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separated list of filters
-     * @return mixed
-     */
-    public function escapeAttr($var, $default = '', $filter = null)
-    {
-        return $this->escape($var, $default, $filter, 'attr');
-    }
-
-    /**
-     * Return a value from template context, optionally set a default and filter.
      * Strings are escaped to be safely used inside CSS code using AuraPHP Web library.
      *
      * @param  string       $var     Variable name
@@ -150,6 +136,20 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     public function escapeCss($var, $default = '', $filter = null)
     {
         return $this->escape($var, $default, $filter, 'css');
+    }
+
+    /**
+     * Return a value from template context, optionally set a default and filter.
+     * Strings are escaped to be safely used inside HTML attributes using AuraPHP Web library.
+     *
+     * @param  string       $var     Variable name
+     * @param  mixed        $default Default
+     * @param  string|array $filter  Array or pipe-separated list of filters
+     * @return mixed
+     */
+    public function escapeAttr($var, $default = '', $filter = null)
+    {
+        return $this->escape($var, $default, $filter, 'attr');
     }
 
     /**

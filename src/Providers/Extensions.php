@@ -15,6 +15,7 @@ use Foil\Extensions\Sections;
 use Foil\Extensions\Helpers;
 use Foil\Extensions\Walker;
 use Foil\Extensions\Filters;
+use Foil\Extensions\AuraHtml;
 
 /**
  * Core extensions service provider
@@ -47,6 +48,10 @@ class Extensions implements BootableServiceProvider
         $container['extensions.filters'] = function () {
             return new Filters();
         };
+
+        $container['extensions.aura_html'] = function ($c) {
+            return new AuraHtml($c['aura.html.locator'], $c['options']['html_tags_functions']);
+        };
     }
 
     public function boot(Container $container)
@@ -60,9 +65,11 @@ class Extensions implements BootableServiceProvider
 
     private function loadExtensions($container)
     {
-        $extensions = ['sections', 'helpers', 'walker', 'filters'];
+        $extensions = ['sections', 'helpers', 'aura_html', 'walker', 'filters'];
         array_walk($extensions, function ($extension) use ($container) {
-            $container['engine']->loadExtension($container["extensions.{$extension}"], [], true);
+            /** @var \Foil\Engine $engine */
+            $engine = $container['engine'];
+            $engine->loadExtension($container["extensions.{$extension}"], [], true);
         });
     }
 }

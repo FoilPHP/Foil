@@ -33,6 +33,7 @@ class TestCaseFunctional extends TestCase
         ], $options);
         $providers = [
             '\\Foil\\Providers\\Kernel',
+            '\\Foil\\Providers\\AuraHtmlProvider',
             '\\Foil\\Providers\\Core',
             '\\Foil\\Providers\\Context',
             '\\Foil\\Providers\\Extensions',
