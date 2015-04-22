@@ -30,6 +30,7 @@ class Bootstrapper
      */
     private static $defaults = [
         'autoescape'          => true,
+        'default_charset'     => 'utf-8',
         'strict_variables'    => false,
         'ext'                 => 'php',
         'folders'             => [],

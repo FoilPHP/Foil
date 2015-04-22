@@ -221,44 +221,16 @@ if (! function_exists('Foil\on')) {
 
 if (! function_exists('Foil\entities')) {
     /**
-     * Escape strings and array using AuraPHP Web library.
+     * Escape strings and array using AuraPHP HTML library.
      *
      * @param  mixed  $data
      * @param  string $strategy
      * @param  string $encoding
      * @return mixed
-     * @see https://github.com/auraphp/Aura.Html
      */
-    function entities($data, $strategy = 'html', $encoding = 'utf-8')
+    function entities($data, $strategy = 'html', $encoding = null)
     {
-        /** @var \Aura\Html\Escaper $escaper */
-        $escaper = foil('aura.html.escaper');
-        ($encoding !== 'utf-8') and $escaper->setEncoding($encoding);
-        if (is_string($data)) {
-            $escaped = call_user_func(
-                [
-                    $escaper,
-                    in_array($strategy, ['html', 'js', 'cs', 'attr'], true) ? $strategy : 'html',
-                ],
-                $data
-            );
-            ($encoding !== 'utf-8') and $escaper->setEncoding('utf-8');
-
-            return $escaped;
-        } elseif (is_array($data) && $strategy === 'attr') {
-            $escaped = $escaper->attr($data);
-            ($encoding !== 'utf-8') and $escaper->setEncoding('utf-8');
-
-            return $escaped;
-        } elseif (is_array($data) || $data instanceof Traversable) {
-            foreach ($data as $i => $val) {
-                $data[$i] = entities($val, $strategy, $encoding);
-            }
-        } elseif (is_object($data) && method_exists($data, '__toString')) {
-            return entities($data->__toString(), $strategy, $encoding);
-        }
-
-        return $data;
+        return foil('escaper')->escape($data, $strategy, $encoding);
     }
 }
 
@@ -270,8 +242,11 @@ if (! function_exists('Foil\decode')) {
      * @param  string $encoding
      * @return mixed
      */
-    function decode($data, $encoding = 'utf-8')
+    function decode($data, $encoding = null)
     {
+        if (is_null($encoding)) {
+            $encoding = option('default_charset');
+        }
         if (is_string($data)) {
             return html_entity_decode($data, ENT_QUOTES, $encoding);
         } elseif (is_array($data)) {

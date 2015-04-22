@@ -18,6 +18,7 @@ use Foil\Contracts\EngineAwareInterface as EngineAware;
 use Foil\Contracts\APIAwareInterface as APIAware;
 use Foil\Kernel\Command;
 use Foil\Kernel\Events;
+use Foil\Kernel\Escaper;
 
 /**
  * Kernel services service provider
@@ -35,11 +36,14 @@ class Kernel implements BootableServiceProviderInterface
      */
     public function register(Container $container)
     {
-        $container['command'] = function ($c) {
+        $container['command'] = function (Container $c) {
             return new Command($c['options']['autoescape']);
         };
         $container['events'] = function () {
             return new Events();
+        };
+        $container['escaper'] = function (Container $c) {
+            return new Escaper($c['aura.html.escaper'], $c['options']['default_charset']);
         };
     }
 
