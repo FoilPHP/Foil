@@ -24,7 +24,7 @@ As alternative you can directly edit your `composer.json` by adding:
 ```json
 {
   "require": {
-    "foil/foil": "~0.1"
+    "foil/foil": "~0.4"
   }
 }
 ```
@@ -39,13 +39,15 @@ require 'vendor/autoload.php';
 
 Foil needs 3 very tiny, fast and great quality libraries to work:
 
- - [Pimple](http://pimple.sensiolabs.org/)
- - [Événement](https://github.com/igorw/evenement)
- - [get-in](https://github.com/igorw/get-in)
+ - [Pimple](http://pimple.sensiolabs.org/) (MIT)
+ - [Événement](https://github.com/igorw/evenement) (MIT)
+ - [get-in](https://github.com/igorw/get-in) (MIT)
+ - [Aura.Html](https://github.com/auraphp/Aura.Html) (BSD-2-Clause)
 
-They will be installed for you by Composer. All of them are released under MIT license just like Foil.
+They will be installed for you by Composer.
 
 When installed in development mode, Foil also requires:
 
  - [PHPUnit](https://phpunit.de) (MIT)
  - [Mockery](http://docs.mockery.io/en/latest/) (BSD-3-CLAUSE)
+ - [Brain Monkey](http://giuseppe-mazzapica.github.io/BrainMonkey/) (MIT)
