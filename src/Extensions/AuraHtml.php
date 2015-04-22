@@ -12,12 +12,14 @@ namespace Foil\Extensions;
 
 use Foil\Contracts\ExtensionInterface;
 use Aura\Html\HelperLocator;
-use Aura\Html\Exception\HelperNotFound;
 
 /**
+ * Provides an interface to AuraPhp Html helpers.
+ *
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
  * @package Foil
+ * @link    https://github.com/auraphp/Aura.Html
  */
 class AuraHtml implements ExtensionInterface
 {
@@ -36,6 +38,34 @@ class AuraHtml implements ExtensionInterface
         'tag',
         'title',
         'ul',
+    ];
+
+    private static $inputs = [
+        'button',
+        'checkbox',
+        'color',
+        'date',
+        'datetime',
+        'datetime-local',
+        'email',
+        'file',
+        'hidden',
+        'image',
+        'month',
+        'number',
+        'password',
+        'radio',
+        'range',
+        'reset',
+        'search',
+        'select',
+        'submit',
+        'tel',
+        'text',
+        'textarea',
+        'time',
+        'url',
+        'week',
     ];
 
     /**
@@ -72,8 +102,7 @@ class AuraHtml implements ExtensionInterface
     public function provideFunctions()
     {
         $base = [
-            'html'  => [$this, 'html'],
-            'input' => [$this, 'input'],
+            'html' => [$this, 'html'],
         ];
 
         return $this->register
@@ -84,40 +113,34 @@ class AuraHtml implements ExtensionInterface
     /**
      * @return mixed
      * @throws \Aura\Html\Exception\HelperNotFound
+     * @link https://github.com/auraphp/Aura.Html/blob/2.x/README-HELPERS.md
      */
-    public function html()
+    public function html($tag)
     {
         $args = func_get_args();
-        $tag = $args ? array_shift($args) : '';
-        if ($this->locator->has($tag)) {
-            /** @var callable $helper */
-            $helper = $this->locator->get($tag);
-
-            return call_user_func_array($helper, $args);
+        $tag = array_shift($args);
+        if (in_array($tag, self::$inputs, true) && $args && is_array($args[0])) {
+            return $this->input($tag, $args[0]);
+        } elseif ($tag === 'input' && $args && is_array($args[0]) && isset($args[0]['type'])) {
+            return $this->input($args[0]['type'], $args[0]);
         }
 
-        throw new HelperNotFound();
+        return call_user_func_array($this->locator->get($tag), $args);
     }
 
     /**
      * @param  string                              $type
+     * @param  array                               $args
      * @return string
      * @throws \Aura\Html\Exception\HelperNotFound
+     * @link https://github.com/auraphp/Aura.Html/blob/2.x/README-FORMS.md
      */
-    public function input($type)
+    private function input($type, array $args)
     {
-        $args = func_get_args();
-        array_shift($args);
-        /** @var \Aura\Html\Helper\Input $inputs */
-        $inputs = $this->locator->get('input');
-        if ($inputs->has($type)) {
-            /** @var callable $helper */
-            $helper = $this->locator->get($type);
+        $args['type'] = $type;
+        $input = call_user_func($this->locator->get('input'), $args);
 
-            return call_user_func_array($helper, $args);
-        }
-
-        throw new HelperNotFound();
+        return $input->__toString();
     }
 
     /**
