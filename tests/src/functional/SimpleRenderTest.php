@@ -9,6 +9,8 @@
  */
 namespace Foil\Tests;
 
+use Foil\Template\Template;
+
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
@@ -29,7 +31,7 @@ class SimpleRenderTest extends TestCaseFunctional
         $buffer = '';
         $this->container['events']->on(
             'f.template.renderlayout',
-            function ($layout, $template) use (&$buffer) {
+            function ($layout, Template $template) use (&$buffer) {
                 $buffer = $template->buffer();
             }
         );
