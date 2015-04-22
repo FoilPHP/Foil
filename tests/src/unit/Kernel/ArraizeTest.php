@@ -10,6 +10,7 @@
 namespace Foil\Tests\Kernel;
 
 use Foil\Tests\TestCase;
+use Aura\Html\Escaper\HtmlEscaper;
 use Foil\Tests\ToArray;
 use Foil\Tests\AsArray;
 use Foil\Tests\Json;
@@ -25,7 +26,7 @@ class ArraizeTest extends TestCase
 {
     private function e($var)
     {
-        return htmlspecialchars($var, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return call_user_func(new HtmlEscaper(), $var);
     }
 
     public function testScalars()
