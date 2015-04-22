@@ -32,18 +32,7 @@ class TestCaseFunctional extends TestCase
     public function initFoil(array $options = [])
     {
         Functions::when('Foil\entities')->alias(function ($var, $strategy = 'html') {
-            /** @var \Aura\Html\Escaper $escaper */
-            $escaper = $this->container['aura.html.escaper'];
-            if (is_array($var) || $var instanceof \Traversable) {
-                $return = [];
-                foreach ($var as $i => $val) {
-                    $return[$i] = $escaper->$strategy($val);
-                }
-
-                return $return;
-            }
-
-            return is_string($var) ? $escaper->$strategy($var) : $var;
+            return $this->container['escaper']->escape($var, $strategy);
         });
         $base = dirname(preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH));
         $bootstrapper = new Bootstrapper();
