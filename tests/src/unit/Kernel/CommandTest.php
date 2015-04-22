@@ -12,7 +12,7 @@ namespace Foil\Tests\Kernel;
 use Foil\Tests\TestCase;
 use Foil\Kernel\Command;
 use Aura\Html\Escaper\HtmlEscaper;
-use Brain\Monkey\Functions;
+use Mockery;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -21,14 +21,19 @@ use Brain\Monkey\Functions;
  */
 class CommandTest extends TestCase
 {
-    protected function setUp()
+    /**
+     * @return \Foil\Contracts\EscaperInterface $escaper
+     */
+    private function escaper()
     {
-        parent::setUp();
-        Functions::when('Foil\entities')->alias(function ($var) {
+        $escaper = Mockery::mock('Foil\Contracts\EscaperInterface');
+        $escaper->shouldReceive('escape')->andReturnUsing(function ($var) {
             return is_array($var)
                 ? array_map(new HtmlEscaper(), $var)
                 : (new HtmlEscaper())->__invoke($var);
         });
+
+        return $escaper;
     }
 
     public function testFunctionNoEcho()
@@ -36,7 +41,7 @@ class CommandTest extends TestCase
         $test = function ($str) {
             echo $str;
         };
-        $c = new Command();
+        $c = new Command($this->escaper());
         $c->registerFunctions(['hello' => $test]);
         assertSame('', $c->run('hello', 'Hello!'));
     }
@@ -46,7 +51,7 @@ class CommandTest extends TestCase
         $test = function ($str) {
             return $str;
         };
-        $c = new Command();
+        $c = new Command($this->escaper());
         $c->registerFunctions(['hello' => $test]);
         $expected = htmlentities('<b>Hello!</b>', ENT_QUOTES, 'UTF-8', false);
         assertSame($expected, $c->run('hello', '<b>Hello!</b>'));
@@ -57,12 +62,12 @@ class CommandTest extends TestCase
         $test = function ($str) {
             return $str;
         };
-        $c = new Command(false);
+        $c = new Command($this->escaper(), false);
         $c->registerFunctions(['hello' => $test]);
         assertSame('<b>Hello!</b>', $c->run('hello', '<b>Hello!</b>'));
     }
 
-    public function testPrevendCoreFunctionOverride()
+    public function testPreventCoreFunctionOverride()
     {
         $test1 = function () {
             return 'A';
@@ -76,7 +81,7 @@ class CommandTest extends TestCase
         $test4 = function () {
             return 'D';
         };
-        $c = new Command();
+        $c = new Command($this->escaper());
         $c->registerFunctions(['t1' => $test1, 't2' => $test2]);
         $c->registerFunctions(['t1' => $test3]); // should override
         $c->lock();
@@ -90,7 +95,7 @@ class CommandTest extends TestCase
         $test = function ($str) {
             return strrev($str);
         };
-        $c = new Command();
+        $c = new Command($this->escaper());
         $c->registerFilters(['rev' => $test]);
         assertSame('Foo', $c->filter('rev', 'ooF'));
     }

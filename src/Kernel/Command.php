@@ -9,9 +9,10 @@
  */
 namespace Foil\Kernel;
 
-use InvalidArgumentException;
 use Foil\Contracts\ExtensionInterface as Extension;
+use Foil\Contracts\EscaperInterface;
 use Foil;
+use InvalidArgumentException;
 
 /**
  * Class that holds all the functions and filters registered in extensions.
@@ -27,6 +28,11 @@ class Command
      * @var bool
      */
     private $autoescape;
+
+    /**
+     * @var \Foil\Kernel\Escaper
+     */
+    private $escaper;
 
     /**
      * @var array
@@ -49,10 +55,12 @@ class Command
     private $locked;
 
     /**
-     * @param bool $autoescape
+     * @param bool                             $autoescape
+     * @param \Foil\Contracts\EscaperInterface $escaper
      */
-    public function __construct($autoescape = true)
+    public function __construct(EscaperInterface $escaper, $autoescape = true)
     {
+        $this->escaper = $escaper;
         $this->autoescape = ! empty($autoescape);
     }
 
@@ -185,7 +193,10 @@ class Command
             ($this->autoescape && ! in_array($function, $this->safe, true))
             && (is_array($raw) || is_string($raw) || (is_object($raw) && ! $raw instanceof Extension))
         ) {
-            $raw = is_object($raw) ? '' : Foil\entities($raw);
+            $raw = $this->escaper->escape($raw);
+            if (is_object($raw)) {
+                $raw = '';
+            }
         }
 
         return is_null($raw) ? '' : $raw;
