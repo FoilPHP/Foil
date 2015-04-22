@@ -38,6 +38,7 @@ class AuraHtml implements ExtensionInterface
         'tag',
         'title',
         'ul',
+        'input'
     ];
 
     private static $inputs = [
