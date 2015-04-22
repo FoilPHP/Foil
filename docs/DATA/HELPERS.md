@@ -12,6 +12,7 @@ They are:
 
 - `raw()`
 - `e()`
+- `eJs()`, `eCss()`, `eAttr()`
 - `d()`
 - `v()`
 - `a()`
@@ -101,6 +102,20 @@ echo $this->e('var_name');
 echo $this->escape($this->raw('var_name'));
 
 echo $this->ee($this->raw('var_name'));
+```
+
+## `eJs()`, `eCss()`, `eAttr()`
+
+`e()` helper uses [AuraPhp/HTML](https://github.com/auraphp/Aura.Html) library to escaping data. That library allows to use a different escaping "targets".
+
+In fact, it is possible to properly escape data to be placed inside JavaScript scripts, inside CSS or inside HTML attributes.
+
+`eJs()`, `eCss()` and `eAttr()` can be used to escape data (strings or array containing strings) that have to be used, respectively, for JavaScript, CSS or HTML attributes.
+
+When using the helpers `escape()` (or its alias (`ee()`) is possible to use a second argument ot use an alternative escape target, e.g.:
+
+```php
+$this->escape($data, 'js');
 ```
 
 ## `v()`

@@ -182,17 +182,28 @@ Additional arguments that the registered function might take can be passed as ad
 
 ```php
 /**
- * @param  mixed $data Data to HTML-encode
+ * @param mixed $data Data to encode
+ * @param string $strategy Target for escaping, can be 'html', 'js', 'css', 'attr'
+ * @param string $encoding Character encoding used for escaping, default 'utf-8'
  *
  * @return mixed
  */
 
-function entities($data)
+function entities($data, $strategy = 'html', $encoding = 'utf-8')
 ```
 
 This function allows to perform on any data, and outside of template files, the same routine Foil uses to escape content with automatic escape or with escape helpers.
 
-This routine is capable to HTML-encode strings and arrays (even deeply nested) that contain strings. Any other data type will be returned unchanged.
+This function is capable to HTML-encode strings and arrays (even deeply nested) that contain strings. Any other data type will be returned unchanged.
+
+The routine applied is based on [AuraPhp/HTML](https://github.com/auraphp/Aura.Html) library.
+
+By default the given data is HTML-encoded using UTF-8, is possible to change the behavior using `$strategy` and `$encoding` arguments.
+
+ - with `$strategy = 'js'` is possible to escape strings to be safely placed inside JavaScript scripts
+ - with `$strategy = 'css'` is possible to escape strings to be safely placed inside CSS code
+ - with `$strategy = 'attr'` is possible to escape strings to be safely inside HTML attributes. This is the only strategy that can be used passing an array,
+   where array keys are attribute names, e.g. `class` and array values are attribute values.
 
 ---
 
@@ -200,16 +211,20 @@ This routine is capable to HTML-encode strings and arrays (even deeply nested) t
 
 ```php
 /**
-* @param  mixed $data Data to HTML-decode
+* @param mixed  $data Data to HTML-decode
+* @param string $encoding Character encoding used for escaping, default 'utf-8'
 *
 * @return mixed
 */
 
-function decode($data)
+function decode($data, $encoding = 'utf-8')
 ```
 
-This function is the counterpart for `entities()`. It is capable to HTML-dencode strings and arrays (even deeply nested) that contain strings.
+This function is the counterpart for `entities()`. It is capable to HTML-decode strings and arrays (even deeply nested) that contain strings.
 Any other data type will be returned unchanged.
+
+This is 100% affordable ony if data were HTML encoded using same character encoding of decoding and, in case data comes from Foil `entities()` function (see above)
+if the strategy used was `'html'`. This is always true if data was escaped by Foil autoescape routine.
 
 ---
 
