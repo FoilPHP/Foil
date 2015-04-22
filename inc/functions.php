@@ -244,27 +244,7 @@ if (! function_exists('Foil\decode')) {
      */
     function decode($data, $encoding = null)
     {
-        if (is_null($encoding)) {
-            $encoding = option('default_charset');
-        }
-        if (is_string($data)) {
-            return html_entity_decode($data, ENT_QUOTES, $encoding);
-        } elseif (is_array($data)) {
-            foreach ($data as $i => $val) {
-                $data[$i] = decode($val);
-            }
-        } elseif ($data instanceof Traversable) {
-            $convert = [];
-            $n = 0;
-            foreach ($data as $i => $val) {
-                $n++;
-                $key = is_string($i) ? $i : $n;
-                $convert[$key] = decode($val);
-            }
-            $data = $convert;
-        }
-
-        return $data;
+        return foil('escaper')->decode($data, $encoding);
     }
 }
 

@@ -53,9 +53,6 @@ class Escaper implements EscaperInterface
      * @param  string      $strategy
      * @param  string|null $encoding
      * @return mixed
-     * @see Escaper::escapeString()
-     * @see Escaper::escapeArray()
-     * @see Escaper::escapeObject()
      */
     public function escape($data, $strategy = 'html', $encoding = null)
     {
@@ -66,6 +63,29 @@ class Escaper implements EscaperInterface
 
         return method_exists($this, $method)
             ? $this->$method($data, $strategy, $this->escaper($encoding))
+            : $data;
+    }
+
+    /**
+     * @param  mixed       $data
+     * @param  string|null $encoding
+     * @return mixed
+     */
+    public function decode($data, $encoding = null)
+    {
+        if (is_string($data)) {
+            return html_entity_decode($data, ENT_QUOTES, $encoding ?: $this->encoding);
+        } elseif (is_array($data) || $data instanceof Traversable) {
+            $result = [];
+            foreach ($data as $i => $item) {
+                $result[$i] = $this->decode($data, $encoding);
+            }
+
+            return $result;
+        }
+
+        return is_object($data) && method_exists($data, '__toString')
+            ? $this->decode($data->__toString(), $data, $encoding)
             : $data;
     }
 

@@ -27,4 +27,14 @@ interface EscaperInterface
      * @return mixed
      */
     public function escape($data, $strategy = 'html', $encoding = null);
+
+    /**
+     * Is the counter part of escape() and have to support all data types supported by escape()
+     * but only for 'html' strategy.
+     *
+     * @param  mixed       $data
+     * @param  string|null $encoding
+     * @return mixed
+     */
+    public function decode($data, $encoding = null);
 }
