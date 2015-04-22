@@ -13,15 +13,16 @@ use Traversable;
 use JsonSerializable;
 
 /**
- * Stateless class that recursively convert an array or a traversable object into a nested array.
+ * Class that recursively converts any data into an array.
+ *
  * Optionally convert all "atomic" items to strings and optionally HTML-encode all strings.
  * Array and traversable objects are all recursively converted.
- * Non-traversable objects are converted to array, in 1st available among following methods:
- *  - if a transformer callback is provided, than it's called with object as param
- *  - if a transformer class is provided, than its transform() method is called with object as
- *  param
- *  - if a transformer object is provided, than its transform() method is called with object as
- *  param
+ * Non-traversable objects are converted to array, using 1st available among following methods:
+ *  - if a transformer callback is provided, than it's called passing the object as param
+ *  - if a transformer class is provided, than its transform() method is called passing the object
+ *    as param
+ *  - if a transformer object is provided, than its transform() method is called passing the object
+ *    as param
  *  - if the object has a method toArray() it is called
  *  - if the object has a method asArray() it is called
  *  - if the object is an instance of JsonSerializable then jsonSerialize() is called
@@ -34,126 +35,180 @@ use JsonSerializable;
  */
 class Arraize
 {
-    const CAST   = 64;
-    const ESCAPE = 128;
+    const TOSTRING = 1;
+    const ESCAPE   = 2;
 
     /**
-     * @param  mixed $data     Data to convert
-     * @param  bool  $escape   Should strings in data be HTML-encoded?
-     * @param  array $trasf    Transformers: full qualified class names, objects or callables
-     * @param  bool  $tostring Should all scalar items in data be casted to strings?
+     * @var mixed
+     */
+    private $rawData;
+
+    /**
+     * @var array
+     */
+    private $data = [];
+
+    /**
+     * @var array
+     */
+    private $transformers = [];
+
+    /**
+     * @var int
+     */
+    private $flags = 0;
+
+    /**
+     * @var bool
+     */
+    private $done = false;
+
+    /**
+     * Constructor.
+     *
+     * Stores data to convert an options.
+     *
+     * @param mixed    $data         Data to convert
+     * @param array    $transformers Array of object transformers
+     * @param int|null $flags        Bitmask of class constants flags
+     */
+    public function __construct($data, array $transformers = [], $flags = null)
+    {
+        $this->rawData = $data;
+        $this->transformers = $transformers;
+        if (is_int($flags)) {
+            $this->flags = $flags;
+        }
+    }
+
+    /**
+     * Run the conversion or just return the result if conversion was already done.
+     *
      * @return array
      */
-    public function run($data = [], $escape = false, array $trasf = [], $tostring = false)
+    public function __invoke()
     {
-        $collect = $this->collect($data, $this->flags($escape, $tostring), $trasf);
+        if (! $this->done && ! empty($this->rawData)) {
+            $collect = $this->collect($this->rawData);
+            $this->data = empty($collect) ? [] : (array) $collect;
+            $this->done = true;
+        }
 
-        return empty($collect) ? [] : (array) $collect;
+        return $this->data;
     }
 
     /**
+     * Recursively called to convert items. If given item is traversable than every items is parsed
+     * otherwise it is returned maybe transformed according to settings.
+     *
      * @param  mixed $var
-     * @param  int   $flags
-     * @param  array $trasf
      * @return mixed
      */
-    private function collect($var, $flags, $trasf)
+    private function collect($var)
     {
-        return $this->traversable($var)
-            ?
-            $this->walk($var, $flags, $trasf)
-            :
-            $this->atomic($var, $flags, $trasf);
+        return is_array($var) || $var instanceof Traversable
+            ? $this->walk($var)
+            : $this->atomic($var);
     }
 
     /**
+     * Function called for non-traversable items. If the given item is an object it is transformed,
+     * otherwise returned maybe casted to string and may HTML-encoded, according to settings.
+     *
      * @param  mixed $var
-     * @param  int   $flags
-     * @param  array $trasf
      * @return mixed
      */
-    private function atomic($var, $flags, $trasf)
+    private function atomic($var)
     {
         return is_object($var)
-            ?
-            $this->collect($this->transform($var, get_class($var), $trasf), $flags, $trasf)
-            :
-            $this->escape($var, $flags);
+            ? $this->collect($this->transform($var, get_class($var)))
+            : $this->scalar($var);
     }
 
     /**
+     * Function called for traversable items. Methods loops every item and if it is traversable
+     * it is recursively parsed, otherwise it is returned maybe transformed according to settings.
      *
      * @param  array|Traversable $var
-     * @param  int               $flags
-     * @param  array             $trasf
      * @return array
      */
-    private function walk($var, $flags, $trasf)
+    private function walk($var)
     {
         $output = [];
         foreach ($var as $index => $item) {
-            $output[$index] = $this->traversable($item)
-                ?
-                $this->collect($item, $flags, $trasf)
-                :
-                $this->atomic($item, $flags, $trasf);
+            $output[$index] = is_array($item) || $item instanceof Traversable
+                ? $this->collect($item)
+                : $this->atomic($item);
         }
 
         return $output;
     }
 
     /**
-     * @param  object $var
-     * @param  string $class
-     * @param  array  $trasf
+     * Takes an object and transform it to an array, using a transformer class or callback if
+     * available, calling jsonSerialize() if the object is JsonSerializable or just getting
+     * array of object vars.
+     *
+     * @param  object $object
      * @return array
      */
-    private function transform($var, $class, $trasf)
+    private function transform($object)
     {
-        $cb = $this->transformer(isset($trasf[trim($class, '\\')]) ? $trasf[$class] : false);
-
-        if (is_object($cb) && method_exists($cb, 'transform')) {
-            $cb = [$cb, 'transform'];
+        $class = trim(get_class($object), '\\');
+        $transformer = array_key_exists($class, $this->transformers)
+            ? $this->transformers[$class]
+            : false;
+        if (! $transformer) {
+            return $this->convert($object);
         }
 
-        return is_callable($cb) ? $this->vars(call_user_func($cb, $var),
-            false) : $this->convert($var);
+        return is_callable(($cb = $this->transformer($transformer)))
+            ? $this->forceArray(call_user_func($cb, $object))
+            : $this->convert($object);
     }
 
     /**
-     * @param  mixed                $transformer
-     * @return callable|object|bool
+     * Return a transformer callback from a settings
+     *
+     * @param  mixed         $transformer
+     * @return callable|bool
      */
     private function transformer($transformer)
     {
         if (is_string($transformer) && class_exists($transformer)) {
             $transformer = new $transformer();
         }
+        if (is_object($transformer) && method_exists($transformer, 'transform')) {
+            $transformer = [$transformer, 'transform'];
+        }
 
-        return is_object($transformer) || is_callable($transformer) ? $transformer : false;
+        return is_callable($transformer) ? $transformer : false;
     }
 
     /**
-     * @param  object $var
+     * @param  object $object
      * @return array
      */
-    private function convert($var)
+    private function convert($object)
     {
-        $toarray = array_reduce(['toArray', 'asArray'], function ($obj, $name) {
+        $toArray = array_reduce(['toArray', 'asArray'], function ($obj, $name) {
             return is_object($obj) && method_exists($obj, $name) ? (array) $obj->$name() : $obj;
-        }, $var);
+        }, $object);
 
-        return is_array($toarray) ? $toarray : $this->vars($var, true);
+        return is_array($toArray) ? $toArray : $this->forceArray($object);
     }
 
     /**
-     * @param  object $var
-     * @param  bool   $try_json
+     * Return an array from any variable.
+     * If the variable is an object that implements JsonSerializable calls jsonSerialize() on it
+     * before returning result casted to an array.
+     *
+     * @param  mixed $var
      * @return array
      */
-    private function vars($var, $try_json)
+    private function forceArray($var)
     {
-        if ($try_json && $var instanceof JsonSerializable) {
+        if ($var instanceof JsonSerializable) {
             $var = $var->jsonSerialize();
         }
 
@@ -161,49 +216,20 @@ class Arraize
     }
 
     /**
-     * @param  bool $escape
-     * @param  bool $tostring
-     * @return int
-     */
-    private function flags($escape = false, $tostring = false)
-    {
-        return (empty($escape) ? 0 : self::ESCAPE) | (empty($tostring) ? 0 : self::CAST);
-    }
-
-    /**
-     * @param  Traversable $var
-     * @return bool
-     */
-    private function traversable($var)
-    {
-        return is_array($var) || $var instanceof Traversable;
-    }
-
-    /**
+     * Run on every scalar items, optionally convert them to string and optionally escape strings
+     * for HTML entities according to settings.
+     *
      * @param  mixed $var
-     * @param  int   $flags
      * @return mixed
      */
-    private function escape($var, $flags)
+    private function scalar($var)
     {
-        return ($flags & self::ESCAPE) && is_string($var)
-            ?
-            htmlentities($var, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
-            :
-            $this->scalar($var, $flags);
-    }
+        if (($this->flags & self::ESCAPE) && is_string($var)) {
+            return htmlentities($var, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        }
 
-    /**
-     * @param  mixed $var
-     * @param  int   $flags
-     * @return mixed
-     */
-    private function scalar($var, $flags)
-    {
-        return ($flags & self::CAST) && ! is_string($var)
-            ?
-            $this->escape((string) $var, $flags)
-            :
-            $var;
+        return ($this->flags & self::TOSTRING) && ! is_string($var)
+            ? $this->scalar((string) $var)
+            : $var;
     }
 }

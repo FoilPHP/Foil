@@ -302,7 +302,7 @@ if (! function_exists('Foil\arraize')) {
      *  - if a transformer class is provided, than transformer transform() method is called
      *  - if the object has a method toArray() it is called
      *  - if the object has a method asArray() it is called
-     *  - if the is an instance of JsonSerializable it is JSON-encoded then decoded
+     *  - if the object is an instance of JsonSerializable it is JSON-encoded then decoded
      *  - calling get_object_vars()
      *
      * @param  mixed $data         Data to convert
@@ -313,6 +313,9 @@ if (! function_exists('Foil\arraize')) {
      */
     function arraize($data = [], $escape = false, array $transformers = [], $toString = false)
     {
-        return (new Arraize())->run($data, $escape, $transformers, $toString);
+        $flags = $escape ? Arraize::ESCAPE : 0;
+        $flags |= $toString ? Arraize::TOSTRING : 0;
+
+        return call_user_func(new Arraize($data, $transformers, $flags));
     }
 }

@@ -10,7 +10,6 @@
 namespace Foil\Tests\Kernel;
 
 use Foil\Tests\TestCase;
-use Foil\Kernel\Arraize;
 use Foil\Tests\ToArray;
 use Foil\Tests\AsArray;
 use Foil\Tests\Json;
@@ -24,15 +23,6 @@ use Foil\Tests\Target;
  */
 class ArraizeTest extends TestCase
 {
-    private function arraize(
-        $data = [],
-        $escape = false,
-        array $trasformers = [],
-        $tostring = false
-    ) {
-        return (new Arraize())->run($data, $escape, $trasformers, $tostring);
-    }
-
     private function e($var)
     {
         return htmlspecialchars($var, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -40,15 +30,15 @@ class ArraizeTest extends TestCase
 
     public function testScalars()
     {
-        assertSame(['<b>foo bar</b>'], $this->arraize('<b>foo bar</b>'));
-        assertSame([$this->e('<b>foo bar</b>')], $this->arraize('<b>foo bar</b>', true));
-        assertSame([1], $this->arraize(1));
-        assertSame([true], $this->arraize(true));
-        assertSame([(string) 1], $this->arraize(1, true, [], true));
-        assertSame([(string) true], $this->arraize(true, true, [], true));
-        assertSame([], $this->arraize(null));
-        assertSame([], $this->arraize(false));
-        assertSame([], $this->arraize(''));
+        assertSame(['<b>foo bar</b>'], \Foil\arraize('<b>foo bar</b>'));
+        assertSame([$this->e('<b>foo bar</b>')], \Foil\arraize('<b>foo bar</b>', true));
+        assertSame([1], \Foil\arraize(1));
+        assertSame([true], \Foil\arraize(true));
+        assertSame([(string) 1], \Foil\arraize(1, true, [], true));
+        assertSame([(string) true], \Foil\arraize(true, true, [], true));
+        assertSame([], \Foil\arraize(null));
+        assertSame([], \Foil\arraize(false));
+        assertSame([], \Foil\arraize(''));
     }
 
     public function testArray()
@@ -113,10 +103,10 @@ class ArraizeTest extends TestCase
                 ],
             ],
         ];
-        assertSame($data, $this->arraize($data));
-        assertSame($esc, $this->arraize($data, true));
-        assertSame($str, $this->arraize($data, false, [], true));
-        assertSame($escstr, $this->arraize($data, true, [], true));
+        assertSame($data, \Foil\arraize($data));
+        assertSame($esc, \Foil\arraize($data, true));
+        assertSame($str, \Foil\arraize($data, false, [], true));
+        assertSame($escstr, \Foil\arraize($data, true, [], true));
     }
 
     public function testStorage()
@@ -132,7 +122,7 @@ class ArraizeTest extends TestCase
             ['b' => $this->e('<b>b</b>')],
             ['c' => $this->e('<b>c</b>')],
         ];
-        assertSame($expected, $this->arraize($storage, true));
+        assertSame($expected, \Foil\arraize($storage, true));
     }
 
     public function testMix()
@@ -183,7 +173,7 @@ class ArraizeTest extends TestCase
             'storage2' => [['foo' => $this->e('<b>bar</b>')]],
             '1',
         ];
-        assertSame($expected, $this->arraize($data, true, [], true));
+        assertSame($expected, \Foil\arraize($data, true, [], true));
     }
 
     public function testObjectToArray()
@@ -239,6 +229,6 @@ class ArraizeTest extends TestCase
             ],
             'storage' => [[]],
         ];
-        assertSame($expected, $this->arraize($data, true, $trasformers));
+        assertSame($expected, \Foil\arraize($data, true, $trasformers));
     }
 }
