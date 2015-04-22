@@ -126,6 +126,11 @@
                                       Uri Helpers
                                   </a>
                               </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/HTML-HELPERS.html">
+                                      HTML and Form Helpers
+                                  </a>
+                              </li>
                                                 </ul>
                     </li>
                                     <li>
@@ -201,6 +206,7 @@ title: "Retrieve Data Inside Templates"
   -&gt;render('template-example', ['bold' =&gt; '&lt;strong&gt;I am "bold"&lt;/strong&gt;']);</code></pre>
 <p>inside the template <code>$this-&gt;bold</code> will be equal to</p>
 <pre><code class="language-html">&amp;lt;strong&amp;gt;I am &amp;quot;bold&amp;quot;&amp;lt;/strong&amp;gt;</code></pre>
+<p>The escaping is based on <a href="https://github.com/auraphp/Aura.Html">AuraPhp/HTML</a> library.</p>
 <h2>Automatic Escaping Gotchas</h2>
 <p>Given that escape data that may possibly come from user input (even when saved in a database) <strong>is really important</strong> to avoid vulnerability to XSS attacks,
 you need to be sure <strong>all</strong> strings you output are escaped. For the purpose you need to make a choice:</p>

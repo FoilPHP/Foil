@@ -126,6 +126,11 @@
                                       Uri Helpers
                                   </a>
                               </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/HTML-HELPERS.html">
+                                      HTML and Form Helpers
+                                  </a>
+                              </li>
                                                 </ul>
                     </li>
                                     <li>
@@ -182,6 +187,7 @@ title: "Data Helpers"
 <ul>
 <li><code>raw()</code></li>
 <li><code>e()</code></li>
+<li><code>eJs()</code>, <code>eCss()</code>, <code>eAttr()</code></li>
 <li><code>d()</code></li>
 <li><code>v()</code></li>
 <li><code>a()</code></li>
@@ -210,7 +216,7 @@ function v($var, $default = '', $filter = null);</code></pre>
 <p>This helper is used to get and escape a variable when autoescape is turned off.</p>
 <pre><code class="language-php">// assuming $this-&gt;a_var_with_html is '&lt;strong&gt;I am "bold"&lt;/strong&gt;'
 echo $this-&gt;e('a_var_with_html'); // echo &amp;lt;strong&amp;gt;I am &amp;quot;bold&amp;quot;&amp;lt;/strong&amp;gt;</code></pre>
-<p>Note that the encode routine applied is the same Foil uses when autoescape is turned on, that is capable to encode strings and also arrays containing strings.</p>
+<p>Note that the encode routine applied is the same Foil uses when autoescape is turned on, that is capable to encode strings and also arrays containing strings. It is based on <a href="https://github.com/auraphp/Aura.Html">AuraPhp/HTML</a> library.</p>
 <p>For example:</p>
 <pre><code class="language-php">/*
 Assuming $this-&gt;an_array is equal to:
@@ -250,6 +256,12 @@ Returns:
 echo $this-&gt;escape($this-&gt;raw('var_name'));
 
 echo $this-&gt;ee($this-&gt;raw('var_name'));</code></pre>
+<h2><code>eJs()</code>, <code>eCss()</code>, <code>eAttr()</code></h2>
+<p><code>e()</code> helper uses <a href="https://github.com/auraphp/Aura.Html">AuraPhp/HTML</a> library to escaping data. That library allows to use a different escaping "targets".</p>
+<p>In fact, it is possible to properly escape data to be placed inside JavaScript scripts, inside CSS or inside HTML attributes.</p>
+<p><code>eJs()</code>, <code>eCss()</code> and <code>eAttr()</code> can be used to escape data (strings or array containing strings) that have to be used, respectively, for JavaScript, CSS or HTML attributes.</p>
+<p>When using the helpers <code>escape()</code> (or its alias (<code>ee()</code>) is possible to use a second argument ot use an alternative escape target, e.g.:</p>
+<pre><code class="language-php">$this-&gt;escape($data, 'js');</code></pre>
 <h2><code>v()</code></h2>
 <p>"v" stands for "variable" and, as you can guess, returns a template variable.</p>
 <p>When autoescape is turned on <code>v()</code> acts like <code>e()</code> otherwise acts as <code>raw()</code>.</p>

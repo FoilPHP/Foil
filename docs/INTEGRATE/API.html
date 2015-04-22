@@ -126,6 +126,11 @@
                                       Uri Helpers
                                   </a>
                               </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/HTML-HELPERS.html">
+                                      HTML and Form Helpers
+                                  </a>
+                              </li>
                                                 </ul>
                     </li>
                                     <li>
@@ -284,25 +289,38 @@ function run($function)</code></pre>
 <hr />
 <h1><code>entities()</code></h1>
 <pre><code class="language-php">/**
- * @param  mixed $data Data to HTML-encode
+ * @param mixed $data Data to encode
+ * @param string $strategy Target for escaping, can be 'html', 'js', 'css', 'attr'
+ * @param string $encoding Character encoding used for escaping, default 'utf-8'
  *
  * @return mixed
  */
 
-function entities($data)</code></pre>
+function entities($data, $strategy = 'html', $encoding = 'utf-8')</code></pre>
 <p>This function allows to perform on any data, and outside of template files, the same routine Foil uses to escape content with automatic escape or with escape helpers.</p>
-<p>This routine is capable to HTML-encode strings and arrays (even deeply nested) that contain strings. Any other data type will be returned unchanged.</p>
+<p>This function is capable to HTML-encode strings and arrays (even deeply nested) that contain strings. Any other data type will be returned unchanged.</p>
+<p>The routine applied is based on <a href="https://github.com/auraphp/Aura.Html">AuraPhp/HTML</a> library.</p>
+<p>By default the given data is HTML-encoded using UTF-8, is possible to change the behavior using <code>$strategy</code> and <code>$encoding</code> arguments.</p>
+<ul>
+<li>with <code>$strategy = 'js'</code> is possible to escape strings to be safely placed inside JavaScript scripts</li>
+<li>with <code>$strategy = 'css'</code> is possible to escape strings to be safely placed inside CSS code</li>
+<li>with <code>$strategy = 'attr'</code> is possible to escape strings to be safely inside HTML attributes. This is the only strategy that can be used passing an array,
+where array keys are attribute names, e.g. <code>class</code> and array values are attribute values.</li>
+</ul>
 <hr />
 <h1><code>decode()</code></h1>
 <pre><code class="language-php">/**
-* @param  mixed $data Data to HTML-decode
+* @param mixed  $data Data to HTML-decode
+* @param string $encoding Character encoding used for escaping, default 'utf-8'
 *
 * @return mixed
 */
 
-function decode($data)</code></pre>
-<p>This function is the counterpart for <code>entities()</code>. It is capable to HTML-dencode strings and arrays (even deeply nested) that contain strings.
+function decode($data, $encoding = 'utf-8')</code></pre>
+<p>This function is the counterpart for <code>entities()</code>. It is capable to HTML-decode strings and arrays (even deeply nested) that contain strings.
 Any other data type will be returned unchanged.</p>
+<p>This is 100% affordable ony if data were HTML encoded using same character encoding of decoding and, in case data comes from Foil <code>entities()</code> function (see above)
+if the strategy used was <code>'html'</code>. This is always true if data was escaped by Foil autoescape routine.</p>
 <hr />
 <h1><code>arraize()</code></h1>
 <pre><code class="language-php">/**

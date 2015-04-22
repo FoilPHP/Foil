@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Giuseppe Mazzapica">
-    <title>Data / Pass Data To Templates. Foil: PHP Template Engine</title>
+    <title>Functions / HTML &amp; Form Helpers. Foil: PHP Template Engine</title>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="http://www.foilphp.it/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -71,7 +71,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
                       <ul>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/DATA/PASS-DATA.html">
                                       Pass Data To Templates
                                   </a>
@@ -126,7 +126,7 @@
                                       Uri Helpers
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="http://www.foilphp.it/docs/FUNCTIONS/HTML-HELPERS.html">
                                       HTML and Form Helpers
                                   </a>
@@ -174,65 +174,111 @@
                     <div id="content" class="col-lg-11">
                                                 <ol class="breadcrumb">
                           <li><a href="http://www.foilphp.it">Foil</a></li>
-                          <li class="active">Data</li>
+                          <li class="active">Functions</li>
                         </ol>
                                                 <!--
-currentMenu: "passdata"
-currentSection: "Data"
-title: "Pass Data To Templates"
+currentMenu: "htmlhelpers"
+currentSection: "Functions"
+title: "HTML & Form Helpers"
 -->
-<h1>Pass Data To Templates</h1>
-<p>The most obvious and straightforward way to pass data to templates is to pass an associative array
-as second argument for <code>render()</code> engine method.</p>
-<p>Something like:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render(
-    'template-example',
-    [
-      'foo' =&gt; 'Bar',
-      'bar' =&gt; 'Baz',
-      'baz' =&gt; 'Foo'
-    ]
-  );</code></pre>
-<p>using code above the variables <code>'foo'</code>, <code>'bar'</code> and <code>'baz'</code> will be available in the template.</p>
-<p>Another way to pass data to templates is to use the <strong>Foil Context API</strong>. See <em>"Data / Context API"</em> docs section
-to know how it works.</p>
-<p>What it worth to say here is that data assigned via Context API is merged with any data passed to <code>render()</code>
-and that the latter takes precedence on the former.</p>
-<h2>Variables Scope</h2>
-<p>In Foil, layout and partials used in a template, by default, will inherit data assigned to template.
-(To know more about layouts and partials see <em>"Templates"</em> docs section).</p>
-<p>However, both for layouts and partials, is possible to override inherited data.</p>
-<p>That is done passing a data array as second argument to <code>layout()</code> and <code>insert()</code> methods respectively.
-(To know more about these methods see <em>"Templates"</em> docs section).</p>
-<p>Assuming the following code:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render('template-example', ['foo' =&gt; 'Template Foo', 'bar' =&gt; 'Baz']);</code></pre>
-<p>and assuming that in the <code>template-example.php</code> file there is:</p>
-<pre><code class="language-php">// layout() is the method used to declare a layout
-$this-&gt;layout('layout-name', ['foo' =&gt; 'Layout Foo']);
-
-// insert() is the method used to include a partial in current template
-$this-&gt;insert('partial-name', ['foo' =&gt; 'Partial Foo']);</code></pre>
-<p>The variable "foo" will evaluate as:</p>
+<h1>HTML &amp; Form Helpers</h1>
+<p>Foil (v0.4+) integrates <a href="https://github.com/auraphp/Aura.Html">Aura.HTML</a> library that is used for <strong>escape</strong> (and autoescape) routine.</p>
+<p>Moreover, Aura.HTML <strong><a href="https://github.com/auraphp/Aura.Html/blob/2.x/README-HELPERS.html">html</a> and 
+<a href="https://github.com/auraphp/Aura.Html/blob/2.x/README-FORMS.html">form</a> helpers</strong> are supported via a shipped extension.</p>
+<h2><code>html()</code></h2>
+<p>By default, Foil has just one helper that works as interface for all Aura.HTML helpers. It is <code>html()</code>.</p>
+<p>The supported helpers are:</p>
 <ul>
-<li>"Template Foo" in the <code>template-example.php</code> template file</li>
-<li>"Layout Foo" in the <code>layout-name.php</code> layout file</li>
-<li>"Partial Foo" in the <code>partial-name.php</code> partial file</li>
+<li>anchor / anchorRaw</li>
+<li>base</li>
+<li>img</li>
+<li>label</li>
+<li>links</li>
+<li>metas</li>
+<li>ol</li>
+<li>scripts</li>
+<li>styles</li>
+<li>tag</li>
+<li>title</li>
+<li>ul</li>
 </ul>
-<p>the variable "bar" will be "Baz" in all 3 files.</p>
-<p>Note that data inheritance follow template inheritance: partials will inherit data from current context,
-i.e. if a partial is included in a layout, it will inherit data from layout.</p>
-<h2>Layout and Partial Data Filtering</h2>
-<p>As said above, by default, layouts and partials will inherit all data from current context.
-However is possible to disable access to all or some context variables.
-That is done by using an array of allowed context variable names as third argument for <code>layout()</code> or <code>insert()</code>.</p>
-<p>E.g. assuming a layout is declared with following code:</p>
-<pre><code class="language-php">$this-&gt;layout('layout-name', ['var_name' =&gt; 'A variable'], ['foo']);
+<p>Please refers to <a href="https://github.com/auraphp/Aura.Html/blob/2.x/README-HELPERS.html">Aura.HTML docs</a> to
+know more.</p>
+<p>The first argument for <code>html()</code> must be the helper name (one from the list above), all other arguments required by Aura.HTML helpers are supported.</p>
+<p>For example, to render an <code>&lt;img&gt;</code> tag is possible to do:</p>
+<pre><code class="language-php">$this-&gt;html('img', '/images/hello.jpg', ['id' =&gt; 'image-id']);</code></pre>
+<p>That will render:</p>
+<pre><code class="language-html">&lt;img src="/images/hello.jpg" alt="hello" id="image-id"&gt;</code></pre>
+<p>The example comes from <a href="https://github.com/auraphp/Aura.Html/blob/2.x/README-HELPERS.md#img">Aura.HTML docs</a>,
+refers to that docs page to know how to similarly use all the supported helpers.</p>
+<h2>Short HTML Helpers</h2>
+<p>Setting an Engine option, <code>"html_tags_functions"</code>, to <code>true</code>, Foil will register additional HTML helpers,
+that allow to call the supported Aura.HTML helpers straight on template instance (<code>$this</code>).</p>
+<p>For example, to print same <code>&lt;img&gt;</code> tag as above:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders'             =&gt; ['path/to/templates'],
+  'html_tags_functions' =&gt; true
+]);
 
-// same goes for $this-&gt;insert('partial-name', ['var_name' =&gt; 'A variable'], ['foo']);</code></pre>
-<p>in the <code>layout-name.php</code> layout file the only available variables will be <code>'var_name'</code> (explicitly passed to layout) and <code>'foo'</code>, inherited from active context.</p>
-<p>Using an empty array as third argument only context explicitly passed variables (if any) will be available in the layout / partial.</p>
+echo $engine-&gt;render('example');
+
+// and inside path/to/templates/example.php
+&lt;?= $this-&gt;img('/images/hello.jpg', ['id' =&gt; 'image-id']) ?&gt;</code></pre>
+<p>All the other tags are supported in same way.</p>
+<h3>Note for <code>a()</code> helper</h3>
+<p>Aura.HTML has the helper <code>a()</code> to print an <code>&lt;a&gt;</code> HTML tag. However, <code>a()</code> is already a Foil helper,
+used to force a template variable to be an array (see <em>Data / Helpers</em>), for this reason to print an
+anchor tag when <code>'html_tags_functions'</code> option is true use <code>anchor()</code> function, that is supported by
+Aura.HTML as well.</p>
+<h2>Form Helpers</h2>
+<p>Aura.HTML has some <a href="https://github.com/auraphp/Aura.Html/blob/2.x/README-FORMS.md#html-5-input-elements">form helpers</a> that
+can be used to render HTML5 form inputs.</p>
+<p>They are:</p>
+<ul>
+<li>button</li>
+<li>checkbox</li>
+<li>color</li>
+<li>date</li>
+<li>datetime</li>
+<li>datetime-local</li>
+<li>email</li>
+<li>file</li>
+<li>hidden</li>
+<li>image</li>
+<li>month</li>
+<li>number</li>
+<li>password</li>
+<li>radio</li>
+<li>range</li>
+<li>reset</li>
+<li>search</li>
+<li>select (including options)</li>
+<li>submit</li>
+<li>tel</li>
+<li>text</li>
+<li>textarea</li>
+<li>time</li>
+<li>url</li>
+<li>week</li>
+</ul>
+<p>Foil supports all of them via <code>html()</code> helper. For example:</p>
+<pre><code class="language-php">$this-&gt;html('submit', ['name' =&gt; 'foo','value' =&gt; 'bar']);</code></pre>
+<p>That will render:</p>
+<pre><code class="language-html">&lt;input type="submit" name="foo" value="bar" /&gt;</code></pre>
+<p>So the first argument for <code>html()</code> must be the input name, the second argument must be an array of all
+the arguments supported by Aura.HTML.</p>
+<p>Note that Aura.HTML requires the argument <code>'type'</code> to be set to the input type ('text', 'submit'...) 
+that is not required by  Foil <code>html()</code> helper because input type is passed as first argument.</p>
+<p>An alternative way to render form inputs (more similar to Aura.HTML syntax) is to use the generic <code>'input'</code>
+as first argument for <code>html()</code>, then pass the input type as part of arguments array.</p>
+<p>For example:</p>
+<pre><code class="language-php">$this-&gt;html('input', ['type' =&gt; 'submit', 'name' =&gt; 'foo','value' =&gt; 'bar']);</code></pre>
+<h2><code>input()</code> Helper</h2>
+<p>When <code>'html_tags_functions'</code> option is <code>true</code> (see "Short HTML Helpers" above) form input names are <strong>not</strong> available
+as template functions, because something like <code>$this-&gt;submit()</code> or <code>$this-&gt;text()</code> is hardly recognized as something
+that prints a form input.</p>
+<p>However, activating <code>'html_tags_functions'</code> options is possible to use <code>input()</code> helper. For example:</p>
+<pre><code class="language-php">$this-&gt;input(['type' =&gt; 'submit', 'name' =&gt; 'foo','value' =&gt; 'bar']);</code></pre>
                     </div>
                 </div>
             </div>
