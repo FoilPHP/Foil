@@ -53,6 +53,7 @@ class Escaper implements EscaperInterface
      * @param  string      $strategy
      * @param  string|null $encoding
      * @return mixed
+     * @see Escaper::escapeString()
      * @see Escaper::escapeArray()
      * @see Escaper::escapeObject()
      */
@@ -83,6 +84,17 @@ class Escaper implements EscaperInterface
         }
 
         return $this->escapers[$escaperEncoding];
+    }
+
+    /**
+     * @param  string             $data
+     * @param  string             $strategy
+     * @param  \Aura\Html\Escaper $escaper
+     * @return string|array
+     */
+    private function escapeString($data, $strategy, AuraHtmlEscaper $escaper)
+    {
+        return $escaper->$strategy($data);
     }
 
     /**

@@ -36,14 +36,14 @@ class Kernel implements BootableServiceProviderInterface
      */
     public function register(Container $container)
     {
+        $container['escaper'] = function (Container $c) {
+            return new Escaper($c['aura.html.escaper'], $c['options']['default_charset']);
+        };
         $container['command'] = function (Container $c) {
-            return new Command($c['options']['autoescape']);
+            return new Command($c['escaper'], $c['options']['autoescape']);
         };
         $container['events'] = function () {
             return new Events();
-        };
-        $container['escaper'] = function (Container $c) {
-            return new Escaper($c['aura.html.escaper'], $c['options']['default_charset']);
         };
     }
 
