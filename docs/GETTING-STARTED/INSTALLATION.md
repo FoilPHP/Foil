@@ -37,7 +37,7 @@ require 'vendor/autoload.php';
 
 ## Dependencies
 
-Foil needs 3 very tiny, fast and great quality libraries to work:
+Foil needs 4 great quality libraries to work:
 
  - [Pimple](http://pimple.sensiolabs.org/) (MIT)
  - [Événement](https://github.com/igorw/evenement) (MIT)
