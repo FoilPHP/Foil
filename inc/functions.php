@@ -61,7 +61,7 @@ if (! function_exists('Foil\foil')) {
             $bootstrapper = new Bootstrapper();
             $providers = [
                 'kernel'     => '\\Foil\\Providers\\Kernel',
-                'aura_html'  => '\\Foil\\Providers\\AuraHtmlProvider',
+                'aura_html'  => '\\Foil\\Providers\\AuraHtml',
                 'core'       => '\\Foil\\Providers\\Core',
                 'context'    => '\\Foil\\Providers\\Context',
                 'extensions' => '\\Foil\\Providers\\Extensions',
