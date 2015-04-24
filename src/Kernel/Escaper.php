@@ -62,7 +62,7 @@ class Escaper implements EscaperInterface
         }
 
         return method_exists($this, $method)
-            ? $this->$method($data, $strategy, $this->escaper($encoding))
+            ? $this->$method($data, $strategy, $encoding, $this->escaper($encoding))
             : $data;
     }
 
@@ -109,10 +109,11 @@ class Escaper implements EscaperInterface
     /**
      * @param  string             $data
      * @param  string             $strategy
+     * @param  string             $encoding
      * @param  \Aura\Html\Escaper $escaper
      * @return string|array
      */
-    private function escapeString($data, $strategy, AuraHtmlEscaper $escaper)
+    private function escapeString($data, $strategy, $encoding, AuraHtmlEscaper $escaper)
     {
         return $escaper->$strategy($data);
     }
@@ -120,16 +121,17 @@ class Escaper implements EscaperInterface
     /**
      * @param  array              $data
      * @param  string             $strategy
+     * @param  string             $encoding
      * @param  \Aura\Html\Escaper $escaper
      * @return string|array
      */
-    private function escapeArray(array $data, $strategy, AuraHtmlEscaper $escaper)
+    private function escapeArray(array $data, $strategy, $encoding, AuraHtmlEscaper $escaper)
     {
         if ($strategy === 'attr') {
             return $escaper->attr($data);
         }
-        array_walk($data, function (&$item) use ($strategy, $escaper) {
-            $item = $this->applyEncoding($item, $escaper, $strategy);
+        array_walk($data, function (&$item) use ($strategy, $encoding) {
+            $item = $this->escape($item, $strategy, $encoding);
         });
 
         return $data;
@@ -138,35 +140,25 @@ class Escaper implements EscaperInterface
     /**
      * @param  object             $data
      * @param  string             $strategy
+     * @param  string             $encoding
      * @param  \Aura\Html\Escaper $escaper
      * @return string|array
      */
-    private function escapeObject($data, $strategy, AuraHtmlEscaper $escaper)
+    private function escapeObject($data, $strategy, $encoding, AuraHtmlEscaper $escaper)
     {
         if (method_exists($data, '__toString')) {
-            return $this->applyEncoding($data->__toString(), $escaper, $strategy);
+            return $this->escapeString($data->__toString(), $strategy, $encoding, $escaper);
         } elseif ($data instanceof Traversable) {
             $result = [];
             foreach ($data as $i => $item) {
-                $result[$i] = $this->applyEncoding($item, $escaper, $strategy);
+                $result[$i] = $this->escape($item, $strategy, $encoding);
             }
 
             return $result;
         }
 
         return $strategy === 'attr'
-            ? $this->escapeArray(get_object_vars($data), $strategy, $escaper)
+            ? $this->escapeArray(get_object_vars($data), $strategy, $encoding, $escaper)
             : $data;
-    }
-
-    /**
-     * @param  mixed              $data
-     * @param  \Aura\Html\Escaper $escaper
-     * @param  string             $strategy
-     * @return mixed
-     */
-    private function applyEncoding($data, AuraHtmlEscaper $escaper, $strategy)
-    {
-        return $escaper->$strategy($data);
     }
 }
