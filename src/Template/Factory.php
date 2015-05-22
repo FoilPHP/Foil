@@ -95,7 +95,7 @@ class Factory implements APIAware
         if (
             ! is_string($class)
             || ! class_exists($class)
-            || ! in_array(ltrim('\\', $this->contract), class_implements($class), true)
+            || ! in_array(ltrim($this->contract, '\\'), class_implements($class), true)
         ) {
             return self::DEFAULT_CLASS;
         }
