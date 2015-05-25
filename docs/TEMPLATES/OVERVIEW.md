@@ -70,3 +70,36 @@ Same method can be used to check if a template file exists: it returns `false` i
   to do that, the folder have to be registered into the engine using folder ID.
 
 See  *"Getting Started / File Extensions"* to know more about default extension and  *"Getting Started / Folders"* to know more about folder IDs.
+
+
+## Custom Templates Class
+
+Sometimes may be desirable having a custom template class to customize rendering behavior.
+
+Custom template classes must extend `Foil\Contracts\TemplateInterface` interface.
+
+There are 2 ways to make Foil use custom template classes.
+
+First method is to use `Engine::renderTemplate()` method instead of `Engine::render()` method.
+
+In fact, `renderTemplate()` accepts a third argument `$class` that can be a custom template class name.
+
+Note that `renderTemplate()` needs the full path of template file as first argument, where `render()` needs only template name.
+However, is possible to use `Engine::find()` to retrieve the full path of a template.
+
+```php
+$engine->renderTemplate( $engine->find('template-name'), $data, 'My\Custom\TemplateClass' );
+```
+
+When a custom template class have to be used for all templates, it's far easier change the default template class used by Foil.
+
+That can be done via the `'template_class'` engine option:
+
+```php
+$engine = Foil\engine([
+  'folders'        => ['path/to/templates'],
+  'template_class' => 'My\Custom\TemplateClass'
+]);
+```
+
+After that any call to `$engine->render()` will use the custom template class.
