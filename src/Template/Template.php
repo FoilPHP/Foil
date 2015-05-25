@@ -251,9 +251,10 @@ class Template implements TemplateInterface, APIAware
      * @return string
      * @access private
      */
-    private function collect($path)
+    protected function collect($path)
     {
         ob_start();
+        /** @noinspection PhpIncludeInspection */
         require $path;
         $this->last_buffer = $this->buffer;
         $this->buffer = trim(ob_get_clean());
@@ -266,7 +267,7 @@ class Template implements TemplateInterface, APIAware
      * @param  array $only
      * @return array
      */
-    private function buildContext(array $data = [], array $only = null)
+    protected function buildContext(array $data = [], array $only = null)
     {
         $now = is_null($only)
             ? $this->data()
