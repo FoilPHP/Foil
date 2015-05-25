@@ -36,6 +36,7 @@ class Bootstrapper
         'folders'             => [],
         'section_def_mode'    => SectionInterface::MODE_APPEND,
         'html_tags_functions' => false,
+        'template_class'      => false
     ];
 
     /**

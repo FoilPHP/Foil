@@ -185,12 +185,13 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      *
      * @param  string $path
      * @param  array  $data
+     * @param string  $class
      * @return string
      */
-    public function renderTemplate($path, array $data = [])
+    public function renderTemplate($path, array $data = [], $class = null)
     {
         if (file_exists($path)) {
-            return $this->doRender($path, $data);
+            return $this->doRender($path, $data, $class);
         }
         throw new RuntimeException(__METHOD__.' needs a valid template path as first argument.');
     }
@@ -200,14 +201,15 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      *
      * @param  string $path
      * @param  array  $data
+     * @param null    $class
      * @return string
      */
-    private function doRender($path, array $data = [])
+    private function doRender($path, array $data = [], $class = null)
     {
         if ($this->status() === self::STATUS_IDLE) {
             $this->statusTransitions();
         }
-        $template = $this->stack()->factory($path);
+        $template = $this->stack()->factory($path, $class);
         $this->api()->fire('f.template.render', $template, $data);
         $output = trim($template->render($data));
         $this->api()->fire('f.template.renderered', $template, $output);

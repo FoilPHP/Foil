@@ -45,6 +45,11 @@ class Factory implements APIAware
     private $sections;
 
     /**
+     * @var string
+     */
+    private $defaultClass;
+
+    /**
      * @param \ArrayAccess $templates
      * @param \ArrayAccess $sections
      * @param \Foil\API    $api
@@ -58,6 +63,8 @@ class Factory implements APIAware
         $this->contract = $contract;
         $this->templates = $templates;
         $this->sections = $sections;
+        $class = $api->option('template_class');
+        $this->defaultClass = $class && class_exists($class) ? $class : self::DEFAULT_CLASS;
         $this->setAPI($api);
     }
 
@@ -97,7 +104,7 @@ class Factory implements APIAware
             || ! class_exists($class)
             || ! in_array(ltrim($this->contract, '\\'), class_implements($class), true)
         ) {
-            return self::DEFAULT_CLASS;
+            return $this->defaultClass;
         }
 
         return $class;
