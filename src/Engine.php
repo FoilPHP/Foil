@@ -185,7 +185,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      *
      * @param  string $path
      * @param  array  $data
-     * @param string  $class
+     * @param  string $class
      * @return string
      */
     public function renderTemplate($path, array $data = [], $class = null)
@@ -201,7 +201,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      *
      * @param  string $path
      * @param  array  $data
-     * @param null    $class
+     * @param  null   $class
      * @return string
      */
     private function doRender($path, array $data = [], $class = null)

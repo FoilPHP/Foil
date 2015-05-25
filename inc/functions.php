@@ -35,7 +35,6 @@ use Foil\Context\RegexContext;
 use Foil\Context\GlobalContext;
 use Foil\Contracts\ContextInterface;
 use Foil\Kernel\Arraize;
-use Traversable;
 use LogicException;
 use InvalidArgumentException;
 

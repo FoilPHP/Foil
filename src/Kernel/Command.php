@@ -90,6 +90,8 @@ class Command
      *
      * @param  string $function
      * @return mixed
+     * @see \Foil\Kernel\Command::doRunIsolated()
+     * @see \Foil\Kernel\Command::doRun()
      */
     public function run($function)
     {
@@ -203,7 +205,7 @@ class Command
     }
 
     /**
-     * Ensure items in callback array are actually callbacks and their names aren't used by Foil
+     * Ensure items in callback array are actually callbacks and their names are not used by Foil
      *
      * @param  array  $callbacks
      * @param  string $which     "functions" or "filters"
