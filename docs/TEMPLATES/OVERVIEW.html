@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Giuseppe Mazzapica">
     <title>Templates / Overview. Foil: PHP Template Engine</title>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="http://www.foilphp.it/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -228,6 +228,22 @@ However, template data you can access with <code>$this-&gt;variable_name</code> 
 </li>
 </ul>
 <p>See  <em>"Getting Started / File Extensions"</em> to know more about default extension and  <em>"Getting Started / Folders"</em> to know more about folder IDs.</p>
+<h2>Custom Template Classes</h2>
+<p>Sometimes may be desirable having a custom template class to customize rendering behavior.</p>
+<p>Custom template classes must extend <code>Foil\Contracts\TemplateInterface</code> interface.</p>
+<p>There are 2 ways to make Foil use custom template classes.</p>
+<p>First method is to use <code>Engine::renderTemplate()</code> method instead of <code>Engine::render()</code> method.</p>
+<p>In fact, <code>renderTemplate()</code> accepts a third argument <code>$class</code> that can be a custom template class name.</p>
+<p>Note that <code>renderTemplate()</code> needs the full path of template file as first argument, where <code>render()</code> needs only template name.
+However, is possible to use <code>Engine::find()</code> to retrieve the full path of a template.</p>
+<pre><code class="language-php">$engine-&gt;renderTemplate( $engine-&gt;find('template-name'), $data, 'My\Custom\TemplateClass' );</code></pre>
+<p>When a custom template class have to be used for all templates, it's far easier change the default template class used by Foil.</p>
+<p>That can be done via the <code>'template_class'</code> engine option:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders'        =&gt; ['path/to/templates'],
+  'template_class' =&gt; 'My\Custom\TemplateClass'
+]);</code></pre>
+<p>After that any call to <code>$engine-&gt;render()</code> will use the custom template class.</p>
                     </div>
                 </div>
             </div>
