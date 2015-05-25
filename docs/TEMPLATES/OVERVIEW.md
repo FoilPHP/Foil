@@ -72,7 +72,7 @@ Same method can be used to check if a template file exists: it returns `false` i
 See  *"Getting Started / File Extensions"* to know more about default extension and  *"Getting Started / Folders"* to know more about folder IDs.
 
 
-## Custom Templates Class
+## Custom Template Classes
 
 Sometimes may be desirable having a custom template class to customize rendering behavior.
 
