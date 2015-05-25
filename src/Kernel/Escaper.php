@@ -53,6 +53,9 @@ class Escaper implements EscaperInterface
      * @param  string      $strategy
      * @param  string|null $encoding
      * @return mixed
+     * @see \Foil\Kernel\Escaper::escapeString()
+     * @see \Foil\Kernel\Escaper::escapeArray()
+     * @see \Foil\Kernel\Escaper::escapeObject()
      */
     public function escape($data, $strategy = 'html', $encoding = null)
     {
@@ -62,7 +65,7 @@ class Escaper implements EscaperInterface
         }
 
         return method_exists($this, $method)
-            ? $this->$method($data, $strategy, $encoding, $this->escaper($encoding))
+            ? $this->$method($data, $strategy, $this->escaper($encoding), $encoding)
             : $data;
     }
 
@@ -78,14 +81,14 @@ class Escaper implements EscaperInterface
         } elseif (is_array($data) || $data instanceof Traversable) {
             $result = [];
             foreach ($data as $i => $item) {
-                $result[$i] = $this->decode($data, $encoding);
+                $result[$i] = $this->decode($item, $encoding);
             }
 
             return $result;
         }
 
         return is_object($data) && method_exists($data, '__toString')
-            ? $this->decode($data->__toString(), $data, $encoding)
+            ? $this->decode($data->__toString(), $encoding)
             : $data;
     }
 
@@ -109,11 +112,10 @@ class Escaper implements EscaperInterface
     /**
      * @param  string             $data
      * @param  string             $strategy
-     * @param  string             $encoding
      * @param  \Aura\Html\Escaper $escaper
-     * @return string|array
+     * @return array|string
      */
-    private function escapeString($data, $strategy, $encoding, AuraHtmlEscaper $escaper)
+    private function escapeString($data, $strategy, AuraHtmlEscaper $escaper)
     {
         return $escaper->$strategy($data);
     }
@@ -121,11 +123,11 @@ class Escaper implements EscaperInterface
     /**
      * @param  array              $data
      * @param  string             $strategy
-     * @param  string             $encoding
      * @param  \Aura\Html\Escaper $escaper
-     * @return string|array
+     * @param  string             $encoding
+     * @return array|string
      */
-    private function escapeArray(array $data, $strategy, $encoding, AuraHtmlEscaper $escaper)
+    private function escapeArray(array $data, $strategy, AuraHtmlEscaper $escaper, $encoding)
     {
         if ($strategy === 'attr') {
             return $escaper->attr($data);
@@ -140,14 +142,14 @@ class Escaper implements EscaperInterface
     /**
      * @param  object             $data
      * @param  string             $strategy
-     * @param  string             $encoding
      * @param  \Aura\Html\Escaper $escaper
-     * @return string|array
+     * @param  string             $encoding
+     * @return array|string
      */
-    private function escapeObject($data, $strategy, $encoding, AuraHtmlEscaper $escaper)
+    private function escapeObject($data, $strategy, AuraHtmlEscaper $escaper, $encoding)
     {
         if (method_exists($data, '__toString')) {
-            return $this->escapeString($data->__toString(), $strategy, $encoding, $escaper);
+            return $this->escapeString($data->__toString(), $strategy, $escaper, $encoding);
         } elseif ($data instanceof Traversable) {
             $result = [];
             foreach ($data as $i => $item) {
@@ -158,7 +160,7 @@ class Escaper implements EscaperInterface
         }
 
         return $strategy === 'attr'
-            ? $this->escapeArray(get_object_vars($data), $strategy, $encoding, $escaper)
+            ? $this->escapeArray(get_object_vars($data), $strategy, $escaper, $encoding)
             : $data;
     }
 }
