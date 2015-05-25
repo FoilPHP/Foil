@@ -27,8 +27,11 @@ abstract class Base implements ExtensionInterface, APIAware
     /**
      * @var array
      */
-    private $args;
+    protected $args;
 
+    /**
+     * @param array $args
+     */
     public function setup(array $args = [])
     {
         $this->args = $args;
