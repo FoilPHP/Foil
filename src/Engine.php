@@ -212,6 +212,10 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
     }
 
     /**
+     * Renders a template and returns the rendered content of a specific passed section.
+     * Section param can also be an array of section names in which case the method will return
+     * an array where keys are required section names, values the related rendered content.
+     *
      * @param  string       $template
      * @param  string|array $section
      * @param  array        $data
@@ -236,6 +240,28 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         $result = array_merge(array_fill_keys($sections, ''), get_object_vars($outputs));
 
         return is_array($section) ? $result : $result[$section];
+    }
+
+    /**
+     * Render a template and return an array where the keys are template section names and values
+     * the section rendered content.
+     *
+     * @param  string $template
+     * @param  array  $data
+     * @param  null   $class
+     * @return array
+     */
+    public function renderSections($template, array $data = [], $class = null)
+    {
+        $outputs = new \stdClass();
+        $setter = function ($name, $content) use ($outputs) {
+            $outputs->$name = $content;
+        };
+        $this->api()->on('f.sections.content', $setter);
+        $this->render($template, $data, $class);
+        $this->api()->foil('events')->removeListener('f.sections.content', $setter);
+
+        return get_object_vars($outputs);
     }
 
     /**
