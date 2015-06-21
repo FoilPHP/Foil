@@ -11,6 +11,7 @@ namespace Foil\Tests;
 
 use PHPUnit_Framework_TestCase;
 use Brain\Monkey;
+use Closure;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -29,5 +30,20 @@ class TestCase extends PHPUnit_Framework_TestCase
     {
         Monkey::tearDown();
         parent::tearDown();
+    }
+
+    /**
+     * @param  callable $closure
+     * @param  object   $object
+     * @param  array    $args
+     * @return mixed
+     */
+    protected function bindClosure(Closure $closure, $object, array $args = [])
+    {
+        /** @var \Closure $closure */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $closure = Closure::bind($closure, $object, get_class($object));
+
+        return call_user_func_array($closure, $args);
     }
 }
