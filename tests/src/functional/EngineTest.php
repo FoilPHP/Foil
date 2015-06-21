@@ -103,4 +103,10 @@ class EngineTest extends TestCaseFunctional
     {
         assertSame('foo,bar', $this->engine->render('foo', ['foo', 'bar']));
     }
+
+    public function testRenderSection()
+    {
+        $section = $this->engine->renderSection('main', 'three');
+        assertSame('YES', trim($section));
+    }
 }

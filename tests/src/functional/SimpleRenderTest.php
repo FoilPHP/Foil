@@ -25,6 +25,22 @@ class SimpleRenderTest extends TestCaseFunctional
         assertSame('Hello Alone NO YES', $render);
     }
 
+    public function testSectionEvent()
+    {
+        $this->initFoil();
+        $section = '';
+        $this->container['events']->on(
+            'f.sections.content',
+            function ($name, $content) use (&$section) {
+                $name === 'three' and $section = trim(preg_replace('/[\s]+/', ' ', $content));
+            }
+        );
+        $this->expectOutputString('');
+        $this->engine->render('second');
+
+        assertSame('YES MAN', $section);
+    }
+
     public function testLayoutRender()
     {
         $this->initFoil();
