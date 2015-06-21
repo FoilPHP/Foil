@@ -144,6 +144,9 @@ class Section implements SectionInterface
         return $this->mode;
     }
 
+    /**
+     * @return bool
+     */
     public function started()
     {
         return $this->started;
