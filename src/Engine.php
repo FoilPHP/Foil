@@ -198,10 +198,10 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
     }
 
     /**
-     * @param  string      $template
-     * @param  string      $section
-     * @param  array       $data
-     * @param  string|null $class
+     * @param  string       $template
+     * @param  string|array $section
+     * @param  array        $data
+     * @param  string|null  $class
      * @return string
      */
     public function renderSection($template, $section, array $data = [], $class = null)
@@ -212,20 +212,16 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
             );
         }
         $sections = is_string($section) ? [$section] : array_filter($section, 'is_string');
-        $outputs = [];
-        $this->api()->on(
-            'f.sections.content',
-            function ($name, $content) use ($sections, &$outputs) {
-                in_array($name, $sections, true) and $outputs[$name] = $content;
-            }
-        );
+        $outputs = new \stdClass();
+        $setter = function ($name, $content) use ($sections, $outputs) {
+            in_array($name, $sections, true) and $outputs->$name = $content;
+        };
+        $this->api()->on('f.sections.content', $setter);
         $this->render($template, $data, $class);
-        $output = '';
-        foreach ($sections as $name) {
-            isset($outputs[$name]) and $output .= $outputs[$name];
-        }
+        $this->api()->foil('events')->removeListener('f.sections.content', $setter);
+        $result = array_merge(array_fill_keys($sections, ''), get_object_vars($outputs));
 
-        return $output;
+        return is_array($section) ? $result : $result[$section];
     }
 
     /**

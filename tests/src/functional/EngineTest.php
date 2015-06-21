@@ -107,6 +107,11 @@ class EngineTest extends TestCaseFunctional
     public function testRenderSection()
     {
         $section = $this->engine->renderSection('main', 'three');
+        $this->initFoil();
+        $sections = $this->engine->renderSection('main', ['two', 'three', 'meh']);
+        $expected = ['two' => 'NO', 'three' => 'YES', 'meh' => ''];
+
         assertSame('YES', trim($section));
+        assertSame($expected, array_map('trim', $sections));
     }
 }
