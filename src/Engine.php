@@ -126,6 +126,20 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
     }
 
     /**
+     * Register a block.
+     *
+     * @param  string       $block_name
+     * @param  callable     $block_function
+     * @return \Foil\Engine Itself for fluent interface
+     */
+    public function registerBlock($block_name, callable $block_function)
+    {
+        $this->api()->fire('f.block.register', $block_name, $block_function);
+
+        return $this;
+    }
+
+    /**
      * Set folders where to search for templates
      *
      * @param  array        $folders

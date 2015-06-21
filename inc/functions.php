@@ -64,6 +64,7 @@ if (! function_exists('Foil\foil')) {
                 'core'       => '\\Foil\\Providers\\Core',
                 'context'    => '\\Foil\\Providers\\Context',
                 'extensions' => '\\Foil\\Providers\\Extensions',
+                'blocks'     => '\\Foil\\Providers\\Blocks',
             ];
             if (! empty($custom_providers)) {
                 $providers = array_merge($providers, array_filter($custom_providers, 'is_string'));

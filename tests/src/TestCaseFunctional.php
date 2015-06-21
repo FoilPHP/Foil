@@ -51,6 +51,7 @@ class TestCaseFunctional extends TestCase
             '\\Foil\\Providers\\Core',
             '\\Foil\\Providers\\Context',
             '\\Foil\\Providers\\Extensions',
+            '\\Foil\\Providers\\Blocks',
         ];
         $container = $bootstrapper->init($options, $providers);
         $container['api'] = new API($container);
