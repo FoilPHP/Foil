@@ -10,10 +10,8 @@
 namespace Foil\Template;
 
 use Countable;
+use Foil\Engine;
 use SplStack;
-use Foil\API;
-use Foil\Contracts\APIAwareInterface as APIAware;
-use Foil\Traits;
 
 /**
  * Template stack (essentially a wrap around SplStack) that allow to easily keep track of the
@@ -23,34 +21,38 @@ use Foil\Traits;
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Stack implements Countable, APIAware
+class Stack implements Countable
 {
-    use Traits\APIAwareTrait;
-
     /**
      * @var \SplStack
      */
     private $stack;
 
     /**
-     * @param \Foil\API $api
+     * @var \Foil\Template\Factory
      */
-    public function __construct(API $api)
+    private $factory;
+
+    /**
+     * @param \Foil\Template\Factory $factory
+     */
+    public function __construct(Factory $factory)
     {
         $this->stack = new SplStack();
-        $this->setAPI($api);
+        $this->factory = $factory;
     }
 
     /**
      * Factory a template using template helper function and push it to the templates stack
      *
-     * @param  string                            $path  Template file full path
-     * @param  string                            $class Custom template class
+     * @param  string                            $path   Template file full path
+     * @param  \Foil\Engine                      $engine
+     * @param  string                            $class  Custom template class
      * @return \Foil\Contracts\TemplateInterface
      */
-    public function factory($path, $class = null)
+    public function factory($path, Engine $engine, $class = null)
     {
-        $template = $this->api()->foil('template.factory')->factory($path, $class);
+        $template = $this->factory->factory($path, $engine, $class);
         $this->stack->push($template);
 
         return $template;

@@ -9,10 +9,9 @@
  */
 namespace Foil\Template;
 
-use ArrayAccess as AA;
-use Foil\API;
-use Foil\Contracts\APIAwareInterface as APIAware;
-use Foil\Traits;
+use Foil\Engine;
+use Foil\Kernel\Command;
+use ArrayAccess;
 use InvalidArgumentException;
 
 /**
@@ -22,10 +21,8 @@ use InvalidArgumentException;
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Factory implements APIAware
+class Factory
 {
-    use Traits\APIAwareTrait;
-
     const DEFAULT_CONTRACT = '\\Foil\\Contracts\\TemplateInterface';
     const DEFAULT_CLASS    = '\\Foil\\Template\\Template';
 
@@ -45,53 +42,62 @@ class Factory implements APIAware
     private $sections;
 
     /**
+     * @var \Foil\Kernel\Command
+     */
+    private $command;
+
+    /**
      * @var string
      */
     private $defaultClass;
 
     /**
-     * @param \ArrayAccess $templates
-     * @param \ArrayAccess $sections
-     * @param \Foil\API    $api
-     * @param null|string  $contract
+     * @param \ArrayAccess         $templates
+     * @param \ArrayAccess         $sections
+     * @param \Foil\Kernel\Command $command
+     * @param array                $options
+     * @param null|string          $contract
      */
-    public function __construct(AA $templates, AA $sections, API $api, $contract = null)
-    {
-        if (! is_string($contract) || ! interface_exists($contract)) {
-            $contract = self::DEFAULT_CONTRACT;
-        }
-        $this->contract = $contract;
+    public function __construct(
+        ArrayAccess $templates,
+        ArrayAccess $sections,
+        Command $command,
+        array $options,
+        $contract = null
+    ) {
         $this->templates = $templates;
         $this->sections = $sections;
-        $class = $api->option('template_class');
+        $this->command = $command;
+        $class = isset($options['template_class']) ? $options['template_class'] : '';
         $this->defaultClass = $class && class_exists($class) ? $class : self::DEFAULT_CLASS;
-        $this->setAPI($api);
+        $this->contract = is_string($contract) && interface_exists($contract)
+            ? $contract
+            : self::DEFAULT_CONTRACT;
     }
 
     /**
      * Factory and/or returns template objects.
      *
      * @param  string                            $path       Full path to template file
+     * @param  \Foil\Engine                      $engine
      * @param  string                            $class_name A custom template class name
      * @return \Foil\Contracts\TemplateInterface
-     * @throws InvalidArgumentException
      */
-    public function factory($path, $class_name = null)
+    public function factory($path, Engine $engine, $class_name = null)
     {
         if (! is_string($path)) {
             throw new InvalidArgumentException('Template path must be in a string.');
         }
         if (! $this->templates->offsetExists($path)) {
             $class = $this->getClass($class_name);
-            $this->templates[$path] = new $class($path, $this->sections, $this->api());
+            $this->templates[$path] = new $class($path, $this->sections, $engine, $this->command);
         }
 
         return $this->templates[$path];
     }
 
     /**
-     * Checks that a given class name implements factory contract and returns it (or default if
-     * not).
+     * Checks that a given class name implements factory contract.
      *
      * @param  string $class
      * @return string
@@ -99,14 +105,10 @@ class Factory implements APIAware
      */
     public function getClass($class)
     {
-        if (
-            ! is_string($class)
-            || ! class_exists($class)
-            || ! in_array(ltrim($this->contract, '\\'), class_implements($class), true)
-        ) {
-            return $this->defaultClass;
+        if (is_string($class) && class_exists($class) && is_subclass_of($class, $this->contract)) {
+            return $class;
         }
 
-        return $class;
+        return $this->defaultClass;
     }
 }

@@ -78,10 +78,15 @@ class Core implements ServiceProviderInterface
             return new ArrayObject();
         };
         $container['template.factory'] = function ($c) {
-            return new TemplateFactory($c['template.templates'], $c['section.sections'], $c['api']);
+            return new TemplateFactory(
+                $c['template.templates'],
+                $c['section.sections'],
+                $c['command'],
+                $c['options']
+            );
         };
         $container['template.stack'] = function ($c) {
-            return new TemplateStack($c['api']);
+            return new TemplateStack($c['template.factory']);
         };
     }
 
@@ -91,7 +96,7 @@ class Core implements ServiceProviderInterface
     private function registerEngine(Container $container)
     {
         $container['engine'] = function ($c) {
-            return new Engine($c['template.stack'], $c['template.finder'], $c['api']);
+            return new Engine($c['template.stack'], $c['template.finder'], $c['events']);
         };
     }
 }

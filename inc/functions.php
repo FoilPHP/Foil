@@ -30,11 +30,7 @@
  */
 namespace Foil;
 
-use Foil\Context\SearchContext;
-use Foil\Context\RegexContext;
-use Foil\Context\GlobalContext;
 use Foil\Contracts\ContextInterface;
-use Foil\Kernel\Arraize;
 use LogicException;
 use InvalidArgumentException;
 
@@ -44,39 +40,23 @@ if (! function_exists('Foil\foil')) {
      * On subsequent calls returns container or a service whose id has been passed as argument.
      *
      * @staticvar \Pimple\Container     $container
-     * @param  string|void              $which            Service id
-     * @param  array                    $options          Engine options
-     * @param  array                    $custom_providers Custom service provider classes
-     * @return mixed                    The container or the service whose id has been passed in $which
-     * @throws LogicException           If used to read service before engine has been set
-     * @throws InvalidArgumentException If service id is not a string or service is not registered
+     * @param  string|void     $which     Service id
+     * @param  array           $options   Engine options
+     * @param  array           $providers Custom service provider classes
+     * @return \Foil\API|mixed API object or the service whose id has been passed in $which
      */
-    function foil($which = null, array $options = [], array $custom_providers = [])
+    function foil($which = null, array $options = [], array $providers = [])
     {
-        static $container = null;
-        if (is_null($container) && $which !== 'engine') {
+        static $app = null;
+        if (is_null($app) && $which !== 'engine') {
             throw new LogicException('Engine must be instantiated before to retrieve any service.');
-        } elseif (is_null($container)) {
-            $bootstrapper = new Bootstrapper();
-            $providers = [
-                'kernel'     => '\\Foil\\Providers\\Kernel',
-                'aura_html'  => '\\Foil\\Providers\\AuraHtml',
-                'core'       => '\\Foil\\Providers\\Core',
-                'context'    => '\\Foil\\Providers\\Context',
-                'extensions' => '\\Foil\\Providers\\Extensions',
-                'blocks'     => '\\Foil\\Providers\\Blocks',
-            ];
-            if (! empty($custom_providers)) {
-                $providers = array_merge($providers, array_filter($custom_providers, 'is_string'));
-            }
-            $container = $bootstrapper->init($options, array_values($providers));
-            $container['api'] = new API();
-            $bootstrapper->boot($container);
+        } elseif (is_null($app)) {
+            $app = Foil::boot($options, $providers);
         } elseif (! is_null($which) && ! is_string($which)) {
             throw new InvalidArgumentException('Service name must be in a string.');
         }
 
-        return is_null($which) ? $container : $container[$which];
+        return is_null($which) ? $app->api() : $app->api()->foil($which);
     }
 }
 
@@ -84,20 +64,18 @@ if (! function_exists('Foil\engine')) {
     /**
      * This function is the preferred way to be used to create a Foil engine.
      *
-     * @param  array        $options Options: autoescape, default and allowed extensions, folders...
+     * @param  array        $options          Options: autoescape, default and allowed extensions, folders...
+     * @param  array        $custom_providers Custom service provider classes
      * @return \Foil\Engine
      */
-    function engine(array $options = [])
+    function engine(array $options = [], array $custom_providers = [])
     {
-        return foil('engine', $options);
+        return foil('engine', $options, $custom_providers);
     }
 }
 
 if (! function_exists('Foil\render_template')) {
     /**
-     * Render a template using a full template file path and some data.
-     * When used before any engine() call, is possible to set engine options.
-     *
      * @param  string $path    Full path for the template
      * @param  array  $data    Template context
      * @param  array  $options Options for the engine
@@ -105,7 +83,9 @@ if (! function_exists('Foil\render_template')) {
      */
     function render_template($path, array $data = [], array $options = [])
     {
-        return engine($options)->renderTemplate($path, $data);
+        foil('engine', $options);
+
+        return foil()->renderTemplate($path, $data);
     }
 }
 
@@ -119,12 +99,7 @@ if (! function_exists('Foil\option')) {
      */
     function option($which = null)
     {
-        if (! is_null($which) && ! is_string($which)) {
-            throw new InvalidArgumentException('Option name must be in a string.');
-        }
-        $options = foil('options');
-
-        return is_null($which) ? $options : $options[$which];
+        return foil()->option($which);
     }
 }
 
@@ -132,16 +107,13 @@ if (! function_exists('Foil\add_context')) {
     /**
      * Add some data for specific templates based on a search or on a regex match.
      *
-     * @param array   $data     Data to set for the templates
-     * @param string  $needle   String to compare template name to
-     * @param boolean $is_regex If true template name will be compared using $needle as a regex
+     * @param array   $data   Data to set for the templates
+     * @param string  $needle String to compare template name to
+     * @param boolean $regex  If true template name will be compared using $needle as a regex
      */
-    function add_context(array $data, $needle, $is_regex = false)
+    function add_context(array $data, $needle, $regex = false)
     {
-        $context = empty($is_regex)
-            ? new SearchContext($needle, $data)
-            : new RegexContext($needle, $data);
-        foil('context')->add($context);
+        foil()->addContext($data, $needle, $regex);
     }
 }
 
@@ -153,7 +125,7 @@ if (! function_exists('Foil\add_global_context')) {
      */
     function add_global_context(array $data)
     {
-        foil('context')->add(new GlobalContext($data));
+        foil()->addGlobalContext($data);
     }
 }
 
@@ -165,7 +137,7 @@ if (! function_exists('Foil\add_context_using')) {
      */
     function add_context_using(ContextInterface $context)
     {
-        foil('context')->add($context);
+        foil()->addContextUsing($context);
     }
 }
 
@@ -178,11 +150,7 @@ if (! function_exists('Foil\run')) {
      */
     function run($function)
     {
-        if (! is_string($function)) {
-            throw new InvalidArgumentException('Function name must be in a string.');
-        }
-
-        return call_user_func_array([foil('command'), 'run'], func_get_args());
+        return call_user_func_array([foil(), __FUNCTION__], func_get_args());
     }
 }
 
@@ -194,10 +162,7 @@ if (! function_exists('Foil\fire')) {
      */
     function fire($event)
     {
-        if (! is_string($event)) {
-            throw new InvalidArgumentException('Event name must be in a string.');
-        }
-        call_user_func_array([foil('events'), 'fire'], func_get_args());
+        call_user_func_array([foil(), __FUNCTION__], func_get_args());
     }
 }
 
@@ -211,18 +176,12 @@ if (! function_exists('Foil\on')) {
      */
     function on($event, callable $callback, $once = false)
     {
-        if (! is_string($event)) {
-            throw new InvalidArgumentException('Event name must be in a string.');
-        }
-        $cb = empty($once) ? 'on' : 'once';
-        foil('events')->$cb($event, $callback);
+        foil()->on($event, $callback, $once);
     }
 }
 
 if (! function_exists('Foil\entities')) {
     /**
-     * Escape strings and array using AuraPHP HTML library.
-     *
      * @param  mixed  $data
      * @param  string $strategy
      * @param  string $encoding
@@ -230,47 +189,35 @@ if (! function_exists('Foil\entities')) {
      */
     function entities($data, $strategy = 'html', $encoding = null)
     {
-        return foil('escaper')->escape($data, $strategy, $encoding);
+        return foil()->entities($data, $strategy, $encoding);
     }
 }
 
 if (! function_exists('Foil\decode')) {
     /**
-     * Decode strings and array from HTML entities
-     *
      * @param  mixed  $data
      * @param  string $encoding
      * @return mixed
      */
     function decode($data, $encoding = null)
     {
-        return foil('escaper')->decode($data, $encoding);
+        return foil()->decode($data, $encoding);
     }
 }
 
 if (! function_exists('Foil\arraize')) {
     /**
-     * Stateless class that recursively convert an array or a traversable object into a nested array.
-     * Optionally convert all "atomic" items to strings and optionally HTML-encode all strings.
-     * Nested array and traversable objects are all converted recursively.
-     * Non-traversable objects are converted to array, in 1st available among following 5 methods:
-     *  - if a transformer class is provided, than transformer transform() method is called
-     *  - if the object has a method toArray() it is called
-     *  - if the object has a method asArray() it is called
-     *  - if the object is an instance of JsonSerializable it is JSON-encoded then decoded
-     *  - calling get_object_vars()
-     *
-     * @param  mixed $data         Data to convert
-     * @param  bool  $escape       Should strings in data be HTML-encoded?
-     * @param  array $transformers Transformers: full qualified class names, objects or callables
-     * @param  bool  $toString     Should all scalar items in data be casted to strings?
-     * @return array
+     * @param  array $data
+     * @param  bool  $escape
+     * @param  array $transformers
+     * @param  bool  $toString
+     * @return mixed
      */
     function arraize($data = [], $escape = false, array $transformers = [], $toString = false)
     {
-        $flags = $escape ? Arraize::ESCAPE : 0;
-        $flags |= $toString ? Arraize::TOSTRING : 0;
+        $flags = $escape ? Kernel\Arraize::ESCAPE : 0;
+        $flags |= $toString ? Kernel\Arraize::TOSTRING : 0;
 
-        return call_user_func(new Arraize($data, $transformers, $flags));
+        return call_user_func(new Kernel\Arraize($data, $transformers, $flags));
     }
 }

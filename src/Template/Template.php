@@ -10,8 +10,8 @@
 namespace Foil\Template;
 
 use Foil\Contracts\TemplateInterface;
-use Foil\API;
-use Foil\Contracts\APIAwareInterface as APIAware;
+use Foil\Engine;
+use Foil\Kernel\Command;
 use ArrayAccess;
 use Foil\Traits;
 use InvalidArgumentException;
@@ -21,9 +21,8 @@ use InvalidArgumentException;
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Template implements TemplateInterface, APIAware
+class Template implements TemplateInterface
 {
-    use Traits\APIAwareTrait;
     use Traits\DataHandlerTrait;
 
     /**
@@ -35,6 +34,16 @@ class Template implements TemplateInterface, APIAware
      * @var \ArrayAccess
      */
     private $sections;
+
+    /**
+     * @var \Foil\Engine
+     */
+    private $engine;
+
+    /**
+     * @var \Foil\Kernel\Command
+     */
+    private $command;
 
     /**
      * @var string
@@ -57,15 +66,21 @@ class Template implements TemplateInterface, APIAware
     private $last_buffer = '';
 
     /**
-     * @param string       $path
-     * @param \ArrayAccess $sections
-     * @param \Foil\API    $api
+     * @param                      $path
+     * @param \ArrayAccess         $sections
+     * @param \Foil\Engine         $engine
+     * @param \Foil\Kernel\Command $command
      */
-    public function __construct($path, ArrayAccess $sections, API $api)
-    {
+    public function __construct(
+        $path,
+        ArrayAccess $sections,
+        Engine $engine,
+        Command $command
+    ) {
         $this->path = $path;
         $this->sections = $sections;
-        $this->setAPI($api);
+        $this->engine = $engine;
+        $this->command = $command;
     }
 
     /**
@@ -120,7 +135,7 @@ class Template implements TemplateInterface, APIAware
             );
         }
         array_walk($filters, function ($filter, $i, $args) use (&$input) {
-            $input = $this->api()->foil('command')->filter($filter, $input, $args[$i]);
+            $input = $this->command->filter($filter, $input, $args[$i]);
         }, $args);
 
         return $input;
@@ -131,7 +146,7 @@ class Template implements TemplateInterface, APIAware
      */
     public function run($function)
     {
-        return call_user_func_array([$this->api()->foil('command'), 'run'], func_get_args());
+        return call_user_func_array([$this->command, 'run'], func_get_args());
     }
 
     /**
@@ -154,9 +169,9 @@ class Template implements TemplateInterface, APIAware
      */
     public function insert($template, array $data = [], array $only = null)
     {
-        $this->api()->fire('f.template.prepartial', $template, $data, $this);
-        $partial = $this->api()->engine()->render($template, $this->buildContext($data, $only));
-        $this->api()->fire('f.template.afterpartial', $this);
+        $this->engine->fire('f.template.prepartial', $template, $data, $this);
+        $partial = $this->engine->render($template, $this->buildContext($data, $only));
+        $this->engine->fire('f.template.afterpartial', $this);
 
         return $partial;
     }
@@ -171,9 +186,7 @@ class Template implements TemplateInterface, APIAware
      */
     public function insertif($template, array $data = [], array $only = null)
     {
-        return $this->api()->engine()->find($template)
-            ? $this->insert($template, $data, $only)
-            : '';
+        return $this->engine->find($template) ? $this->insert($template, $data, $only) : '';
     }
 
     /**
@@ -181,14 +194,14 @@ class Template implements TemplateInterface, APIAware
      */
     public function layout($layout, array $data = [], array $only = null)
     {
-        $layout_file = file_exists($layout) ? $layout : $this->api()->engine()->find($layout);
+        $layout_file = file_exists($layout) ? $layout : $this->engine->find($layout);
         if (! $layout_file) {
             throw new InvalidArgumentException('Layout must be a valid file name.');
         }
         $this->layout = $layout_file;
         $this->layout_data[$layout_file] = ['data' => $data, 'only' => $only];
         // listener for this event makes sections work in non-output mode
-        $this->api()->fire('f.template.layout', $layout_file, $this);
+        $this->engine->fire('f.template.layout', $layout_file, $this);
 
         return $this->layout;
     }
@@ -198,7 +211,7 @@ class Template implements TemplateInterface, APIAware
      */
     public function render(array $data = [])
     {
-        $this->api()->fire('f.template.prerender', $this);
+        $this->engine->fire('f.template.prerender', $this);
         $this->setData(array_merge($this->data(), $data));
         $output = $this->collect($this->path());
         while ($this->layoutPath()) {
@@ -209,11 +222,11 @@ class Template implements TemplateInterface, APIAware
             ));
             $this->layout = null;
             // listener for this event makes sections work in output mode
-            $this->api()->fire('f.template.renderlayout', $layout, $this);
+            $this->engine->fire('f.template.renderlayout', $layout, $this);
             $output = $this->collect($layout);
         }
 
-        $this->api()->fire('f.template.rendered', $this);
+        $this->engine->fire('f.template.rendered', $this);
 
         return $output;
     }

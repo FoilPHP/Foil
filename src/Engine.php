@@ -14,6 +14,7 @@ use Foil\Contracts\TemplateAwareInterface as TemplateAware;
 use Foil\Contracts\FinderAwareInterface as FinderAware;
 use Foil\Contracts\APIAwareInterface as APIAware;
 use Foil\Contracts\ExtensionInterface as Extension;
+use Foil\Kernel\Events;
 use Foil\Template\Stack;
 use Foil\Template\Finder;
 use RuntimeException;
@@ -44,15 +45,20 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
     private $status;
 
     /**
+     * @var \Foil\Kernel\Events
+     */
+    private $events;
+
+    /**
      * @param \Foil\Template\Stack  $stack
      * @param \Foil\Template\Finder $finder
-     * @param \Foil\API             $api
+     * @param \Foil\Kernel\Events   $events
      */
-    public function __construct(Stack $stack, Finder $finder, API $api)
+    public function __construct(Stack $stack, Finder $finder, Events $events)
     {
         $this->setStack($stack);
         $this->setFinder($finder);
-        $this->setAPI($api);
+        $this->events = $events;
         $this->status = self::STATUS_IDLE;
     }
 
@@ -66,9 +72,14 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         if (! in_array($name, self::$safe_functions, true)) {
             throw new LogicException($name.' is not a valid engine method.');
         }
-        $this->api()->fire('f.engine.call', $name, $arguments);
+        $this->fire('f.engine.call', $name, $arguments);
 
         return $this;
+    }
+
+    public function fire()
+    {
+        call_user_func_array([$this->events, 'fire'], func_get_args());
     }
 
     /**
@@ -91,7 +102,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      */
     public function loadExtension(Extension $extension, array $options = [], $safe = false)
     {
-        $this->api()->fire('f.extension.load', $extension, $options, $safe);
+        $this->fire('f.extension.load', $extension, $options, $safe);
 
         return $this;
     }
@@ -105,7 +116,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      */
     public function registerFilter($filter_name, callable $filter)
     {
-        $this->api()->fire('f.filter.register', $filter_name, $filter);
+        $this->fire('f.filter.register', $filter_name, $filter);
 
         return $this;
     }
@@ -120,7 +131,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      */
     public function registerFunction($function_name, callable $function, $safe = false)
     {
-        $this->api()->fire('f.function.register', $function_name, $function, $safe);
+        $this->fire('f.function.register', $function_name, $function, $safe);
 
         return $this;
     }
@@ -134,7 +145,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
      */
     public function registerBlock($block_name, callable $block_function)
     {
-        $this->api()->fire('f.block.register', $block_name, $block_function);
+        $this->fire('f.block.register', $block_name, $block_function);
 
         return $this;
     }
@@ -234,9 +245,9 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         $setter = function ($name, $content) use ($sections, $outputs) {
             in_array($name, $sections, true) and $outputs->$name = $content;
         };
-        $this->api()->on('f.sections.content', $setter);
+        $this->events->on('f.sections.content', $setter);
         $this->render($template, $data, $class);
-        $this->api()->foil('events')->removeListener('f.sections.content', $setter);
+        $this->events->removeListener('f.sections.content', $setter);
         $result = array_merge(array_fill_keys($sections, ''), get_object_vars($outputs));
 
         return is_array($section) ? $result : $result[$section];
@@ -257,9 +268,9 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         $setter = function ($name, $content) use ($outputs) {
             $outputs->$name = $content;
         };
-        $this->api()->on('f.sections.content', $setter);
+        $this->events->on('f.sections.content', $setter);
         $this->render($template, $data, $class);
-        $this->api()->foil('events')->removeListener('f.sections.content', $setter);
+        $this->events->removeListener('f.sections.content', $setter);
 
         return get_object_vars($outputs);
     }
@@ -277,10 +288,10 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
         if ($this->status() === self::STATUS_IDLE) {
             $this->statusTransitions();
         }
-        $template = $this->stack()->factory($path, $class);
-        $this->api()->fire('f.template.render', $template, $data);
+        $template = $this->stack()->factory($path, $this, $class);
+        $this->events->fire('f.template.render', $template, $data);
         $output = trim($template->render($data));
-        $this->api()->fire('f.template.renderered', $template, $output);
+        $this->events->fire('f.template.renderered', $template, $output);
 
         return $output;
     }
@@ -295,22 +306,22 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
     private function statusTransitions()
     {
         $this->status = self::STATUS_IN_LAYOUT;
-        $this->api()->on('f.template.layout', function () {
+        $this->events->on('f.template.layout', function () {
             if ($this->status & self::STATUS_IN_PARTIAL) {
                 throw new LogicException('Is not possible to use $this->layout() in partials.');
             }
             $this->status = self::STATUS_IN_TEMPLATE;
         });
-        $this->api()->on('f.template.renderlayout', function () {
+        $this->events->on('f.template.renderlayout', function () {
             $this->status = self::STATUS_IN_LAYOUT;
         });
-        $this->api()->on('f.template.prepartial', function () {
+        $this->events->on('f.template.prepartial', function () {
             $this->status |= self::STATUS_IN_PARTIAL;
         });
-        $this->api()->on('f.template.afterpartial', function () {
+        $this->events->on('f.template.afterpartial', function () {
             $this->status ^= self::STATUS_IN_PARTIAL;
         });
-        $this->api()->on('f.template.renderered', function () {
+        $this->events->on('f.template.renderered', function () {
             $this->stack()->pop();
             if ($this->stack()->count() === 0) {
                 $this->status = self::STATUS_RENDERED;
