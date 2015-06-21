@@ -70,14 +70,12 @@ class LinksTest extends TestCase
     public function testAssetOnlyUrl()
     {
         $l = new Links();
-        $path = FOILTESTSBASEPATH.'/_files/assets';
         $l->setup(['assets_url' => '/assets/']);
         assertSame('/assets/foo.js', $l->asset('foo.js'));
     }
 
     public function testAssetOnlyDomain()
     {
-        $path = FOILTESTSBASEPATH.'/_files/assets';
         $l = new Links();
         $l->setup(['host' => 'example.com']);
         $l2 = new Links();
