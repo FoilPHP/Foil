@@ -277,7 +277,8 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     public function getIn($data, $where, $strict = false)
     {
         if (is_object($data)) {
-            $data = $this->api()->arraize($data, $this->autoescape);
+            $clone = clone $data;
+            $data = $this->api()->arraize($clone, $this->autoescape);
         } elseif (! is_array($data)) {
             return $this->autoescape ? $this->api()->entities($data) : $data;
         }
