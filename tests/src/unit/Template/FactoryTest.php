@@ -11,9 +11,7 @@ namespace Foil\Tests\Template;
 
 use Foil\Tests\TestCase;
 use Foil\Template\Factory;
-use Foil\Tests\API;
 use ArrayObject;
-use Pimple\Container;
 use Mockery;
 
 /**
@@ -23,12 +21,25 @@ use Mockery;
  */
 class FactoryTest extends TestCase
 {
+    /**
+     * @param  string|bool            $class
+     * @return \Foil\Template\Factory
+     */
+    private function getTemplateFactory($class = false)
+    {
+        /** @var \Foil\Kernel\Command $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $options = ['template_class' => $class];
+
+        return new Factory(new ArrayObject(), new ArrayObject(), $command, $options);
+    }
 
     public function testFactoryStandardClass()
     {
-        $container = new Container(['options' => ['template_class' => false]]);
-        $e = new Factory(new ArrayObject(), new ArrayObject(), new API($container));
-        $instance = $e->factory('one');
+        $factory = $this->getTemplateFactory(false);
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $instance = $factory->factory('one', $engine);
         assertInstanceOf('Foil\Template\Template', $instance);
     }
 
@@ -36,31 +47,34 @@ class FactoryTest extends TestCase
     {
         $mock = Mockery::mock('Foil\\Contracts\\TemplateInterface');
         $class = get_class($mock);
-        $container = new Container(['options' => ['template_class' => $class]]);
-        $e = new Factory(new ArrayObject(), new ArrayObject(), new API($container));
-        $instance = $e->factory('one');
+        $factory = $this->getTemplateFactory($class);
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $instance = $factory->factory('one', $engine);
         assertInstanceOf($class, $instance);
     }
 
     public function testFactoryCustomClass()
     {
+        $factory = $this->getTemplateFactory();
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
         $mock = Mockery::mock('Foil\\Contracts\\TemplateInterface');
         $class = get_class($mock);
-        $container = new Container(['options' => ['template_class' => false]]);
-        $e = new Factory(new ArrayObject(), new ArrayObject(), new API($container));
-        $instance1 = $e->factory('one', $class);
-        $instance2 = $e->factory('two');
+        $instance1 = $factory->factory('one', $engine, $class);
+        $instance2 = $factory->factory('two', $engine);
         assertInstanceOf($class, $instance1);
         assertInstanceOf('Foil\Template\Template', $instance2);
     }
 
     public function testFactorySameInstance()
     {
-        $container = new Container(['options' => ['template_class' => false]]);
-        $e = new Factory(new ArrayObject(), new ArrayObject(), new API($container));
-        $instance1 = $e->factory('one');
-        $instance2 = $e->factory('two');
-        $instance3 = $e->factory('one');
+        $factory = $this->getTemplateFactory();
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $instance1 = $factory->factory('one', $engine);
+        $instance2 = $factory->factory('two', $engine);
+        $instance3 = $factory->factory('one', $engine);
         assertSame($instance1, $instance3);
         assertNotSame($instance1, $instance2);
     }

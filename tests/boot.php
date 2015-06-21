@@ -18,8 +18,6 @@ require_once $vendor.'antecedent/patchwork/Patchwork.php';
 require_once $vendor.'autoload.php';
 require_once $vendor.'phpunit/phpunit/src/Framework/Assert/Functions.php';
 
-if (! defined('FOILTESTSBASEPATH')) {
-    define('FOILTESTSBASEPATH', __DIR__);
-}
+putenv('FOIL_TESTS_BASEPATH='.__DIR__);
 
 unset($vendor);

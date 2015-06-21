@@ -9,7 +9,7 @@
  */
 namespace Foil\Tests;
 
-use Foil\Bootstrapper;
+use Foil\Foil;
 use Brain\Monkey\Functions;
 
 /**
@@ -25,38 +25,31 @@ class TestCaseFunctional extends TestCase
     protected $engine;
 
     /**
-     * @var \Pimple\Container
+     * @var \Foil\API
      */
-    protected $container;
+    protected $api;
 
+    /**
+     * @param array $options
+     */
     public function initFoil(array $options = [])
     {
         Functions::when('Foil\entities')->alias(function ($var, $strategy = 'html') {
-            return $this->container['escaper']->escape($var, $strategy);
+            return $this->api->entities($var, $strategy);
         });
-        $base = dirname(preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH));
-        $bootstrapper = new Bootstrapper();
+
+        $base = realpath(getenv('FOIL_TESTS_BASEPATH')).DIRECTORY_SEPARATOR;
         $options = array_merge(
             [
                 'folders' => [
-                    'foo' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'foo']),
-                    'bar' => $base.implode(DIRECTORY_SEPARATOR, ['', 'tests', '_files', 'bar']),
+                    'foo' => $base.implode(DIRECTORY_SEPARATOR, ['_files', 'foo']),
+                    'bar' => $base.implode(DIRECTORY_SEPARATOR, ['_files', 'bar']),
                 ],
             ],
             $options
         );
-        $providers = [
-            '\\Foil\\Providers\\Kernel',
-            '\\Foil\\Providers\\AuraHtml',
-            '\\Foil\\Providers\\Core',
-            '\\Foil\\Providers\\Context',
-            '\\Foil\\Providers\\Extensions',
-            '\\Foil\\Providers\\Blocks',
-        ];
-        $container = $bootstrapper->init($options, $providers);
-        $container['api'] = new API($container);
-        $bootstrapper->boot($container);
-        $this->container = $container;
-        $this->engine = $container['engine'];
+        $app = Foil::boot($options);
+        $this->api = $app->api();
+        $this->engine = $app->api()->engine();
     }
 }

@@ -13,6 +13,7 @@ use Foil\Extensions\Helpers;
 use Foil\Tests\TestCase;
 use Foil\API;
 use Mockery;
+use Pimple\Container;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -31,7 +32,8 @@ class HelpersTest extends TestCase
                  });
         $helpers = Mockery::mock('Foil\Extensions\Helpers')->makePartial();
         $helpers->shouldReceive('template')->withNoArgs()->andReturn($template);
-        $helpers->shouldReceive('api')->withNoArgs()->andReturn(new API());
+        $api = new API(new Container());
+        $helpers->shouldReceive('api')->withNoArgs()->andReturn($api);
 
         return $helpers;
     }

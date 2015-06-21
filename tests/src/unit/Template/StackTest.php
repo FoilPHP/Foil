@@ -22,19 +22,22 @@ class StackTest extends TestCase
 {
     public function testFactory()
     {
-        $api = Mockery::mock('Foil\API');
-        $api->shouldReceive('foil->factory')->andReturnValues(['foo', 'bar', 'baz']);
-        $s = new Stack($api);
-        $s->factory('/path/to/foo');
-        $s->factory('/path/to/bar');
-        $s->factory('/path/to/baz');
-        assertSame('baz', $s->template());
-        assertSame(3, $s->count());
-        $s->pop();
-        assertSame('bar', $s->template());
-        assertSame(2, $s->count());
-        $s->pop();
-        assertSame('foo', $s->template());
-        assertSame(1, $s->count());
+        /** @var \Foil\Template\Factory|\Mockery\MockInterface $factory */
+        $factory = Mockery::mock('Foil\Template\Factory');
+        $factory->shouldReceive('factory')->andReturnValues(['foo', 'bar', 'baz']);
+        $stack = new Stack($factory);
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $stack->factory('/path/to/foo', $engine);
+        $stack->factory('/path/to/bar', $engine);
+        $stack->factory('/path/to/baz', $engine);
+        assertSame('baz', $stack->template());
+        assertSame(3, $stack->count());
+        $stack->pop();
+        assertSame('bar', $stack->template());
+        assertSame(2, $stack->count());
+        $stack->pop();
+        assertSame('foo', $stack->template());
+        assertSame(1, $stack->count());
     }
 }

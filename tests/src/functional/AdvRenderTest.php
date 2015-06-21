@@ -25,8 +25,9 @@ class AdvRenderTest extends TestCaseFunctional
     {
         parent::setUp();
         $this->initFoil();
-        $base = preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH);
-        $this->templates_path = $base.implode(DIRECTORY_SEPARATOR, ['', '_files', 'templates']);
+        $base = realpath(getenv('FOIL_TESTS_BASEPATH')).DIRECTORY_SEPARATOR;
+        $this->templates_path = $base.implode(DIRECTORY_SEPARATOR, ['_files', 'templates']);
+
         $this->engine->addFolder($this->templates_path);
     }
 
@@ -83,8 +84,8 @@ class AdvRenderTest extends TestCaseFunctional
             ]
         ]);
         $context_failed = new SearchContext('foo', ['i_do_not_exist' => 'NOT SHOULD BE HERE']);
-        $this->container['context']->add($context);
-        $this->container['context']->add($context_failed);
+        $this->api->addContextUsing($context);
+        $this->api->addContextUsing($context_failed);
         $this->engine->useContext('final', ['lowercase' => 'esacrewol ma i']);
     }
 
@@ -100,6 +101,10 @@ class AdvRenderTest extends TestCaseFunctional
         $this->engine->useContext('/\.php$/', ['title' => 'Foil is Awesome!', ], true);
     }
 
+    /**
+     * @param $html
+     * @return string
+     */
     private function normalize($html)
     {
         return preg_replace('~[\s]+~s', '', $html);

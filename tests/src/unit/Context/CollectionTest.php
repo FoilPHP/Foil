@@ -22,7 +22,7 @@ class CollectionTest extends TestCase
 {
     private function getCollectionMocked()
     {
-        $api = Mockery::mock('Foil\API');
+        $api = Mockery::mock();
         $api->shouldReceive('fire')->andReturnNull();
         $c = Mockery::mock('Foil\Context\Collection')->makePartial();
         $c->shouldReceive('api')->andReturn($api);

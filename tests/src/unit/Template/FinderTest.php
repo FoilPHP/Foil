@@ -21,7 +21,7 @@ class FinderTest extends TestCase
 {
     private function fooDirs($named = false)
     {
-        $base = preg_replace('|[\\/]+|', DIRECTORY_SEPARATOR, FOILTESTSBASEPATH);
+        $base = realpath(getenv('FOIL_TESTS_BASEPATH'));
         $dirs = [
             $base.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, ['_files', 'foo']),
             $base.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, ['_files', 'bar']),

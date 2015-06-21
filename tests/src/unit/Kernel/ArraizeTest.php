@@ -181,7 +181,7 @@ class ArraizeTest extends TestCase
     {
         // this file uses contain the object used to test object "arraization"
         // see that file to understand what happen here
-        require FOILTESTSBASEPATH.'/_files/stubs.php';
+        require getenv('FOIL_TESTS_BASEPATH').'/_files/stubs.php';
 
         $cb = function ($object) {
             return is_object($object) ? ['callbacked' => get_object_vars($object)] : false;

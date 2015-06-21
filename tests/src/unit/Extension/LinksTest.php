@@ -95,7 +95,7 @@ class LinksTest extends TestCase
 
     public function testAssetOnlyCache()
     {
-        $path = FOILTESTSBASEPATH.'/_files/assets';
+        $path = getenv('FOIL_TESTS_BASEPATH').'/_files/assets';
         $l1 = new Links();
         $l1->setup(['assets_path' => $path, 'cache_bust' => true]);
         $l2 = new Links();
@@ -128,13 +128,13 @@ class LinksTest extends TestCase
     {
         $l1 = new Links();
         $l1->setup([
-            'assets_path' => FOILTESTSBASEPATH.'/_files/assets',
+            'assets_path' => getenv('FOIL_TESTS_BASEPATH').'/_files/assets',
             'cache_bust'  => ['js', '.jpg'],
             'host'        => 'foo.example.com',
         ]);
         $l2 = new Links();
         $l2->setup([
-            'assets_path' => FOILTESTSBASEPATH.'/_files/assets',
+            'assets_path' => getenv('FOIL_TESTS_BASEPATH').'/_files/assets',
             'cache_bust'  => ['js', '.jpg'],
             'host'        => 'foo.example.com',
             'assets_host' => 'static.example.com',
@@ -170,7 +170,7 @@ class LinksTest extends TestCase
     {
         $l = new Links();
         $l->setup([
-            'assets_path' => FOILTESTSBASEPATH.'/_files/assets',
+            'assets_path' => getenv('FOIL_TESTS_BASEPATH').'/_files/assets',
             'cache_bust'  => ['js', '.jpg'],
             'assets_url'  => '/assets/',
         ]);
@@ -185,7 +185,7 @@ class LinksTest extends TestCase
         $l1 = new Links();
         $l1->setup([
             'host'        => 'foo.example.com',
-            'assets_path' => FOILTESTSBASEPATH.'/_files/assets',
+            'assets_path' => getenv('FOIL_TESTS_BASEPATH').'/_files/assets',
             'cache_bust'  => ['js', '.jpg'],
             'assets_url'  => '/assets/',
         ]);
@@ -194,7 +194,7 @@ class LinksTest extends TestCase
         $l2->setup([
             'host'        => 'foo.example.com',
             'assets_host' => 'static.example.com',
-            'assets_path' => FOILTESTSBASEPATH.'/_files/assets',
+            'assets_path' => getenv('FOIL_TESTS_BASEPATH').'/_files/assets',
             'cache_bust'  => ['js', '.jpg'],
             'assets_url'  => '/assets/',
         ]);

@@ -10,9 +10,9 @@
 namespace Foil\Tests\Template;
 
 use Foil\Tests\TestCase;
+use Foil\Template\Template;
 use Mockery;
 use ArrayObject;
-use Foil\Template\Template;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -21,62 +21,92 @@ use Foil\Template\Template;
  */
 class TemplateTest extends TestCase
 {
-    private function getAPI()
-    {
-        return Mockery::mock('Foil\API');
-    }
-
-    private function getTemplate($path, $api = null)
-    {
-        $sections = new ArrayObject();
-        if (is_null($api)) {
-            $api = $this->getAPI();
-        }
-
-        return new Template($path, $sections, $api);
-    }
-
     public function testFilter()
     {
-        $api = $this->getAPI();
-        $api->shouldReceive('foil->filter')
-            ->with(Mockery::type('string'), Mockery::any(), [])
-            ->andReturnValues(['foo', 'bar', null, 'baz']);
-        $template = $this->getTemplate('path', $api);
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $command->shouldReceive('filter')
+                ->with(Mockery::type('string'), Mockery::any(), [])
+                ->andReturnValues(['foo', 'bar', null, 'baz']);
+
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
         assertSame('baz', $template->filter('first|foo|bar|baz', 'Lorem Ipsum'));
     }
 
     public function testRenderNoLayout()
     {
-        $api = $this->getAPI();
         // the file foo.php contains the code `echo implode(',', $this->data());`
-        $path = FOILTESTSBASEPATH.implode(DIRECTORY_SEPARATOR, ['', '_files', 'foo', 'foo.php']);
-        $template = $this->getTemplate($path, $api);
-        $api->shouldReceive('fire')->with('f.template.prerender',
-            $template)->once()->andReturnNull();
-        $api->shouldReceive('fire')->with('f.template.rendered',
-            $template)->once()->andReturnNull();
+        $base = realpath(getenv('FOIL_TESTS_BASEPATH')).DIRECTORY_SEPARATOR;
+        $path = $base.implode(DIRECTORY_SEPARATOR, ['_files', 'foo', 'foo.php']);
+
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+
+        $template = new Template($path, new ArrayObject(), $engine, $command);
+
+        $command->shouldReceive('filter')
+                ->with(Mockery::type('string'), Mockery::any(), [])
+                ->andReturnValues(['foo', 'bar', null, 'baz']);
+
+        $engine->shouldReceive('fire')
+               ->with('f.template.prerender', $template)
+               ->once()
+               ->andReturnNull();
+
+        $engine->shouldReceive('fire')
+               ->with('f.template.rendered', $template)
+               ->once()
+               ->andReturnNull();
+
         $render = $template->render(['foo', 'bar']);
         assertSame('foo,bar', $render);
     }
 
     public function testRenderLayout()
     {
-        $api = $this->getAPI();
+        $base = realpath(getenv('FOIL_TESTS_BASEPATH')).DIRECTORY_SEPARATOR;
         // the file foo.php contains the code `echo implode(',', $this->data());`
-        $path = FOILTESTSBASEPATH.implode(DIRECTORY_SEPARATOR, ['', '_files', 'foo', 'foo.php']);
+        $path = $base.implode(DIRECTORY_SEPARATOR, ['_files', 'foo', 'foo.php']);
         // the file foo.php contains the code `echo implode('|', $this->data());`
-        $layout = FOILTESTSBASEPATH.implode(DIRECTORY_SEPARATOR, ['', '_files', 'foo', 'bar.inc']);
-        $template = $this->getTemplate($path, $api);
-        $api->shouldReceive('fire')->with('f.template.prerender',
-            $template)->once()->andReturnNull();
-        $api->shouldReceive('fire')->with('f.template.layout', $layout,
-            $template)->once()->andReturnNull();
-        $api->shouldReceive('fire')->with('f.template.renderlayout', $layout,
-            $template)->once()->andReturnNull();
-        $api->shouldReceive('fire')->with('f.template.rendered',
-            $template)->once()->andReturnNull();
-        $api->shouldReceive('engine->find')->with('bar.inc')->once()->andReturn($layout);
+        $layout = $base.implode(DIRECTORY_SEPARATOR, ['_files', 'foo', 'bar.inc']);
+
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+
+        $template = new Template($path, new ArrayObject(), $engine, $command);
+
+        $engine->shouldReceive('fire')
+               ->with('f.template.prerender', $template)
+               ->once()
+               ->andReturnNull();
+
+        $engine->shouldReceive('fire')
+               ->with('f.template.layout', $layout, $template)
+               ->once()
+               ->andReturnNull();
+
+        $engine->shouldReceive('fire')
+               ->with('f.template.renderlayout', $layout, $template)
+               ->once()
+               ->andReturnNull();
+
+        $engine->shouldReceive('fire')
+               ->with('f.template.rendered', $template)
+               ->once()
+               ->andReturnNull();
+
+        $engine->shouldReceive('find')
+               ->with('bar.inc')
+               ->once()
+               ->andReturn($layout);
+
         $template->layout('bar.inc');
         assertSame('foo|bar', $template->render(['foo', 'bar']));
         assertSame('foo,bar', $template->lastBuffer());

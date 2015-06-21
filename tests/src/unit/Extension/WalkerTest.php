@@ -12,6 +12,7 @@ namespace Foil\Tests\Extension;
 use Foil\Tests\TestCase;
 use Mockery;
 use Foil;
+use Foil\Kernel\Arraize;
 use Aura\Html\Escaper\HtmlEscaper;
 use ArrayIterator;
 
@@ -22,16 +23,25 @@ use ArrayIterator;
  */
 class WalkerTest extends TestCase
 {
+    /**
+     * @return \Foil\Extensions\Walker|\Mockery\MockInterface
+     */
     private function getWalkerMocked()
     {
+        $api = Mockery::mock();
+        $api->shouldReceive('arraize')->andReturnUsing(function ($value) {
+            $arraize = new Arraize($value, [], Foil\Kernel\Arraize::ESCAPE);
+
+            return $arraize();
+        });
+        $api->shouldReceive('entities')->andReturnUsing(function ($value) {
+            return array_map(new HtmlEscaper(), $value);
+        });
+
+        /** @var \Foil\Extensions\Walker|\Mockery\MockInterface $walker */
         $walker = Mockery::mock('Foil\Extensions\Walker')->makePartial();
         $walker->shouldReceive('option')->with('autoescape')->andReturn(true);
-        $walker->shouldReceive('api->arraize')->andReturnUsing(function ($value) {
-            return Foil\arraize($value, true);
-        });
-        $walker->shouldReceive('api->entities')->andReturnUsing(function ($var) {
-            return array_map(new HtmlEscaper(), $var);
-        });
+        $walker->shouldReceive('api')->andReturn($api);
 
         return $walker;
     }

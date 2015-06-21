@@ -36,7 +36,7 @@ class EngineTest extends TestCaseFunctional
     {
         $this->engine->useData(['foo' => 'bar'], 'foo', 'bar');
         // $this->container is set in `TestCaseFunctional::setUp()`
-        $context = $this->container['context'];
+        $context = $this->api->foil('context');
         $context->accept('foo');
         assertSame(['foo' => 'bar'], $context->provide());
     }
@@ -50,7 +50,7 @@ class EngineTest extends TestCaseFunctional
             ->useContext('/[\w]+/', ['regex_2' => 2], true)
             ->useContext('no', ['search_3' => 3])
             ->useContext('/[0-9]+/', ['regex_3' => 3], true);
-        $context = $this->container['context'];
+        $context = $this->api->foil('context');
         $context->accept('foo');
         $expected = [
             'search_1' => 1,
@@ -74,8 +74,9 @@ class EngineTest extends TestCaseFunctional
         $e->shouldReceive('provideFilters')->andReturn(['foo' => $filter]);
         $e->shouldReceive('provideFunctions')->andReturn(['foo' => $func]);
         $this->engine->loadExtension($e);
-        assertSame('Hello!', $this->container['command']->run('foo', 'Hello', '!'));
-        assertSame('Hello!', $this->container['command']->filter('foo', 'Hello', ['!']));
+
+        assertSame('Hello!', $this->api->foil('command')->run('foo', 'Hello', '!'));
+        assertSame('Hello!', $this->api->foil('command')->filter('foo', 'Hello', ['!']));
     }
 
     public function testRegisterFunction()
@@ -87,7 +88,7 @@ class EngineTest extends TestCaseFunctional
         };
         $this->engine->registerFunction('foo', $cb);
         $expected = htmlentities('<b>Hello</b>', ENT_QUOTES, 'UTF-8', false);
-        assertSame($expected, $this->container['command']->run('foo', '<b>Hello', '</b>'));
+        assertSame($expected, $this->api->foil('command')->run('foo', '<b>Hello', '</b>'));
     }
 
     public function testRegisterFilter()
@@ -96,7 +97,7 @@ class EngineTest extends TestCaseFunctional
             return $original.$a.$b;
         };
         $this->engine->registerFilter('foo', $cb);
-        assertSame('Hello!!', $this->container['command']->filter('foo', 'Hello', ['!', '!']));
+        assertSame('Hello!!', $this->api->foil('command')->filter('foo', 'Hello', ['!', '!']));
     }
 
     public function testRender()
