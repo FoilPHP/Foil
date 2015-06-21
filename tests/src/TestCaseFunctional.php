@@ -50,6 +50,6 @@ class TestCaseFunctional extends TestCase
         );
         $app = Foil::boot($options);
         $this->api = $app->api();
-        $this->engine = $app->api()->engine();
+        $this->engine = $app->engine();
     }
 }

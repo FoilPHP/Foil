@@ -16,6 +16,7 @@ use Foil\Context\SearchContext;
 use Foil\Context\GlobalContext;
 use Foil\Kernel\Arraize;
 use InvalidArgumentException;
+use BadMethodCallException;
 
 /**
  * YOLO
@@ -35,8 +36,35 @@ class API
     }
 
     /**
+     * Here for backward compatibility to allow calling methods using snake_case names.
+     * Will be removed in future versions.
+     *
+     * @param  string $name
+     * @param  array  $arguments
+     * @return mixed
+     */
+    public function __call($name, array $arguments = [])
+    {
+        $method = str_replace(' ', '', lcfirst(ucwords(str_replace('_', ' ', $name))));
+        if (method_exists($this, $method)) {
+            return call_user_func_array([$this, $method], $arguments);
+        }
+        throw new BadMethodCallException("{$name} is not a valid Foil API method.");
+    }
+
+    /**
+     * @param  string $which
+     * @return mixed
+     */
+    public function get($which)
+    {
+        return $this->container[$which];
+    }
+
+    /**
      * @param  null                    $which
      * @return mixed|\Pimple\Container
+     * @deprecated
      */
     public function foil($which = null)
     {
@@ -45,14 +73,15 @@ class API
 
     /**
      * @param  array $options
-     * @param  array $customProviders
+     * @param  array $providers
      * @return mixed
+     * @deprecated
      */
-    public function engine(array $options = null, array $customProviders = null)
+    public function engine(array $options = null, array $providers = null)
     {
         $container = is_null($options)
             ? $this->container
-            : Foil::boot($options, $customProviders);
+            : Foil::boot($options, $providers);
 
         return $container['engine'];
     }
@@ -96,11 +125,11 @@ class API
      *
      * @param array  $data
      * @param string $needle
-     * @param bool   $isRegex
+     * @param bool   $regex
      */
-    public function addContext(array $data, $needle, $isRegex = false)
+    public function addContext(array $data, $needle, $regex = false)
     {
-        $context = empty($isRegex)
+        $context = empty($regex)
             ? new SearchContext($needle, $data)
             : new RegexContext($needle, $data);
         $this->container['context']->add($context);

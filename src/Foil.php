@@ -52,6 +52,16 @@ final class Foil
     ];
 
     /**
+     * @var \Foil\API
+     */
+    private $api;
+
+    /**
+     * @var \Pimple\Container
+     */
+    private $container;
+
+    /**
      * @param  array $options
      * @param  array $providers
      * @return self
@@ -67,7 +77,7 @@ final class Foil
         $container['api'] = $api;
         self::setup($container, $providers);
 
-        return new self($api);
+        return new self($container, $api);
     }
 
     /**
@@ -75,14 +85,16 @@ final class Foil
      */
     public function engine()
     {
-        return $this->api->engine();
+        return $this->container['engine'];
     }
 
     /**
-     * @param \Foil\API $api
+     * @param \Pimple\Container $container
+     * @param \Foil\API         $api
      */
-    public function __construct(API $api)
+    public function __construct(Container $container, API $api)
     {
+        $this->container = $container;
         $this->api = $api;
     }
 

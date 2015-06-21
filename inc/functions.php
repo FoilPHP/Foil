@@ -44,6 +44,7 @@ if (! function_exists('Foil\foil')) {
      * @param  array           $options   Engine options
      * @param  array           $providers Custom service provider classes
      * @return \Foil\API|mixed API object or the service whose id has been passed in $which
+     * @deprecated
      */
     function foil($which = null, array $options = [], array $providers = [])
     {
@@ -64,13 +65,13 @@ if (! function_exists('Foil\engine')) {
     /**
      * This function is the preferred way to be used to create a Foil engine.
      *
-     * @param  array        $options          Options: autoescape, default and allowed extensions, folders...
-     * @param  array        $custom_providers Custom service provider classes
+     * @param  array        $options   Options: autoescape, default and allowed extensions, folders...
+     * @param  array        $providers Custom service provider classes
      * @return \Foil\Engine
      */
-    function engine(array $options = [], array $custom_providers = [])
+    function engine(array $options = [], array $providers = [])
     {
-        return foil('engine', $options, $custom_providers);
+        return foil('engine', $options, $providers);
     }
 }
 
@@ -96,6 +97,7 @@ if (! function_exists('Foil\option')) {
      * @param  string                   $which
      * @return mixed
      * @throws InvalidArgumentException When $which param isn't a string nor a valid option name
+     * @deprecated
      */
     function option($which = null)
     {
@@ -110,6 +112,7 @@ if (! function_exists('Foil\add_context')) {
      * @param array   $data   Data to set for the templates
      * @param string  $needle String to compare template name to
      * @param boolean $regex  If true template name will be compared using $needle as a regex
+     * @deprecated
      */
     function add_context(array $data, $needle, $regex = false)
     {
@@ -122,6 +125,7 @@ if (! function_exists('Foil\add_global_context')) {
      * Add data to all templates
      *
      * @param array $data
+     * @deprecated
      */
     function add_global_context(array $data)
     {
@@ -134,6 +138,7 @@ if (! function_exists('Foil\add_context_using')) {
      * Add a custom context class
      *
      * @param ContextInterface $context
+     * @deprecated
      */
     function add_context_using(ContextInterface $context)
     {
@@ -147,6 +152,7 @@ if (! function_exists('Foil\run')) {
      *
      * @param  string $function Function name
      * @return mixed
+     * @deprecated
      */
     function run($function)
     {
@@ -159,6 +165,7 @@ if (! function_exists('Foil\fire')) {
      * Fire an event using Foil event emitter
      *
      * @param string $event
+     * @deprecated
      */
     function fire($event)
     {
@@ -173,6 +180,7 @@ if (! function_exists('Foil\on')) {
      * @param string   $event
      * @param callable $callback
      * @param bool     $once
+     * @deprecated
      */
     function on($event, callable $callback, $once = false)
     {
@@ -186,6 +194,7 @@ if (! function_exists('Foil\entities')) {
      * @param  string $strategy
      * @param  string $encoding
      * @return mixed
+     * @deprecated
      */
     function entities($data, $strategy = 'html', $encoding = null)
     {
@@ -198,6 +207,7 @@ if (! function_exists('Foil\decode')) {
      * @param  mixed  $data
      * @param  string $encoding
      * @return mixed
+     * @deprecated
      */
     function decode($data, $encoding = null)
     {
