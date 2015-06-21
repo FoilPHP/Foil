@@ -11,6 +11,7 @@ namespace Foil\Extensions;
 
 use Foil\Contracts\ExtensionInterface;
 use Foil\Contracts\EngineAwareInterface;
+use Foil\Kernel\Events;
 use Foil\Section\Factory;
 use Foil\Contracts\EngineInterface as Engine;
 use Foil\Contracts\SectionInterface;
@@ -45,13 +46,25 @@ class Sections implements ExtensionInterface, EngineAwareInterface
     private $names;
 
     /**
-     * @param \Foil\Section\Factory $factory
+     * @var string
      */
-    public function __construct(Factory $factory)
+    private $last = null;
+
+    /**
+     * @var \Foil\Kernel\Events
+     */
+    private $events;
+
+    /**
+     * @param \Foil\Section\Factory $factory
+     * @param \Foil\Kernel\Events   $events
+     */
+    public function __construct(Factory $factory, Events $events)
     {
         $this->factory = $factory;
         $this->stack = new SplStack();
         $this->names = new SplStack();
+        $this->events = $events;
     }
 
     /**
@@ -106,7 +119,9 @@ class Sections implements ExtensionInterface, EngineAwareInterface
      */
     public function append($name = null)
     {
-        $this->end($name)->append();
+        $section = $this->end($name);
+        $section->append();
+        $this->events->fire('f.sections.content', $this->last, $section->content());
     }
 
     /**
@@ -117,7 +132,9 @@ class Sections implements ExtensionInterface, EngineAwareInterface
      */
     public function stop($name = null)
     {
-        $this->end($name)->stop();
+        $section = $this->end($name);
+        $section->stop();
+        $this->events->fire('f.sections.content', $this->last, $section->content());
     }
 
     /**
@@ -128,7 +145,9 @@ class Sections implements ExtensionInterface, EngineAwareInterface
      */
     public function replace($name = null)
     {
-        $this->end($name)->replace();
+        $section = $this->end($name);
+        $section->replace();
+        $this->events->fire('f.sections.content', $this->last, $section->content());
     }
 
     /**
@@ -140,11 +159,11 @@ class Sections implements ExtensionInterface, EngineAwareInterface
      */
     private function end($name)
     {
-        $current = $this->names->pop();
-        if (! is_null($name) && $current !== $name) {
+        $this->last = $this->names->pop();
+        if (! is_null($name) && $this->last !== $name) {
             $n = is_string($name) ? $name : 'a bad';
             $msg = 'You tried to close %s section where you should have closed %s.';
-            throw new InvalidArgumentException(sprintf($msg, $n, $current));
+            throw new InvalidArgumentException(sprintf($msg, $n, $this->last));
         }
 
         return $this->stack->pop();

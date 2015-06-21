@@ -18,6 +18,7 @@ use Foil\Template\Stack;
 use Foil\Template\Finder;
 use RuntimeException;
 use LogicException;
+use InvalidArgumentException;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -194,6 +195,37 @@ class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
             return $this->doRender($path, $data, $class);
         }
         throw new RuntimeException(__METHOD__.' needs a valid template path as first argument.');
+    }
+
+    /**
+     * @param  string      $template
+     * @param  string      $section
+     * @param  array       $data
+     * @param  string|null $class
+     * @return string
+     */
+    public function renderSection($template, $section, array $data = [], $class = null)
+    {
+        if (! is_array($section) && ! is_string($section)) {
+            throw new InvalidArgumentException(
+                'Section to render must be passed as string or array of strings.'
+            );
+        }
+        $sections = is_string($section) ? [$section] : array_filter($section, 'is_string');
+        $outputs = [];
+        $this->api()->on(
+            'f.sections.content',
+            function ($name, $content) use ($sections, &$outputs) {
+                in_array($name, $sections, true) and $outputs[$name] = $content;
+            }
+        );
+        $this->render($template, $data, $class);
+        $output = '';
+        foreach ($sections as $name) {
+            isset($outputs[$name]) and $output .= $outputs[$name];
+        }
+
+        return $output;
     }
 
     /**

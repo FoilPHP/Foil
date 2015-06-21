@@ -34,7 +34,7 @@ class Extensions implements BootableServiceProvider
     public function register(Container $container)
     {
         $container['extensions.sections'] = function ($c) {
-            return new Sections($c['section.factory']);
+            return new Sections($c['section.factory'], $c['events']);
         };
 
         $container['extensions.helpers'] = function ($c) {
