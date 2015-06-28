@@ -10,9 +10,8 @@
 namespace Foil\Context;
 
 use Foil\Contracts\ContextCollectionInterface;
-use Foil\API;
-use Foil\Contracts\APIAwareInterface;
 use Foil\Contracts\ContextInterface;
+use Foil\Engine;
 use Foil\Traits;
 use SplObjectStorage;
 
@@ -23,10 +22,14 @@ use SplObjectStorage;
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Collection implements ContextCollectionInterface, APIAwareInterface
+class Collection implements ContextCollectionInterface
 {
-    use Traits\APIAwareTrait;
     use Traits\DataHandlerTrait;
+
+    /**
+     * @var \Foil\Engine
+     */
+    private $engine;
 
     /**
      * @var \SplObjectStorage
@@ -44,12 +47,12 @@ class Collection implements ContextCollectionInterface, APIAwareInterface
     private $allowed;
 
     /**
-     * @param \Foil\API $api
+     * @param \Foil\Engine $engine
      */
-    public function __construct(API $api)
+    public function __construct(Engine $engine)
     {
+        $this->engine = $engine;
         $this->storage = new SplObjectStorage();
-        $this->setAPI($api);
         $this->allow();
     }
 
@@ -94,11 +97,11 @@ class Collection implements ContextCollectionInterface, APIAwareInterface
             $context = $storage->current();
             if ($context->accept($template)) {
                 $data = array_merge($data, $context->provide());
-                $this->api()->fire('f.context.provided', $context, $this);
+                $this->engine->fire('f.context.provided', $context, $this);
             }
             $storage->next();
         }
-        $this->api()->fire('f.context.allprovided', $this);
+        $this->engine->fire('f.context.allprovided', $this);
 
         return $data;
     }

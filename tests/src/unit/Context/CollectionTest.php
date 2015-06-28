@@ -9,9 +9,9 @@
  */
 namespace Foil\Tests\Context;
 
+use Foil\Context\Collection;
 use Foil\Tests\TestCase;
 use Mockery;
-use SplObjectStorage;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -20,17 +20,25 @@ use SplObjectStorage;
  */
 class CollectionTest extends TestCase
 {
-    private function getCollectionMocked()
+    /**
+     * @return \Foil\Context\Collection
+     */
+    private function getCollection()
     {
-        $api = Mockery::mock();
-        $api->shouldReceive('fire')->andReturnNull();
-        $c = Mockery::mock('Foil\Context\Collection')->makePartial();
-        $c->shouldReceive('api')->andReturn($api);
-        $c->shouldReceive('data')->once()->withNoArgs()->andReturn(['foo' => 'bar']);
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $engine->shouldReceive('fire')->andReturnNull();
+        $collection = new Collection($engine);
+        $collection->setData(['foo' => 'bar']);
 
-        return $c;
+        return $collection;
     }
 
+    /**
+     * @param                                                          $data
+     * @param  bool                                                    $accept
+     * @return \Mockery\MockInterface|\Foil\Contracts\ContextInterface
+     */
     private function getContextMocked($data, $accept = true)
     {
         $con = Mockery::mock('Foil\Contracts\ContextInterface');
@@ -42,16 +50,19 @@ class CollectionTest extends TestCase
 
     public function testProvideReturnDataIfNoTemplate()
     {
-        $c = $this->getCollectionMocked();
+        $c = $this->getCollection();
         assertSame(['foo' => 'bar'], $c->provide());
     }
 
     public function testProvideNoStorage()
     {
-        $c = $this->getCollectionMocked();
-        $c->shouldReceive('template')->once()->withNoArgs()->andReturn('foo');
-        $c->shouldReceive('storage')->once()->withNoArgs()->andReturn(new SplObjectStorage());
-        assertSame(['foo' => 'bar'], $c->provide());
+        $collection = $this->getCollection();
+        $this->bindClosure(function () {
+            /** @noinspection PhpUndefinedFieldInspection */
+            $this->template = 'foo';
+        }, $collection);
+
+        assertSame(['foo' => 'bar'], $collection->provide());
     }
 
     public function testProvide()
@@ -60,14 +71,16 @@ class CollectionTest extends TestCase
         $con2 = $this->getContextMocked(['two' => 'two']);
         $con3 = $this->getContextMocked(['foo' => 'baz']);
         $con4 = $this->getContextMocked(['x' => 'x'], false);
-        $storage = new SplObjectStorage();
-        $storage->attach($con1);
-        $storage->attach($con2);
-        $storage->attach($con3);
-        $storage->attach($con4);
-        $c = $this->getCollectionMocked();
-        $c->shouldReceive('template')->once()->withNoArgs()->andReturn('foo');
-        $c->shouldReceive('storage')->once()->withNoArgs()->andReturn($storage);
-        assertSame(['foo' => 'baz', 'one' => 'one', 'two' => 'two'], $c->provide());
+        $collection = $this->getCollection();
+        $collection->add($con1);
+        $collection->add($con2);
+        $collection->add($con3);
+        $collection->add($con4);
+        $this->bindClosure(function () {
+            /** @noinspection PhpUndefinedFieldInspection */
+            $this->template = 'foo';
+        }, $collection);
+
+        assertSame(['foo' => 'baz', 'one' => 'one', 'two' => 'two'], $collection->provide());
     }
 }

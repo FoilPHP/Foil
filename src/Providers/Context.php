@@ -34,7 +34,7 @@ class Context implements BootableServiceProviderInterface
     public function register(Container $container)
     {
         $container['context'] = function ($c) {
-            return new ContextCollection($c['api']);
+            return new ContextCollection($c['engine']);
         };
     }
 
