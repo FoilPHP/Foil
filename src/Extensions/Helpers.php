@@ -11,7 +11,7 @@ namespace Foil\Extensions;
 
 use Foil\Contracts\ExtensionInterface;
 use Foil\Contracts\TemplateAwareInterface as TemplateAware;
-use Foil\Contracts\APIAwareInterface as APIAware;
+use Foil\Kernel\Escaper;
 use Foil\Traits;
 use igorw;
 use Closure;
@@ -25,19 +25,32 @@ use RuntimeException;
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Helpers implements ExtensionInterface, TemplateAware, APIAware
+class Helpers implements ExtensionInterface, TemplateAware
 {
     use Traits\TemplateAwareTrait;
-    use Traits\APIAwareTrait;
 
+    /**
+     * @var \Foil\Kernel\Escaper
+     */
+    private $escaper;
+
+    /**
+     * @var bool
+     */
     private $autoescape;
+
+    /**
+     * @var bool|string
+     */
     private $strict;
 
     /**
-     * @param array $options
+     * @param \Foil\Kernel\Escaper $escaper
+     * @param array                $options
      */
-    public function __construct(array $options)
+    public function __construct(Escaper $escaper, array $options)
     {
+        $this->escaper = $escaper;
         $this->autoescape = ! isset($options['autoescape']) || ! empty($options['autoescape']);
         if (isset($options['strict_variables'])) {
             $this->strict = strtolower((string) $options['strict_variables']) === 'notice'
@@ -119,7 +132,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      */
     public function escape($var, $default = '', $filter = null, $strategy = 'html')
     {
-        return $this->api()->entities($this->raw($var, $default, $filter), $strategy);
+        return $this->escaper->escape($this->raw($var, $default, $filter), $strategy);
     }
 
     /**
@@ -175,7 +188,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
      */
     public function decode($var, $default = '', $filter = null)
     {
-        return $this->api()->decode($this->raw($var, $default, $filter));
+        return $this->escaper->decode($this->raw($var, $default, $filter));
     }
 
     /**
@@ -218,7 +231,7 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     {
         $raw = $this->raw($var, (array) $default, $filter);
 
-        return $this->api()->arraize($raw, ($this->autoescape && ! $force_raw));
+        return \Foil\arraize($raw, ($this->autoescape && ! $force_raw));
     }
 
     /**
@@ -278,9 +291,9 @@ class Helpers implements ExtensionInterface, TemplateAware, APIAware
     {
         if (is_object($data)) {
             $clone = clone $data;
-            $data = $this->api()->arraize($clone, $this->autoescape);
+            $data = \Foil\arraize($clone, $this->autoescape);
         } elseif (! is_array($data)) {
-            return $this->autoescape ? $this->api()->entities($data) : $data;
+            return $this->autoescape ? $this->escaper->escape($data) : $data;
         }
         $where = is_string($where) ? explode('.', $where) : (array) $where;
         $get = igorw\get_in($data, $where);

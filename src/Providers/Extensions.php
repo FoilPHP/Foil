@@ -38,7 +38,7 @@ class Extensions implements BootableServiceProvider
         };
 
         $container['extensions.helpers'] = function ($c) {
-            return new Helpers($c['options']);
+            return new Helpers($c['escaper'], $c['options']);
         };
 
         $container['extensions.walker'] = function ($c) {

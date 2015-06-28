@@ -9,11 +9,9 @@
  */
 namespace Foil\Tests\Extension;
 
-use Foil\Extensions\Helpers;
 use Foil\Tests\TestCase;
-use Foil\API;
+use Foil\Extensions\Helpers;
 use Mockery;
-use Pimple\Container;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -22,33 +20,54 @@ use Pimple\Container;
  */
 class HelpersTest extends TestCase
 {
-    private function getHelpersMocked($data = [])
+    /**
+     * @param  array                    $data
+     * @param  bool|string              $strict
+     * @return \Foil\Extensions\Helpers
+     */
+    private function getHelpers($data = [], $strict = false)
     {
+        /** @var \Foil\Contracts\TemplateInterface|\Mockery\MockInterface $template */
         $template = Mockery::mock('Foil\Contracts\TemplateInterface');
         $template->shouldReceive('data')->andReturn($data);
         $template->shouldReceive('filter')->with(Mockery::type('array'), Mockery::any())
                  ->andReturnUsing(function (array $filters, $data) {
                      return $data.' + '.implode(',', $filters);
                  });
-        $helpers = Mockery::mock('Foil\Extensions\Helpers')->makePartial();
-        $helpers->shouldReceive('template')->withNoArgs()->andReturn($template);
-        $api = new API(new Container());
-        $helpers->shouldReceive('api')->withNoArgs()->andReturn($api);
+
+        /** @var \Foil\Template\Stack|\Mockery\MockInterface $stack */
+        $stack =  Mockery::mock('\Foil\Template\Stack');
+        $stack->shouldReceive('template')->andReturn($template);
+
+        /** @var \Foil\Kernel\Escaper|\Mockery\MockInterface $escaper */
+        $escaper =  Mockery::mock('\Foil\Kernel\Escaper');
+        $escaper->shouldReceive('escape')->andReturnUsing(function ($data) {
+            if (is_string($data)) {
+                return htmlentities($data);
+            } elseif (is_array($data)) {
+                return array_map('htmlentities', $data);
+            }
+
+            return $data;
+        });
+
+        $helpers = new Helpers($escaper, ['autoescape' => true, 'strict_variables' => $strict]);
+        $helpers->setStack($stack);
 
         return $helpers;
     }
 
     public function testRawDefault()
     {
-        $h1 = $this->getHelpersMocked();
+        $h1 = $this->getHelpers();
         assertSame('foo', $h1->raw('some', 'foo'));
-        $h2 = $this->getHelpersMocked(['foo' => 'bar']);
+        $h2 = $this->getHelpers(['foo' => 'bar']);
         assertSame('foo', $h2->raw('some', 'foo'));
     }
 
     public function testRawDefaultClosureEcho()
     {
-        $output = $this->getHelpersMocked()->raw('some', function () {
+        $output = $this->getHelpers()->raw('some', function () {
             echo "I'm loving it!";
         });
         assertSame("I'm loving it!", $output);
@@ -56,7 +75,7 @@ class HelpersTest extends TestCase
 
     public function testRawDefaultClosureReturn()
     {
-        $output = $this->getHelpersMocked()->raw('some', function () {
+        $output = $this->getHelpers()->raw('some', function () {
             return "I'm loving it!";
         });
         assertSame("I'm loving it!", $output);
@@ -64,7 +83,7 @@ class HelpersTest extends TestCase
 
     public function testRaw()
     {
-        $h1 = $this->getHelpersMocked(['some' => 'bar']);
+        $h1 = $this->getHelpers(['some' => 'bar']);
         assertSame('bar', $h1->raw('some', 'foo'));
         $data = [
             'foo' => [
@@ -75,7 +94,7 @@ class HelpersTest extends TestCase
                 ],
             ],
         ];
-        $h2 = $this->getHelpersMocked($data);
+        $h2 = $this->getHelpers($data);
         assertSame('Deep! + f1,f2', $h2->raw('foo.bar.baz.some|f1|f2', 'foo'));
     }
 
@@ -84,7 +103,7 @@ class HelpersTest extends TestCase
      */
     public function testStrictVariablesException()
     {
-        $helpers = new Helpers(['strict_variables' => true]);
+        $helpers = $this->getHelpers([], true);
         $helpers->getIn(['foo' => 'bar'], 'bar.baz', true);
     }
 
@@ -93,20 +112,20 @@ class HelpersTest extends TestCase
      */
     public function testStrictVariablesNotice()
     {
-        $helpers = new Helpers(['strict_variables' => 'notice']);
+        $helpers = $this->getHelpers([], 'notice');
         $helpers->getIn(['foo' => 'bar'], 'bar.baz', true);
     }
 
     public function testAsArray()
     {
-        $helper = $this->getHelpersMocked(['string' => 'foo', 'object' => (object) ['id' => 'foo']]);
+        $helper = $this->getHelpers(['string' => 'foo', 'object' => (object) ['id' => 'foo']]);
         assertSame(['foo'], $helper->asArray('string'));
         assertSame(['id' => 'foo'], $helper->asArray('object'));
     }
 
     public function testIfNot()
     {
-        $helper = $this->getHelpersMocked(['foo' => 'foo', 'bar' => 'bar']);
+        $helper = $this->getHelpers(['foo' => 'foo', 'bar' => 'bar']);
         assertSame('Yes', $helper->ifNot('baz', 'Yes'));
         assertSame('', $helper->ifNot('foo', 'Yes'));
     }
