@@ -84,8 +84,8 @@ class AdvRenderTest extends TestCaseFunctional
             ]
         ]);
         $context_failed = new SearchContext('foo', ['i_do_not_exist' => 'NOT SHOULD BE HERE']);
-        $this->api->addContextUsing($context);
-        $this->api->addContextUsing($context_failed);
+        $this->engine->useContext($context);
+        $this->engine->useContext($context_failed);
         $this->engine->useContext('final', ['lowercase' => 'esacrewol ma i']);
     }
 

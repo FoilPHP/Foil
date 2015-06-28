@@ -10,7 +10,6 @@
 namespace Foil\Tests;
 
 use Foil\Foil;
-use Brain\Monkey\Functions;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -25,19 +24,15 @@ class TestCaseFunctional extends TestCase
     protected $engine;
 
     /**
-     * @var \Foil\API
+     * @var \Pimple\Container
      */
-    protected $api;
+    protected $container;
 
     /**
      * @param array $options
      */
     public function initFoil(array $options = [])
     {
-        Functions::when('Foil\entities')->alias(function ($var, $strategy = 'html') {
-            return $this->api->entities($var, $strategy);
-        });
-
         $base = realpath(getenv('FOIL_TESTS_BASEPATH')).DIRECTORY_SEPARATOR;
         $options = array_merge(
             [
@@ -49,7 +44,10 @@ class TestCaseFunctional extends TestCase
             $options
         );
         $app = Foil::boot($options);
-        $this->api = $app->api();
+        $this->container = $this->bindClosure(function() use(&$container) {
+            return $this->container;
+        }, $app);
+
         $this->engine = $app->engine();
     }
 }

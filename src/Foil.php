@@ -52,11 +52,6 @@ final class Foil
     ];
 
     /**
-     * @var \Foil\API
-     */
-    private $api;
-
-    /**
      * @var \Pimple\Container
      */
     private $container;
@@ -73,11 +68,9 @@ final class Foil
             : array_merge(self::$providers, array_filter($providers, 'is_string'));
 
         $container = new Container(['options' => array_merge(self::$defaults, $options)]);
-        $api = new API($container);
-        $container['api'] = $api;
         self::setup($container, $providers);
 
-        return new self($container, $api);
+        return new self($container);
     }
 
     /**
@@ -90,20 +83,10 @@ final class Foil
 
     /**
      * @param \Pimple\Container $container
-     * @param \Foil\API         $api
      */
-    public function __construct(Container $container, API $api)
+    public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->api = $api;
-    }
-
-    /**
-     * @return \Foil\API
-     */
-    public function api()
-    {
-        return $this->api;
     }
 
     /**

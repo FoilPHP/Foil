@@ -29,7 +29,9 @@ class SimpleRenderTest extends TestCaseFunctional
     {
         $this->initFoil();
         $section = '';
-        $this->api->on(
+        /** @var \Foil\Kernel\Events $events */
+        $events = $this->container['events'];
+        $events->on(
             'f.sections.content',
             function ($name, $content) use (&$section) {
                 $name === 'three' and $section = trim(preg_replace('/[\s]+/', ' ', $content));
@@ -45,7 +47,9 @@ class SimpleRenderTest extends TestCaseFunctional
     {
         $this->initFoil();
         $buffer = '';
-        $this->api->on(
+        /** @var \Foil\Kernel\Events $events */
+        $events = $this->container['events'];
+        $events->on(
             'f.template.renderlayout',
             function ($layout, Template $template) use (&$buffer) {
                 $buffer = $template->buffer();
