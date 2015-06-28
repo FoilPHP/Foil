@@ -10,10 +10,9 @@
 namespace Foil\Tests\Extension;
 
 use Foil\Tests\TestCase;
+use Foil\Extensions\Walker;
 use Mockery;
 use Foil;
-use Foil\Kernel\Arraize;
-use Aura\Html\Escaper\HtmlEscaper;
 use ArrayIterator;
 
 /**
@@ -24,45 +23,46 @@ use ArrayIterator;
 class WalkerTest extends TestCase
 {
     /**
+     * @param  bool                                           $autoescape
      * @return \Foil\Extensions\Walker|\Mockery\MockInterface
      */
-    private function getWalkerMocked()
+    private function getWalker($autoescape = true)
     {
-        $api = Mockery::mock();
-        $api->shouldReceive('arraize')->andReturnUsing(function ($value) {
-            $arraize = new Arraize($value, [], Foil\Kernel\Arraize::ESCAPE);
+        /** @var \Foil\Kernel\Command $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        /** @var \Foil\Kernel\Escaper|\Mockery\MockInterface $escaper */
+        $escaper = Mockery::mock('\Foil\Kernel\Escaper');
+        $escaper->shouldReceive('escape')->andReturnUsing(function ($data) {
+            if (is_string($data)) {
+                return htmlentities($data);
+            } elseif (is_array($data)) {
+                return array_map('htmlentities', $data);
+            }
 
-            return $arraize();
+            return '';
         });
-        $api->shouldReceive('entities')->andReturnUsing(function ($value) {
-            return array_map(new HtmlEscaper(), $value);
-        });
+        $options = ['autoescape' => $autoescape];
 
-        /** @var \Foil\Extensions\Walker|\Mockery\MockInterface $walker */
-        $walker = Mockery::mock('Foil\Extensions\Walker')->makePartial();
-        $walker->shouldReceive('option')->with('autoescape')->andReturn(true);
-        $walker->shouldReceive('api')->andReturn($api);
-
-        return $walker;
+        return new Walker($command, $escaper, $options);
     }
 
     public function testWalkArray()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = '<li>A - foo - bar</li><li>B - foo - bar</li><li>C - foo - bar</li>';
         assertSame($expected, $w->walk(['A', 'B', 'C'], '<li>%s %s %s</li>', '- foo', '- bar'));
     }
 
     public function testWalkArrayEscape()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = '<li>&quot;A&quot; &lt;foo&gt;</li><li>&quot;B&quot; &lt;foo&gt;</li>';
         assertSame($expected, $w->walk(['"A"', '"B"'], '<li>%s %s</li>', '<foo>'));
     }
 
     public function testWalkArrayArray()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = "<p>Tom is 30 years old and comes from London</p>"
             ."<p>Dick is 33 years old and comes from New York</p>"
             ."<p>Harry is 25 years old and comes from Berlin</p>";
@@ -72,7 +72,7 @@ class WalkerTest extends TestCase
 
     public function testWalkIterator()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = '<li>&quot;A&quot; foo</li><li>&quot;B&quot; foo</li><li>&quot;C&quot; foo</li>';
         $it = new ArrayIterator(['"A"', '"B"', '"C"']);
         assertSame($expected, $w->walk($it, '<li>%s %s</li>', 'foo'));
@@ -80,7 +80,7 @@ class WalkerTest extends TestCase
 
     public function testWalkIfBool()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = '<li>A - foo</li><li>B - foo</li><li>C - foo</li>';
         assertSame($expected, $w->walkIf(['A', 'B', 'C'], true, '<li>%s %s</li>', '- foo'));
         assertSame('', $w->walkIf(['A', 'B', 'C'], false, '<li>%s %s</li>', '- foo'));
@@ -88,7 +88,7 @@ class WalkerTest extends TestCase
 
     public function testWalkIfCallback()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = '<li>A - foo</li><li>B - foo</li><li>C - foo</li>';
         assertSame(
             $expected,
@@ -106,7 +106,7 @@ class WalkerTest extends TestCase
 
     public function testWalkWrap()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = '<ul><li>A - foo</li><li>B - foo</li><li>C - foo</li></ul>';
         assertSame(
             $expected,
@@ -116,7 +116,7 @@ class WalkerTest extends TestCase
 
     public function testWalkWrapIf()
     {
-        $w = $this->getWalkerMocked();
+        $w = $this->getWalker();
         $expected = '<ul><li>A - foo</li><li>B - foo</li><li>C - foo</li></ul>';
         assertSame(
             $expected,

@@ -9,6 +9,10 @@
  */
 namespace Foil\Extensions;
 
+use Foil\Contracts\ExtensionInterface;
+use Foil\Kernel\Command;
+use Foil\Kernel\Escaper;
+
 /**
  * Extension that provides very short functions names to be used in template files to walk arrays
  * and output string in a very concise way
@@ -17,8 +21,58 @@ namespace Foil\Extensions;
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Walker extends Base
+class Walker implements ExtensionInterface
 {
+    /**
+     * @var array
+     */
+    protected $args;
+
+    /**
+     * @var \Foil\Kernel\Command
+     */
+    private $command;
+
+    /**
+     * @var \Foil\Kernel\Escaper
+     */
+    private $escaper;
+
+    /**
+     * @var array
+     */
+    private $options;
+
+    /**
+     * @param \Foil\Kernel\Command $command
+     * @param \Foil\Kernel\Escaper $escaper
+     * @param array                $options
+     */
+    public function __construct(Command $command, Escaper $escaper, array $options)
+    {
+        $this->command = $command;
+        $this->escaper = $escaper;
+        $this->options = $options;
+    }
+
+    /**
+     * Setup the extension using an arguments array that should be provided on registration
+     *
+     * @param array $args
+     */
+    public function setup(array $args = [])
+    {
+        $this->args = $args;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function provideFilters()
+    {
+        return [];
+    }
+
     /**
      * @inheritdoc
      */
@@ -45,8 +99,8 @@ class Walker extends Base
     {
         $out = '';
         $args = $this->args(func_get_args(), 2);
-        $what = is_string($var) ? $this->api()->run('raw', $var) : $var;
-        foreach ($this->api()->arraize($what, $this->option('autoescape'), [], true) as $value) {
+        $what = is_string($var) ? $this->command->run('raw', $var) : $var;
+        foreach (\Foil\arraize($what, $this->options['autoescape'], [], true) as $value) {
             $replacement = is_array($value) ? $value : [$value];
             $out .= vsprintf($format, array_merge($replacement, $args));
         }
@@ -121,6 +175,6 @@ class Walker extends Base
     {
         $args = array_filter(array_slice($func_args, $slice), 'is_scalar');
 
-        return $this->option('autoescape') ? $this->api()->entities($args) : $args;
+        return $this->options['autoescape'] ? $this->escaper->escape($args) : $args;
     }
 }
