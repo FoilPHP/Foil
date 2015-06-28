@@ -12,7 +12,6 @@ namespace Foil;
 use Foil\Contracts\EngineInterface;
 use Foil\Contracts\TemplateAwareInterface as TemplateAware;
 use Foil\Contracts\FinderAwareInterface as FinderAware;
-use Foil\Contracts\APIAwareInterface as APIAware;
 use Foil\Contracts\ExtensionInterface as Extension;
 use Foil\Kernel\Events;
 use Foil\Template\Stack;
@@ -29,11 +28,10 @@ use InvalidArgumentException;
  * @method Engine useData()
  * @method Engine useContext()
  */
-class Engine implements EngineInterface, TemplateAware, FinderAware, APIAware
+class Engine implements EngineInterface, TemplateAware, FinderAware
 {
     use Traits\TemplateAwareTrait;
     use Traits\FinderAwareTrait;
-    use Traits\APIAwareTrait;
     /**
      * @var array
      */
