@@ -15,7 +15,6 @@ use Foil\Contracts\ExtensionInterface as Extension;
 use Foil\Contracts\TemplateAwareInterface as TemplateAware;
 use Foil\Contracts\FinderAwareInterface as FinderAware;
 use Foil\Contracts\EngineAwareInterface as EngineAware;
-use Foil\Contracts\APIAwareInterface as APIAware;
 use Foil\Kernel\Command;
 use Foil\Kernel\Events;
 use Foil\Kernel\Escaper;
@@ -67,9 +66,6 @@ class Kernel implements BootableServiceProviderInterface
                 }
                 if ($extension instanceof FinderAware) {
                     $extension->setFinder($container['template.finder']);
-                }
-                if ($extension instanceof APIAware) {
-                    $extension->setAPI($container['api']);
                 }
                 if ($extension instanceof EngineAware) {
                     $extension->setEngine($container['engine']);
