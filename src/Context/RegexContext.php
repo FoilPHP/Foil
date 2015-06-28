@@ -68,6 +68,9 @@ class RegexContext implements ContextInterface
         return $this->data();
     }
 
+    /**
+     * @return bool
+     */
     public function acceptBasename()
     {
         return $this->accept_basename = true;
