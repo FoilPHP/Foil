@@ -42,10 +42,12 @@ class Finder
      * Set the folders where to search for templates
      *
      * @param  array                    $dirs
+     * @param bool   $reset
      * @throws InvalidArgumentException
      */
-    public function in(array $dirs)
+    public function in(array $dirs, $reset = false)
     {
+        $reset and $this->dirs = [];
         array_walk($dirs, function ($dir, $name) {
             if (! is_dir($dir)) {
                 throw new InvalidArgumentException('Template folders must be readable paths.');

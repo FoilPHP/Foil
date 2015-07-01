@@ -43,6 +43,25 @@ class FinderTest extends TestCase
         assertSame($named_dirs, $f2->dirs());
     }
 
+    public function testInEdit()
+    {
+        $dirs = $this->fooDirs(true);
+        $finder = new Finder();
+        $finder->in(['foo' => $dirs['foo']]);
+        assertSame(['foo' => $dirs['foo']], $finder->dirs());
+        // add
+        $finder->in(['bar' => $dirs['bar']]);
+        assertSame($dirs, $finder->dirs());
+        // edit
+        $finder->in(['bar' => $dirs['foo']]);
+        assertSame(['foo' => $dirs['foo'], 'bar' => $dirs['foo']], $finder->dirs());
+        $finder->in(['foo' => $dirs['foo']]); // this do nothing
+        assertSame(['foo' => $dirs['foo'], 'bar' => $dirs['foo']], $finder->dirs());
+        // reset
+        $finder->in(['foo' => $dirs['foo']], true);
+        assertSame(['foo' => $dirs['foo']], $finder->dirs());
+    }
+
     public function testFindInDir()
     {
         $f = new Finder();

@@ -156,7 +156,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      */
     public function setFolders(array $folders)
     {
-        $this->finder()->in($folders);
+        $this->finder()->in($folders, true);
 
         return $this;
     }
