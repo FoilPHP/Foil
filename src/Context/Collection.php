@@ -11,7 +11,7 @@ namespace Foil\Context;
 
 use Foil\Contracts\ContextCollectionInterface;
 use Foil\Contracts\ContextInterface;
-use Foil\Engine;
+use Foil\Kernel\Events;
 use Foil\Traits;
 use SplObjectStorage;
 
@@ -27,9 +27,9 @@ class Collection implements ContextCollectionInterface
     use Traits\DataHandlerTrait;
 
     /**
-     * @var \Foil\Engine
+     * @var \Foil\Kernel\Events
      */
-    private $engine;
+    private $events;
 
     /**
      * @var \SplObjectStorage
@@ -47,11 +47,11 @@ class Collection implements ContextCollectionInterface
     private $allowed;
 
     /**
-     * @param \Foil\Engine $engine
+     * @param \Foil\Kernel\Events $events
      */
-    public function __construct(Engine $engine)
+    public function __construct(Events $events)
     {
-        $this->engine = $engine;
+        $this->events = $events;
         $this->storage = new SplObjectStorage();
         $this->allow();
     }
@@ -97,11 +97,11 @@ class Collection implements ContextCollectionInterface
             $context = $storage->current();
             if ($context->accept($template)) {
                 $data = array_merge($data, $context->provide());
-                $this->engine->fire('f.context.provided', $context, $this);
+                $this->events->fire('f.context.provided', $context, $this);
             }
             $storage->next();
         }
-        $this->engine->fire('f.context.allprovided', $this);
+        $this->events->fire('f.context.allprovided', $this);
 
         return $data;
     }

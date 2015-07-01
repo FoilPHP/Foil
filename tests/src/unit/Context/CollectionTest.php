@@ -25,10 +25,10 @@ class CollectionTest extends TestCase
      */
     private function getCollection()
     {
-        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
-        $engine = Mockery::mock('Foil\Engine');
-        $engine->shouldReceive('fire')->andReturnNull();
-        $collection = new Collection($engine);
+        /** @var \Foil\Kernel\Events|\Mockery\MockInterface $events */
+        $events = Mockery::mock('Foil\Kernel\Events');
+        $events->shouldReceive('fire')->andReturnNull();
+        $collection = new Collection($events);
         $collection->setData(['foo' => 'bar']);
 
         return $collection;
