@@ -224,14 +224,14 @@ class Helpers implements ExtensionInterface, TemplateAware
      * @param  string       $var       Variable name
      * @param  mixed        $default   Default
      * @param  string|array $filter    Array or pipe-separated list of filters
-     * @param  boolean      $force_raw Should use raw variable?
+     * @param  boolean      $forceRaw Should use raw variable?
      * @return mixed
      */
-    public function asArray($var, $default = [], $filter = null, $force_raw = false)
+    public function asArray($var, $default = [], $filter = null, $forceRaw = false)
     {
         $raw = $this->raw($var, (array) $default, $filter);
 
-        return \Foil\arraize($raw, ($this->autoescape && ! $force_raw));
+        return \Foil\arraize($raw, ($this->autoescape && ! $forceRaw));
     }
 
     /**
@@ -270,13 +270,13 @@ class Helpers implements ExtensionInterface, TemplateAware
      *
      * @param  string|array $filters     Array or pipe-separated list of filters
      * @param  string       $var         Variable name
-     * @param  array|void   $filter_args Array or additional arguments for filters
+     * @param  array|void   $args Array or additional arguments for filters
      * @param  mixed        $default     Default
      * @return mixed
      */
-    public function filter($filters, $var, array $filter_args = null, $default = '')
+    public function filter($filters, $var, array $args = null, $default = '')
     {
-        return $this->template()->filter($filters, $this->variable($var, $default), $filter_args);
+        return $this->template()->filter($filters, $this->variable($var, $default), $args);
     }
 
     /**

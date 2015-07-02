@@ -58,7 +58,7 @@ class Template implements AliasAllowedTemplateInterface
     /**
      * @var array
      */
-    private $layout_data = [];
+    private $layoutData = [];
 
     /**
      * @var string
@@ -68,7 +68,7 @@ class Template implements AliasAllowedTemplateInterface
     /**
      * @var string
      */
-    private $last_buffer = '';
+    private $lastBuffer = '';
 
     /**
      * @param                      $path
@@ -209,14 +209,14 @@ class Template implements AliasAllowedTemplateInterface
      */
     public function layout($layout, array $data = [], array $only = null)
     {
-        $layout_file = file_exists($layout) ? $layout : $this->engine->find($layout);
-        if (! $layout_file) {
+        $file = file_exists($layout) ? $layout : $this->engine->find($layout);
+        if (! $file) {
             throw new InvalidArgumentException('Layout must be a valid file name.');
         }
-        $this->layout = $layout_file;
-        $this->layout_data[$layout_file] = ['data' => $data, 'only' => $only];
+        $this->layout = $file;
+        $this->layoutData[$file] = ['data' => $data, 'only' => $only];
         // listener for this event makes sections work in non-output mode
-        $this->engine->fire('f.template.layout', $layout_file, $this);
+        $this->engine->fire('f.template.layout', $file, $this);
 
         return $this->layout;
     }
@@ -232,8 +232,8 @@ class Template implements AliasAllowedTemplateInterface
         while ($this->layoutPath()) {
             $layout = $this->layoutPath();
             $this->setData($this->buildContext(
-                $this->layout_data[$layout]['data'],
-                $this->layout_data[$layout]['only']
+                $this->layoutData[$layout]['data'],
+                $this->layoutData[$layout]['only']
             ));
             $this->layout = null;
             // listener for this event makes sections work in output mode
@@ -259,7 +259,7 @@ class Template implements AliasAllowedTemplateInterface
      */
     public function lastBuffer()
     {
-        return $this->last_buffer;
+        return $this->lastBuffer;
     }
 
     /**
@@ -285,7 +285,7 @@ class Template implements AliasAllowedTemplateInterface
         $this->alias and extract(["{$this->alias}" => $this], EXTR_SKIP);
         /** @noinspection PhpIncludeInspection */
         require $path;
-        $this->last_buffer = $this->buffer;
+        $this->lastBuffer = $this->buffer;
         $this->buffer = trim(ob_get_clean());
 
         return $this->buffer;

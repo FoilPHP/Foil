@@ -34,7 +34,7 @@ class Section implements SectionInterface
     /**
      * @var int
      */
-    private $default_mode;
+    private $defaultMode;
 
     /**
      * @var bool
@@ -42,17 +42,17 @@ class Section implements SectionInterface
     private $started = false;
 
     /**
-     * @param bool     $output_mode
-     * @param null|int $default_mode
+     * @param bool     $outputMode
+     * @param null|int $defaultMode
      */
-    public function __construct($output_mode = false, $default_mode = null)
+    public function __construct($outputMode = false, $defaultMode = null)
     {
-        if ($output_mode !== false && ! in_array($output_mode, self::$modes, true)) {
-            $output_mode = self::MODE_OUTPUT;
+        if ($outputMode !== false && ! in_array($outputMode, self::$modes, true)) {
+            $outputMode = self::MODE_OUTPUT;
         }
-        $this->mode = $output_mode;
-        if (in_array($default_mode, self::$modes, true)) {
-            $this->default_mode = $default_mode;
+        $this->mode = $outputMode;
+        if (in_array($defaultMode, self::$modes, true)) {
+            $this->defaultMode = $defaultMode;
         }
     }
 
@@ -114,7 +114,7 @@ class Section implements SectionInterface
      */
     public function stop()
     {
-        $this->default_mode === self::MODE_REPLACE ? $this->replace() : $this->append();
+        $this->defaultMode === self::MODE_REPLACE ? $this->replace() : $this->append();
     }
 
     /**

@@ -86,8 +86,8 @@ class Context implements BootableServiceProviderInterface
             $collection->add($args[0]);
         }
         if (is_string($args[0]) && isset($args[1]) && is_array($args[1])) {
-            $is_regex = isset($args[2]) && ! empty($args[2]);
-            $class = $is_regex ? '\\Foil\\Context\\RegexContext' : '\\Foil\\Context\\SearchContext';
+            $regex = isset($args[2]) && ! empty($args[2]);
+            $class = $regex ? '\\Foil\\Context\\RegexContext' : '\\Foil\\Context\\SearchContext';
             $collection->add(new $class($args[0], $args[1]));
         }
     }

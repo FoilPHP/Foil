@@ -46,19 +46,19 @@ interface EngineInterface
     /**
      * Register a function to be used in templates
      *
-     * @param string   $function_name
+     * @param string   $functionName
      * @param callable $function
      */
-    public function registerFunction($function_name, callable $function);
+    public function registerFunction($functionName, callable $function);
 
     /**
      * Register a filter to be used in templates
      *
-     * @param  string          $filter_name
+     * @param  string          $filterName
      * @param  callable        $filter
      * @return EngineInterface Itself, for fluent interface
      */
-    public function registerFilter($filter_name, callable $filter);
+    public function registerFilter($filterName, callable $filter);
 
     /**
      * Load an extension into the engine

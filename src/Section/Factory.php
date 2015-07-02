@@ -38,21 +38,21 @@ class Factory
     /**
      * @var int
      */
-    private $default_mode;
+    private $defaultMode;
 
     /**
      * @param \ArrayAccess $sections
-     * @param null|int     $default_mode
+     * @param null|int     $defaultMode
      * @param null |string $contract
      */
-    public function __construct(ArrayAccess $sections, $default_mode = null, $contract = null)
+    public function __construct(ArrayAccess $sections, $defaultMode = null, $contract = null)
     {
         if (! is_string($contract) || ! interface_exists($contract)) {
             $contract = self::DEFAULT_CONTRACT;
         }
         $this->contract = $contract;
         $this->sections = $sections;
-        $this->default_mode = $default_mode;
+        $this->defaultMode = $defaultMode;
     }
 
     /**
@@ -60,18 +60,18 @@ class Factory
      *
      * @param  string                           $name       Section name
      * @param  int|bool                         $mode       Section mode, one of the mode const
-     * @param  string                           $class_name Full qualified section class name
+     * @param  string                           $className Full qualified section class name
      * @return \Foil\Contracts\SectionInterface
      * @throws InvalidArgumentException
      */
-    public function factory($name, $mode = false, $class_name = null)
+    public function factory($name, $mode = false, $className = null)
     {
         if (! is_string($name)) {
             throw new InvalidArgumentException('Section name must be in a string.');
         }
         if (! $this->sections->offsetExists($name)) {
-            $class = $this->getClass($class_name);
-            $this->sections[$name] = new $class($mode, $this->default_mode);
+            $class = $this->getClass($className);
+            $this->sections[$name] = new $class($mode, $this->defaultMode);
         } else {
             $merge = $mode === SectionInterface::MODE_REPLACE ? false : true;
             $this->sections[$name]->setMode($mode, $merge);

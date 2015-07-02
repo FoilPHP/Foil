@@ -78,45 +78,45 @@ class Uri implements ExtensionInterface
      * and 2nd item is the chunk to match.
      *
      * @param  string|array $url
-     * @param  mixed        $if_true  What return if the compare is true
-     * @param  mixed        $if_false What return if the compare is true
+     * @param  mixed        $true  What return if the compare is true
+     * @param  mixed        $false What return if the compare is true
      * @return mixed
      */
-    public function is($url = '', $if_true = true, $if_false = "")
+    public function is($url = '', $true = true, $false = "")
     {
         if (is_array($url) && isset($url[0]) && is_int($url[0]) && $url[0] <= count($this->chunks)) {
             $chunk = isset($url[1]) && is_string($url[1]) ? $this->clean($url[1]) : '';
 
-            return $this->clean($this->chunks[($url[0] - 1)]) === $chunk ? $if_true : $if_false;
+            return $this->clean($this->chunks[($url[0] - 1)]) === $chunk ? $true : $false;
         }
 
-        return $this->clean($this->path) === $this->clean($url) ? $if_true : $if_false;
+        return $this->clean($this->path) === $this->clean($url) ? $true : $false;
     }
 
     /**
      * Check if current url starts with a given url.
      *
      * @param  string $url
-     * @param  mixed  $if_true  What return if the compare is true
-     * @param  mixed  $if_false What return if the compare is true
+     * @param  mixed  $true  What return if the compare is true
+     * @param  mixed  $false What return if the compare is true
      * @return mixed
      */
-    public function has($url = '', $if_true = true, $if_false = "")
+    public function has($url = '', $true = true, $false = "")
     {
-        return strpos($this->path, $this->clean($url)) === 0 ? $if_true : $if_false;
+        return strpos($this->path, $this->clean($url)) === 0 ? $true : $false;
     }
 
     /**
      * Check if current url matches a given regex.
      *
      * @param  string $regex
-     * @param  mixed  $if_true  What return if the compare is true
-     * @param  mixed  $if_false What return if the compare is true
+     * @param  mixed  $true  What return if the compare is true
+     * @param  mixed  $false What return if the compare is true
      * @return mixed
      */
-    public function match($regex = '', $if_true = true, $if_false = "")
+    public function match($regex = '', $true = true, $false = "")
     {
-        return preg_match("~{$regex}~", $this->path) === 1 ? $if_true : $if_false;
+        return preg_match("~{$regex}~", $this->path) === 1 ? $true : $false;
     }
 
     /**

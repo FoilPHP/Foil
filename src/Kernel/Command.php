@@ -95,8 +95,8 @@ class Command
      */
     public function run($function)
     {
-        $can_echo = ['stop', 'append', 'replace', 'section', 'block', 'endblock'];
-        if (in_array($function, $can_echo, true)) {
+        $canEcho = ['stop', 'append', 'replace', 'section', 'block', 'endblock'];
+        if (in_array($function, $canEcho, true)) {
             return call_user_func_array([$this, 'doRun'], func_get_args());
         }
 
@@ -142,9 +142,9 @@ class Command
         }
         $this->$which = array_merge($this->$which, $filtered);
         if ($which === 'functions' && ! empty($safe)) {
-            $are_safe = is_array($safe) ? array_intersect($safe,
+            $areSafe = is_array($safe) ? array_intersect($safe,
                 array_keys($filtered)) : array_keys($filtered);
-            $this->safe = array_merge($this->safe, $are_safe);
+            $this->safe = array_merge($this->safe, $areSafe);
         }
     }
 

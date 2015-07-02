@@ -81,12 +81,12 @@ class AuraHtml implements ExtensionInterface
 
     /**
      * @param \Aura\Html\HelperLocator $locator
-     * @param bool                     $register_tag_functions
+     * @param bool                     $registerTagFunctions
      */
-    public function __construct(HelperLocator $locator, $register_tag_functions = false)
+    public function __construct(HelperLocator $locator, $registerTagFunctions = false)
     {
         $this->locator = $locator;
-        $this->register = filter_var($register_tag_functions, FILTER_VALIDATE_BOOLEAN);
+        $this->register = filter_var($registerTagFunctions, FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
@@ -112,6 +112,7 @@ class AuraHtml implements ExtensionInterface
     }
 
     /**
+     * @param string $tag
      * @return mixed
      * @throws \Aura\Html\Exception\HelperNotFound
      * @link https://github.com/auraphp/Aura.Html/blob/2.x/README-HELPERS.md
@@ -125,8 +126,10 @@ class AuraHtml implements ExtensionInterface
         } elseif ($tag === 'input' && $args && is_array($args[0]) && isset($args[0]['type'])) {
             return $this->input($args[0]['type'], $args[0]);
         }
+        /** @var callable $callable */
+        $callable = $this->locator->get($tag);
 
-        return call_user_func_array($this->locator->get($tag), $args);
+        return call_user_func_array($callable, $args);
     }
 
     /**
@@ -139,7 +142,9 @@ class AuraHtml implements ExtensionInterface
     private function input($type, array $args)
     {
         $args['type'] = $type;
-        $input = call_user_func($this->locator->get('input'), $args);
+        /** @var callable $callable */
+        $callable = $this->locator->get('input');
+        $input = call_user_func($callable, $args);
 
         return $input->__toString();
     }

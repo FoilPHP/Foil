@@ -35,7 +35,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * @var array
      */
-    private static $safe_functions = ['useData', 'useContext'];
+    private static $safeFunctions = ['useData', 'useContext'];
 
     /**
      * @var int
@@ -67,7 +67,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      */
     public function __call($name, array $arguments)
     {
-        if (! in_array($name, self::$safe_functions, true)) {
+        if (! in_array($name, self::$safeFunctions, true)) {
             throw new LogicException($name.' is not a valid engine method.');
         }
         $this->fire('f.engine.call', $name, $arguments);
@@ -108,13 +108,13 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Register a single filter
      *
-     * @param  string       $filter_name
+     * @param  string       $filterName
      * @param  callable     $filter
      * @return \Foil\Engine Itself for fluent interface
      */
-    public function registerFilter($filter_name, callable $filter)
+    public function registerFilter($filterName, callable $filter)
     {
-        $this->fire('f.filter.register', $filter_name, $filter);
+        $this->fire('f.filter.register', $filterName, $filter);
 
         return $this;
     }
@@ -122,14 +122,14 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Register a single function
      *
-     * @param  string       $function_name
+     * @param  string       $functionName
      * @param  callable     $function
      * @param  boolean      $safe          Can function output html?
      * @return \Foil\Engine Itself for fluent interface
      */
-    public function registerFunction($function_name, callable $function, $safe = false)
+    public function registerFunction($functionName, callable $function, $safe = false)
     {
-        $this->fire('f.function.register', $function_name, $function, $safe);
+        $this->fire('f.function.register', $functionName, $function, $safe);
 
         return $this;
     }
@@ -137,13 +137,13 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Register a block.
      *
-     * @param  string       $block_name
-     * @param  callable     $block_function
+     * @param  string       $name
+     * @param  callable     $callback
      * @return \Foil\Engine Itself for fluent interface
      */
-    public function registerBlock($block_name, callable $block_function)
+    public function registerBlock($name, callable $callback)
     {
-        $this->fire('f.block.register', $block_name, $block_function);
+        $this->fire('f.block.register', $name, $callback);
 
         return $this;
     }

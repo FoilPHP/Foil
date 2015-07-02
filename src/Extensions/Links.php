@@ -26,12 +26,12 @@ class Links implements ExtensionInterface
     /**
      * @var string
      */
-    private $asset_path = '';
+    private $assetPath = '';
 
     /**
      * @var string
      */
-    private $asset_url = '/';
+    private $assetUrl = '/';
 
     /**
      * @var array
@@ -46,7 +46,7 @@ class Links implements ExtensionInterface
     /**
      * @var string
      */
-    private $assets_host;
+    private $assetsHost;
 
     /**
      * @var string
@@ -56,7 +56,7 @@ class Links implements ExtensionInterface
     /**
      * @var bool
      */
-    private $cache_bust = false;
+    private $cacheBust = false;
 
     /**
      * @inheritdoc
@@ -95,19 +95,19 @@ class Links implements ExtensionInterface
      * set via setup arguments. Allow to easily output long urls with few chars.
      *
      * @param  string      $file
-     * @param  string|bool $subdir_url
-     * @param  boolean     $use_scheme
+     * @param  string|bool $subdirUrl
+     * @param  boolean     $scheme
      * @return string
      */
-    public function link($file, $subdir_url = false, $use_scheme = null)
+    public function link($file, $subdirUrl = false, $scheme = null)
     {
         $sub = '/';
         $clean = $this->clean($file, false);
-        if (is_string($subdir_url) && array_key_exists(strtolower($subdir_url), $this->urls)) {
-            $sub = $this->urls[strtolower($subdir_url)];
+        if (is_string($subdirUrl) && array_key_exists(strtolower($subdirUrl), $this->urls)) {
+            $sub = $this->urls[strtolower($subdirUrl)];
         }
 
-        return $this->addHost($sub.$clean, $use_scheme, false);
+        return $this->addHost($sub.$clean, $scheme, false);
     }
 
     /**
@@ -117,24 +117,24 @@ class Links implements ExtensionInterface
      * to use different schemes on a per-url basis.
      *
      * @param  string  $asset
-     * @param  boolean $use_scheme
+     * @param  boolean $scheme
      * @return string
      */
-    public function asset($asset, $use_scheme = null)
+    public function asset($asset, $scheme = null)
     {
         $suffix = false;
         $ext = strtolower(pathinfo($asset, PATHINFO_EXTENSION));
-        if (is_array($this->cache_bust) && in_array($ext, $this->cache_bust,
-                true) && is_string($this->asset_path)
+        if (is_array($this->cacheBust) && in_array($ext, $this->cacheBust,
+                true) && is_string($this->assetPath)
         ) {
-            $path = $this->asset_path.DIRECTORY_SEPARATOR.$this->normalize($asset);
+            $path = $this->assetPath.DIRECTORY_SEPARATOR.$this->normalize($asset);
             $suffix = is_readable($path) ? @filemtime($path) : false;
         }
         if ($suffix) {
             $asset = substr($asset, 0, -1 * strlen($ext)).$suffix.'.'.$ext;
         }
 
-        return $this->addHost($this->asset_url.$asset, $use_scheme, true);
+        return $this->addHost($this->assetUrl.$asset, $scheme, true);
     }
 
     /**
@@ -200,15 +200,15 @@ class Links implements ExtensionInterface
             'scripts' => ['js'],
         ];
         if ($args['cache_bust'] === true || $args['cache_bust'] === 'all') {
-            $this->cache_bust = array_merge($def['images'], $def['styles'], $def['scripts']);
+            $this->cacheBust = array_merge($def['images'], $def['styles'], $def['scripts']);
         } elseif (is_array($args['cache_bust'])) {
-            $this->cache_bust = array_map([$this, 'cleanExt'],
+            $this->cacheBust = array_map([$this, 'cleanExt'],
                 array_filter($args['cache_bust'], 'is_string'));
         } elseif (
             is_string($args['cache_bust'])
             && array_key_exists(strtolower($args['cache_bust']), $def)
         ) {
-            $this->cache_bust = $def[strtolower($args['cache_bust'])];
+            $this->cacheBust = $def[strtolower($args['cache_bust'])];
         }
     }
 
@@ -217,13 +217,13 @@ class Links implements ExtensionInterface
      */
     private function setupAssetPaths($args)
     {
-        $this->asset_url = isset($args['assets_url']) && is_string($args['assets_url'])
+        $this->assetUrl = isset($args['assets_url']) && is_string($args['assets_url'])
             ? '/'.$this->clean($args['assets_url']).'/'
             : '/';
-        if (! is_array($this->cache_bust)) {
+        if (! is_array($this->cacheBust)) {
             return;
         }
-        $this->asset_path = isset($args['assets_path'])
+        $this->assetPath = isset($args['assets_path'])
             ? rtrim($this->normalize($args['assets_path']), '/\\')
             : false;
     }
@@ -273,19 +273,19 @@ class Links implements ExtensionInterface
 
     /**
      * @param  string $url
-     * @param  bool   $use_scheme
-     * @param  bool   $is_asset
+     * @param  bool   $useScheme
+     * @param  bool   $asset
      * @return string
      */
-    private function addHost($url, $use_scheme, $is_asset)
+    private function addHost($url, $useScheme, $asset)
     {
-        $host = $is_asset && ! is_null($this->assets_host) ? $this->assets_host : $this->host;
+        $host = $asset && ! is_null($this->assetsHost) ? $this->assetsHost : $this->host;
         if (! $host) {
             return $url;
         }
         $scheme = '//';
-        if ($use_scheme !== false) {
-            $scheme = $this->isScheme($use_scheme) ? strtolower($use_scheme).'://' : $this->scheme;
+        if ($useScheme !== false) {
+            $scheme = $this->isScheme($useScheme) ? strtolower($useScheme).'://' : $this->scheme;
         }
 
         return $scheme.$host.'/'.ltrim($url, '\\/');

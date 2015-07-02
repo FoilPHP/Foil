@@ -31,6 +31,9 @@ trait EngineAwareTrait
         return $this->engine;
     }
 
+    /**
+     * @param \Foil\Contracts\EngineInterface $engine
+     */
     public function setEngine(EngineInterface $engine)
     {
         $this->engine = $engine;

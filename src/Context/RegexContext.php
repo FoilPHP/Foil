@@ -32,7 +32,7 @@ class RegexContext implements ContextInterface
     /**
      * @var bool
      */
-    private $accept_basename = false;
+    private $acceptBasename = false;
 
     /**
      * @param string $regex
@@ -55,7 +55,7 @@ class RegexContext implements ContextInterface
         if (! is_string($template)) {
             throw new InvalidArgumentException('Template name must be in a string');
         }
-        $match = $this->accept_basename ? basename($template) : $template;
+        $match = $this->acceptBasename ? basename($template) : $template;
 
         return preg_match($this->regex, $match) === 1;
     }
@@ -73,6 +73,6 @@ class RegexContext implements ContextInterface
      */
     public function acceptBasename()
     {
-        return $this->accept_basename = true;
+        return $this->acceptBasename = true;
     }
 }

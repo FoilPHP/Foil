@@ -167,13 +167,13 @@ class Walker implements ExtensionInterface
     }
 
     /**
-     * @param  array $func_args
+     * @param  array $funcArgs
      * @param  int   $slice
      * @return array
      */
-    private function args(array $func_args, $slice = 2)
+    private function args(array $funcArgs, $slice = 2)
     {
-        $args = array_filter(array_slice($func_args, $slice), 'is_scalar');
+        $args = array_filter(array_slice($funcArgs, $slice), 'is_scalar');
 
         return $this->options['autoescape'] ? $this->escaper->escape($args) : $args;
     }

@@ -107,56 +107,56 @@ class Finder
      * folder_name::file_name.
      * If file name as no extension, default extension is appended if available.
      *
-     * @param  string $template_name
+     * @param  string $templateName
      * @return array
      * @access private
      */
-    private function parseName($template_name)
+    private function parseName($templateName)
     {
         $dir = false;
-        $template_array = explode('::', $template_name);
-        if (count($template_array) > 1) {
-            $dir = $this->normalize($template_array[0]);
-            $template_name = $this->normalize($template_array[1]);
+        $array = explode('::', $templateName);
+        if (count($array) > 1) {
+            $dir = $this->normalize($array[0]);
+            $templateName = $this->normalize($array[1]);
         }
-        $ext = (string) pathinfo($template_name, PATHINFO_EXTENSION);
+        $ext = (string) pathinfo($templateName, PATHINFO_EXTENSION);
         if (empty($ext) && is_string($this->ext) && ! empty($this->ext)) {
-            $template_name .= ".{$this->ext}";
+            $templateName .= ".{$this->ext}";
         }
 
-        return ['dir' => $dir, 'file' => $this->normalize($template_name)];
+        return ['dir' => $dir, 'file' => $this->normalize($templateName)];
     }
 
     /**
      * Find a template when a specific directory name is required
      *
      * @param  string  $dir
-     * @param  string  $template_name
+     * @param  string  $templateName
      * @return boolean
      */
-    private function findInDir($dir, $template_name)
+    private function findInDir($dir, $templateName)
     {
         if (! array_key_exists($dir, $this->dirs)) {
             return false;
         }
 
-        return $this->exists($this->dirs[$dir], $template_name);
+        return $this->exists($this->dirs[$dir], $templateName);
     }
 
     /**
      * Scans directories to find a template that matches given template name.
      *
-     * @param  string         $template_name
+     * @param  string         $template
      * @return string|boolean Template full path if found, false otherwise
      * @access private
      */
-    private function scanFor($template_name)
+    private function scanFor($template)
     {
         $in = $this->dirs;
         $found = false;
         while (! $found && ! empty($in)) {
             $dir = array_shift($in);
-            $found = $this->exists($dir, $template_name);
+            $found = $this->exists($dir, $template);
         }
 
         return $found;
@@ -166,12 +166,12 @@ class Finder
      * Check if a given template file exists in a given directory
      *
      * @param  string         $dir
-     * @param  string         $template_name
+     * @param  string         $template
      * @return string|boolean Template full path if found, false otherwise
      */
-    private function exists($dir, $template_name)
+    private function exists($dir, $template)
     {
-        $path = $dir.DIRECTORY_SEPARATOR.$template_name;
+        $path = $dir.DIRECTORY_SEPARATOR.$template;
 
         return file_exists($path) ? $path : false;
     }

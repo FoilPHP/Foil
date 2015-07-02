@@ -87,16 +87,16 @@ class Factory
      *
      * @param  string                            $path       Full path to template file
      * @param  \Foil\Engine                      $engine
-     * @param  string                            $class_name A custom template class name
+     * @param  string                            $className A custom template class name
      * @return \Foil\Contracts\TemplateInterface
      */
-    public function factory($path, Engine $engine, $class_name = null)
+    public function factory($path, Engine $engine, $className = null)
     {
         if (! is_string($path)) {
             throw new InvalidArgumentException('Template path must be in a string.');
         }
         if (! $this->templates->offsetExists($path)) {
-            $class = $this->getClass($class_name);
+            $class = $this->getClass($className);
             $template = new $class($path, $this->sections, $engine, $this->command);
             ($template instanceof Aliasable && $this->alias) and $template->alias($this->alias);
             $this->templates[$path] = $template;
