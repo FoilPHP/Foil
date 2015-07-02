@@ -13,6 +13,7 @@ use Foil\Engine;
 use Foil\Kernel\Command;
 use ArrayAccess;
 use InvalidArgumentException;
+use Foil\Contracts\AliasAllowedTemplateInterface as Aliasable;
 
 /**
  * Factory and holds templates object instances.
@@ -52,6 +53,11 @@ class Factory
     private $defaultClass;
 
     /**
+     * @var string
+     */
+    private $alias;
+
+    /**
      * @param \ArrayAccess         $templates
      * @param \ArrayAccess         $sections
      * @param \Foil\Kernel\Command $command
@@ -73,6 +79,7 @@ class Factory
         $this->contract = is_string($contract) && interface_exists($contract)
             ? $contract
             : self::DEFAULT_CONTRACT;
+        isset($options['alias']) and $this->alias = new Alias($options['alias']);
     }
 
     /**
@@ -90,7 +97,9 @@ class Factory
         }
         if (! $this->templates->offsetExists($path)) {
             $class = $this->getClass($class_name);
-            $this->templates[$path] = new $class($path, $this->sections, $engine, $this->command);
+            $template = new $class($path, $this->sections, $engine, $this->command);
+            ($template instanceof Aliasable && $this->alias) and $template->alias($this->alias);
+            $this->templates[$path] = $template;
         }
 
         return $this->templates[$path];

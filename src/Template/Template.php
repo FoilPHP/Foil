@@ -9,7 +9,7 @@
  */
 namespace Foil\Template;
 
-use Foil\Contracts\TemplateInterface;
+use Foil\Contracts\AliasAllowedTemplateInterface;
 use Foil\Engine;
 use Foil\Kernel\Command;
 use ArrayAccess;
@@ -21,7 +21,7 @@ use InvalidArgumentException;
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Template implements TemplateInterface
+class Template implements AliasAllowedTemplateInterface
 {
     use Traits\DataHandlerTrait;
 
@@ -44,6 +44,11 @@ class Template implements TemplateInterface
      * @var \Foil\Kernel\Command
      */
     private $command;
+
+    /**
+     * @var \Foil\Template\Alias|null
+     */
+    private $alias;
 
     /**
      * @var string
@@ -114,6 +119,16 @@ class Template implements TemplateInterface
     public function path()
     {
         return $this->path;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function alias(Alias $alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
     }
 
     /**
@@ -240,7 +255,7 @@ class Template implements TemplateInterface
     }
 
     /**
-     * Return las buffer.
+     * Return last buffer.
      */
     public function lastBuffer()
     {
@@ -267,6 +282,7 @@ class Template implements TemplateInterface
     protected function collect($path)
     {
         ob_start();
+        $this->alias and extract(["{$this->alias}" => $this], EXTR_SKIP);
         /** @noinspection PhpIncludeInspection */
         require $path;
         $this->last_buffer = $this->buffer;

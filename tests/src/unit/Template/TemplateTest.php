@@ -11,6 +11,7 @@ namespace Foil\Tests\Template;
 
 use Foil\Tests\TestCase;
 use Foil\Template\Template;
+use Foil\Template\Alias;
 use Mockery;
 use ArrayObject;
 
@@ -110,5 +111,29 @@ class TemplateTest extends TestCase
         $template->layout('bar.inc');
         assertSame('foo|bar', $template->render(['foo', 'bar']));
         assertSame('foo,bar', $template->lastBuffer());
+    }
+
+    public function testAlias(){
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $command->shouldReceive('run')
+            ->with('v', 'foo')
+            ->andReturn('Foo!');
+
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+
+        $template->alias(new Alias('T'));
+
+        $file = realpath(getenv('FOIL_TESTS_BASEPATH').'/_files/foo/alias.php');
+
+        $collected = '';
+        $this->bindClosure(function($file) use(&$collected) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $collected = $this->collect($file);
+        }, $template, [$file]);
+
+        assertSame('Foo!', trim($collected));
     }
 }
