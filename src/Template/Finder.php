@@ -42,7 +42,7 @@ class Finder
      * Set the folders where to search for templates
      *
      * @param  array                    $dirs
-     * @param bool   $reset
+     * @param  bool                     $reset
      * @throws InvalidArgumentException
      */
     public function in(array $dirs, $reset = false)
@@ -63,14 +63,20 @@ class Finder
     /**
      * Find a template
      *
-     * @param  string                   $template
+     * @param  string|array             $template
      * @return string|boolean           Template path if found or false if not
      * @throws InvalidArgumentException
      */
     public function find($template)
     {
-        if (! is_string($template)) {
-            throw new InvalidArgumentException('Template name must be in a string.');
+        is_array($template) and $template = array_filter($template, 'is_string');
+        if ((! is_string($template) && ! is_array($template)) || empty($template)) {
+            throw new InvalidArgumentException(
+                'Template name must be a string or an array of strings.'
+            );
+        }
+        if (is_array($template)) {
+            return $this->findMany($template);
         }
         $parse = $this->parseName($template);
         if ($parse['dir']) {
@@ -100,6 +106,22 @@ class Finder
     public function dirs()
     {
         return $this->dirs;
+    }
+
+    /**
+     * Return first found of an array of templates
+     *
+     * @param  array       $templates
+     * @return bool|string
+     */
+    private function findMany(array $templates)
+    {
+        $found = false;
+        while (! $found && ! empty($templates)) {
+            $found = $this->find(array_shift($templates));
+        }
+
+        return $found;
     }
 
     /**
