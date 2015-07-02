@@ -179,7 +179,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Find a template in registered folders.
      *
-     * @param  string         $template
+     * @param  string|array   $template
      * @return string|boolean Full path of template if found, false otherwise
      */
     public function find($template)
@@ -190,7 +190,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Render a given template with given data.
      *
-     * @param  string           $template
+     * @param  string|array     $template
      * @param  array            $data
      * @return string
      * @throws RuntimeException
