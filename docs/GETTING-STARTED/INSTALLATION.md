@@ -24,7 +24,7 @@ As alternative you can directly edit your `composer.json` by adding:
 ```json
 {
   "require": {
-    "foil/foil": "~0.4"
+    "foil/foil": "~0.6"
   }
 }
 ```

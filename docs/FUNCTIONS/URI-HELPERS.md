@@ -1,6 +1,6 @@
 <!--
 currentMenu: "urihelpers"
-currentSection: "Functions"
+currentSection: "Blocks & Helpers"
 title: "URI Helpers"
 -->
 

@@ -25,6 +25,7 @@ FOIL
 
 ...and many more
 
+
 # Why?
 
 Templates engines like Twig, or Blade are a great thing, really.
@@ -46,6 +47,17 @@ I wrote [a blog post](http://gm.zoomlab.it/2015/template-engines-i-moved-from-lo
 # Requirements
 
 Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.
+
+---
+
+# Backward Incompatibility Notice
+
+Foil version **0.6** introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
+core features and especially template functions were not affected.
+
+Please see v0.6 release notes to know more on the topic.
+
+---
 
 # License
 

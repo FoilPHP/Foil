@@ -71,6 +71,12 @@ Same method can be used to check if a template file exists: it returns `false` i
 
 See  *"Getting Started / File Extensions"* to know more about default extension and  *"Getting Started / Folders"* to know more about folder IDs.
 
+### Search multiple templates
+
+Since version 0.6, is possible to pass to `find()` method, an array of template names. The first found among them will be returned.
+
+Note that `Engine::render()` method internally uses `find()`, so it is possible to pass an array of templates to `render()` method as well.
+
 
 ## Custom Template Classes
 

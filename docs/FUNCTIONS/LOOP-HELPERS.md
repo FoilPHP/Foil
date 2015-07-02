@@ -1,6 +1,6 @@
 <!--
 currentMenu: "loophelpers"
-currentSection: "Functions"
+currentSection: "Blocks & Helpers"
 title: "Loop Helpers"
 -->
 

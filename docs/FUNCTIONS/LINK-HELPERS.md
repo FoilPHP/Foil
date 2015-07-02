@@ -1,6 +1,6 @@
 <!--
 currentMenu: "linkhelpers"
-currentSection: "Functions"
+currentSection: "Blocks & Helpers"
 title: "Link Helpers"
 -->
 

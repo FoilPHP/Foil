@@ -1,6 +1,6 @@
 <!--
 currentMenu: "htmlhelpers"
-currentSection: "Functions"
+currentSection: "Blocks & Helpers"
 title: "HTML & Form Helpers"
 -->
 
