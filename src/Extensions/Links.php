@@ -143,16 +143,47 @@ class Links implements ExtensionInterface
      */
     private function setupHost(array $args, $which = 'host')
     {
-        if (! isset($args[$which]) || is_null($args[$which])) {
-            $this->$which = $which === 'host' ? false : null;
-        } elseif (empty($args[$which])) {
-            $this->$which = false;
-        } elseif (is_string($args[$which]) && strtolower($args[$which]) !== 'auto') {
-            $parse = parse_url($args[$which]);
-            $host = isset($parse['host']) ? $parse['host'] : $parse['path'];
-            $this->$which = $this->clean($host);
-        } elseif ($args[$which] === true || is_string($args[$which])) {
-            $this->$which = $this->clean(filter_input(INPUT_SERVER, 'SERVER_NAME'));
+        $checks = [
+            function(array $args, $which) {
+                return ! isset($args[$which]) || is_null($args[$which]);
+            },
+            function(array $args, $which) {
+                return empty($args[$which]);
+            },
+            function(array $args, $which) {
+                return is_string($args[$which]) && strtolower($args[$which]) !== 'auto';
+            },
+            function(array $args, $which) {
+                return $args[$which] === true || is_string($args[$which]);
+            }
+        ];
+        $actions = [
+            function($var, $which) {
+                $this->$var = $which === 'host' ? false : null;
+            },
+            function($var) {
+                $this->$var = false;
+            },
+            function($var, $which, array $args) {
+                $parse = parse_url($args[$which]);
+                $host = isset($parse['host']) ? $parse['host'] : $parse['path'];
+                $this->$var = $this->clean($host);
+            },
+            function($var) {
+                $this->$var = $this->clean(filter_input(INPUT_SERVER, 'SERVER_NAME'));
+            },
+        ];
+
+        foreach($checks as $i => $check) {
+            if ($check($args, $which)) {
+                $args = [
+                    $which === 'assets_host' ? 'assetsHost' : 'host',
+                    $which,
+                    $args,
+                ];
+                call_user_func_array($actions[$i], $args);
+                break;
+            }
         }
     }
 
