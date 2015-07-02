@@ -197,6 +197,9 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      */
     public function render($template, array $data = [])
     {
+        if (is_file($template)) {
+            return $this->renderTemplate($template, $data);
+        }
         $path = $this->find($template);
         if ($path) {
             return $this->doRender($path, $data);
