@@ -37,6 +37,11 @@
                                   </a>
                               </li>
                                                         <li class="">
+                                  <a href="http://www.foilphp.it/docs/GETTING-STARTED/ALIAS.html">
+                                      Alias
+                                  </a>
+                              </li>
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/GETTING-STARTED/FOLDERS.html">
                                       Folders
                                   </a>
@@ -59,6 +64,11 @@
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">
                                       Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/TEMPLATES/SECTIONS-RENDERING.html">
+                                      Sections Rendering
                                   </a>
                               </li>
                                                         <li class="">
@@ -104,8 +114,13 @@
                                                 </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Blocks &amp; Helpers</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/BLOCKS.html">
+                                      Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">
                                       Loop Helpers
@@ -136,6 +151,11 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/EXTENDING/CUSTOM-BLOCKS.html">
+                                      Custom Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
                                       Custom Functions and Filters
@@ -184,8 +204,7 @@ title: "Overview"
 <h1>Integrate Foil</h1>
 <h2>Dependency Injection</h2>
 <p>For the great majority of the use cases, the only Foil component your code needs to interact with is the Foil engine object.</p>
-<p>That object can be obtained using <strong><code>Foil\engine()</code></strong> function that may receives an array of options to configure Foil behavior. See <em>"Getting Started / Engine"</em> for more details.</p>
-<p>Best way to integrate Foil in your OOP project is to <em>inject</em> an instance of the engine into your application objects (controllers most of the times).</p>
+<p>So the best way to integrate Foil in your OOP project is to <em>inject</em> an instance of the engine into your application objects (controllers most of the times).</p>
 <p>This is an example:</p>
 <pre><code class="language-php">use Foil\Engine;
 
@@ -203,6 +222,7 @@ class MyController
     return $this-&gt;foil-&gt;render('home', ['message' =&gt; 'Welcome to my site.']);
   }
 }</code></pre>
+<p>To know hot to obtain an instance of <code>Foil\Engine</code> to pass to controller, see <em>"Getting Started / Engine"</em>.</p>
 <p>In any class that has access to Foil engine object, you can make use of pretty all Foil features:</p>
 <ul>
 <li>render templates (of course)</li>
@@ -210,31 +230,14 @@ class MyController
 <li>extend Foil features with extensions, functions and filters</li>
 <li>pass data via Context API</li>
 </ul>
-<h2>Functional API Approach</h2>
-<p>Object oriented design is not the only way to write PHP code.</p>
-<p>Functional programming is becoming increasingly popular nowadays, and even if surely PHP is not the best language to build functional code,
-it can be used for the scope, and more and more PHP packages and extensions are released for that purpose.</p>
-<p>Foil is <strong>not</strong> built using functional code, but is designed to be easily integrated in application that are.</p>
-<p>First of all note how you don't instantiate Foil engine using standard OOP approach (<code>$engine = new Foil\engine()</code>), but you use a function instead.</p>
-<p>Engine initialization is just one of the things that can be done using functions in Foil, in fact, there is an entire set of API functions (all under <code>Foil</code> namespace)
-that can be used to use all Foil features. (Full list available at <em>"Integrate Foil / API functions"</em>)</p>
-<p>Even better, using API functions is possible to do, very easily, things that using OOP would require a tight coupling between Foil and consumer code, and a deep knowledge of internal used Foil objects.</p>
-<p>So, is functional programming the preferred way to use Foil? Not really, thanks to the <strong>Foil API object</strong>.</p>
-<h2>Foil API object</h2>
-<p>Foil API object is a class on which you call all the API functions, just like they are class methods.</p>
-<p>You will probably be surprised that the this sentence, that explain what API object is, contains almost same characters of the entire <a href="https://github.com/Giuseppe-Mazzapica/Foil/blob/master/src/API.php">class code</a>.</p>
-<p>If you followed the link to class code, you've seen that the only thing that API class do is to run namespaced functions that have the same name of any method you call on it.</p>
-<p>For example let's take a Foil API function we already seen, <code>Foil\engine()</code>:</p>
-<pre><code class="language-php">// functional API
-$engine = Foil\engine($options);
-
-// OOP API
-$api = new Foil\API();
-$engine = $api-&gt;engine($options);</code></pre>
-<p>The 2 ways to obtain Foil engine instance used in code above are equivalent and interchangeable.</p>
-<p>So, the net effect of using the API object is that the Foil API functions can be <em>ported</em> to OOP applications seamlessly.</p>
-<p>In fact, passing around API object with dependency injection is possible to write well designed and testable OOP code that integrates perfectly with Foil.</p>
-<p>In the page <em>"Integrate Foil / API functions"</em> there is the complete list of available Foil API functions.</p>
+<h2>Warning</h2>
+<p>Version v0.6 completely changed how Foil internally works, <strong>introducing backward compatibility breaks</strong>, the main are:</p>
+<ul>
+<li>most of the functions under <code>Foil</code> namespaces have been removed</li>
+<li>the <code>Foil\API</code> object has been removed (as a consequence the <code>APIAware</code> interface has been removed as well)</li>
+<li><code>Foil\engine()</code> function that used to return same instance of Engine (~ singleton), now returns a <em>"fresh"</em> instance on any call.</li>
+</ul>
+<p>These changes mostly affected the writing of custom extensions, in fact, Foil <strong>core features and template methods are unchanged</strong>.</p>
                     </div>
                 </div>
             </div>

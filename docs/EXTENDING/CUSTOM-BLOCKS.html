@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Giuseppe Mazzapica">
-    <title>Data / Pass Data To Templates. Foil: PHP Template Engine</title>
+    <title>Extending Foil / Custom Blocks. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="http://www.foilphp.it/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -81,7 +81,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
                       <ul>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/DATA/PASS-DATA.html">
                                       Pass Data To Templates
                                   </a>
@@ -151,7 +151,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
                       <ul>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="http://www.foilphp.it/docs/EXTENDING/CUSTOM-BLOCKS.html">
                                       Custom Blocks
                                   </a>
@@ -194,65 +194,71 @@
                     <div id="content" class="col-lg-11">
                                                 <ol class="breadcrumb">
                           <li><a href="http://www.foilphp.it">Foil</a></li>
-                          <li class="active">Data</li>
+                          <li class="active">Extending Foil</li>
                         </ol>
                                                 <!--
-currentMenu: "passdata"
-currentSection: "Data"
-title: "Pass Data To Templates"
+currentMenu: "customblocks"
+currentSection: "Extending Foil"
+title: "Custom Blocks"
 -->
-<h1>Pass Data To Templates</h1>
-<p>The most obvious and straightforward way to pass data to templates is to pass an associative array
-as second argument for <code>render()</code> engine method.</p>
-<p>Something like:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render(
-    'template-example',
-    [
-      'foo' =&gt; 'Bar',
-      'bar' =&gt; 'Baz',
-      'baz' =&gt; 'Foo'
-    ]
-  );</code></pre>
-<p>using code above the variables <code>'foo'</code>, <code>'bar'</code> and <code>'baz'</code> will be available in the template.</p>
-<p>Another way to pass data to templates is to use the <strong>Foil Context API</strong>. See <em>"Data / Context API"</em> docs section
-to know how it works.</p>
-<p>What it worth to say here is that data assigned via Context API is merged with any data passed to <code>render()</code>
-and that the latter takes precedence on the former.</p>
-<h2>Variables Scope</h2>
-<p>In Foil, layout and partials used in a template, by default, will inherit data assigned to template.
-(To know more about layouts and partials see <em>"Templates"</em> docs section).</p>
-<p>However, both for layouts and partials, is possible to override inherited data.</p>
-<p>That is done passing a data array as second argument to <code>layout()</code> and <code>insert()</code> methods respectively.
-(To know more about these methods see <em>"Templates"</em> docs section).</p>
-<p>Assuming the following code:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render('template-example', ['foo' =&gt; 'Template Foo', 'bar' =&gt; 'Baz']);</code></pre>
-<p>and assuming that in the <code>template-example.php</code> file there is:</p>
-<pre><code class="language-php">// layout() is the method used to declare a layout
-$this-&gt;layout('layout-name', ['foo' =&gt; 'Layout Foo']);
+<h1>Custom Blocks</h1>
+<p>Custom blocks are callback that perform operations on a block of HTML that is delimited in templates using
+<code>block()</code> and <code>endblock()</code> template methods.</p>
+<p>Please have a look at the section "<em>Blocks &amp; Helpers / Blocks</em>" to know more about blocks.</p>
+<h2>Add a custom block</h2>
+<p>Adding a block callback is as easy as pass a block name and a block callback to the <code>Engine::registerBlock()</code> method.</p>
+<p>For example, let's write a callback that takes a block of text, and output every new line in a separate <code>&lt;li&gt;</code> tag, all wrapped in a <code>&lt;ul&gt;</code> tag.</p>
+<pre><code class="language-php">$engine-&gt;registerBlock(
+   'eol2ul',
+   function($html) {
+      // remove white space at boundaries an normalize end of lines
+      $trim = trim(str_replace("\r\n", "\n", $html));
+      // explode by end of lines
+      $exploded = explode("\n", $trim);
+      // implode lines into a list
+      return '&lt;ul&gt;&lt;li&gt;'.implode('&lt;/li&gt;&lt;li&gt;', $exploded).'&lt;/li&gt;&lt;/ul&gt;';
+   }
+);</code></pre>
+<p>After that, in a template:</p>
+<pre><code class="language-php">&lt;?php $this-&gt;block('eol2ul') ?&gt;
 
-// insert() is the method used to include a partial in current template
-$this-&gt;insert('partial-name', ['foo' =&gt; 'Partial Foo']);</code></pre>
-<p>The variable "foo" will evaluate as:</p>
-<ul>
-<li>"Template Foo" in the <code>template-example.php</code> template file</li>
-<li>"Layout Foo" in the <code>layout-name.php</code> layout file</li>
-<li>"Partial Foo" in the <code>partial-name.php</code> partial file</li>
-</ul>
-<p>the variable "bar" will be "Baz" in all 3 files.</p>
-<p>Note that data inheritance follow template inheritance: partials will inherit data from current context,
-i.e. if a partial is included in a layout, it will inherit data from layout.</p>
-<h2>Layout and Partial Data Filtering</h2>
-<p>As said above, by default, layouts and partials will inherit all data from current context.
-However is possible to disable access to all or some context variables.
-That is done by using an array of allowed context variable names as third argument for <code>layout()</code> or <code>insert()</code>.</p>
-<p>E.g. assuming a layout is declared with following code:</p>
-<pre><code class="language-php">$this-&gt;layout('layout-name', ['var_name' =&gt; 'A variable'], ['foo']);
+a
+b
+c
 
-// same goes for $this-&gt;insert('partial-name', ['var_name' =&gt; 'A variable'], ['foo']);</code></pre>
-<p>in the <code>layout-name.php</code> layout file the only available variables will be <code>'var_name'</code> (explicitly passed to layout) and <code>'foo'</code>, inherited from active context.</p>
-<p>Using an empty array as third argument only context explicitly passed variables (if any) will be available in the layout / partial.</p>
+&lt;?php $this-&gt;endblock() ?&gt;</code></pre>
+<p>Will output:</p>
+<pre><code class="language-html">&lt;ul&gt;
+    &lt;li&gt;a&lt;/li&gt;
+    &lt;li&gt;b&lt;/li&gt;
+    &lt;li&gt;c&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<h2>Blocks with arguments</h2>
+<p>Blocks callbacks may accept a variadic number of arguments that can be passed to <code>block()</code> function right after block name.</p>
+<p>A simple example that will covert given words in a block of text to links to the Google search url for that word:</p>
+<pre><code class="language-php">$engine-&gt;registerBlock(
+   'googleize',
+   function() {
+      $args = func_get_args();
+      $html = array_shift($args); // block of HTMl is first argument
+      $words = $args; // all the words passed ot open() are now in $args array
+      $format = '&lt;a href="https://www.google.com#q=%s" target="_blank"&gt;%s&lt;/a&gt;';
+      foreach($words as $word) {
+        $html = str_replace($word, sprintf($format, urlencode($word), $word), $html);
+      }
+      return $html;
+   }
+);</code></pre>
+<p>In template...</p>
+<pre><code class="language-php">&lt;?php $this-&gt;block('googleize', 'Lorem', 'adipiscing') ?&gt;
+
+Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.
+
+&lt;?php $this-&gt;endblock() ?&gt;</code></pre>
+<p>The output will be:</p>
+<pre><code class="language-html">&lt;a href="https://www.google.com#q=Lorem" target="_blank"&gt;Lorem&lt;/a&gt; ipsum dolor sit amet,
+consectetur &lt;a href="https://www.google.com#q=adipiscing" target="_blank"&gt;adipiscing&lt;/a&gt; elit.</code></pre>
                     </div>
                 </div>
             </div>

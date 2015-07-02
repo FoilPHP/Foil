@@ -37,6 +37,11 @@
                                   </a>
                               </li>
                                                         <li class="">
+                                  <a href="http://www.foilphp.it/docs/GETTING-STARTED/ALIAS.html">
+                                      Alias
+                                  </a>
+                              </li>
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/GETTING-STARTED/FOLDERS.html">
                                       Folders
                                   </a>
@@ -59,6 +64,11 @@
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">
                                       Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/TEMPLATES/SECTIONS-RENDERING.html">
+                                      Sections Rendering
                                   </a>
                               </li>
                                                         <li class="">
@@ -104,8 +114,13 @@
                                                 </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Blocks &amp; Helpers</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/BLOCKS.html">
+                                      Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">
                                       Loop Helpers
@@ -136,6 +151,11 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/EXTENDING/CUSTOM-BLOCKS.html">
+                                      Custom Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
                                       Custom Functions and Filters
@@ -182,22 +202,39 @@ currentSection: "Getting Started"
 title: "Engine"
 -->
 <h1>Engine</h1>
-<p>There are very few components in Foil you should interact with.</p>
-<p>The most important is the Foil <strong>Engine</strong>. An instance of that class can be obtained using <strong><code>Foil\engine()</code></strong> function.</p>
-<p>You need to pass (only first time you call it) an array of arguments that let you configure how Foil engine will work.</p>
+<p>There are very few components in Foil you should interact with. The most important is the Foil <strong>Engine</strong>.</p>
+<h2>Obtaining an Engine instance</h2>
+<p>An instance of that class can be obtained using:</p>
+<ul>
+<li><strong><code>Foil\engine()</code></strong> function..</li>
+<li><strong><code>Foil\Foil::boot()</code></strong> method. It returns an instance of <code>Foil\Foil</code> class. That class has a method <code>engine()</code> that returns an instance of the engine.</li>
+</ul>
+<p>You need to pass to both an array of arguments that let you configure how Foil engine will work.</p>
+<p>The two methods works in same way, the <code>Foil\Foil::boot()</code> method was introduced in version <code>v0.6</code>.</p>
+<h3>With Engine Function</h3>
 <pre><code class="language-php">$engine = Foil\engine([
   'folders' =&gt; ['path/to/templates']
+]);</code></pre>
+<h3>With <code>boot()</code> Method (since v0.6)</h3>
+<pre><code class="language-php">$foil = Foil\Foil::boot([
+    'folders' =&gt; ['path/to/templates']
 ]);
-
-echo $engine-&gt;render('a-template', $some_data);</code></pre>
+$engine = $foil-&gt;engine();</code></pre>
+<h2>Render a template file with some data</h2>
+<p>Having an instance of the engine, render a template with some data is just a matter of:</p>
+<pre><code>echo $engine-&gt;render('a-template', $some_data);</code></pre>
 <p>The code above is a very simple (and working) example on how to instantiate Foil engine and use it to render a template with some data.</p>
-<p>Please note:</p>
 <ul>
 <li>
 <p><code>render()</code> method here takes just template name (no file extension, no folder): engine will search for the template in registered template folders. Foil engine will also add default extension, that is <code>.php</code>, to file name. This behavior can be customized using engine options.</p>
 </li>
 <li><code>$some_data</code> must be an associative array. Array keys will be variable names in the template. There are powerful tools in Foil to interact with template data inside template file. Moreover, directly passing data to <code>render()</code> is not the only way to add context for templates, Foil comes with a context API that lets you pre-assign data to templates under specific conditions.</li>
 </ul>
+<h2>Warning</h2>
+<p>The function <code>engine()</code> in versions older than <code>v0.6</code> used to return the <em>same</em> instance of the engine when called more times during same request.</p>
+<p>This was changed in version <code>v0.6</code>, and now every time <code>Foil\engine()</code> is called it returns a <em>"fresh"</em> instance of the engine, that has nothing
+shared with any previously got instance.</p>
+<p>Create an instance of the engine may consume some resources, so re-using the same instance can be a good idea, however, that task is now left to implementers that are free to do that as they prefer.</p>
                     </div>
                 </div>
             </div>

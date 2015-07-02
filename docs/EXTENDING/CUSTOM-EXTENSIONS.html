@@ -37,6 +37,11 @@
                                   </a>
                               </li>
                                                         <li class="">
+                                  <a href="http://www.foilphp.it/docs/GETTING-STARTED/ALIAS.html">
+                                      Alias
+                                  </a>
+                              </li>
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/GETTING-STARTED/FOLDERS.html">
                                       Folders
                                   </a>
@@ -59,6 +64,11 @@
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">
                                       Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/TEMPLATES/SECTIONS-RENDERING.html">
+                                      Sections Rendering
                                   </a>
                               </li>
                                                         <li class="">
@@ -104,8 +114,13 @@
                                                 </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Blocks &amp; Helpers</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/BLOCKS.html">
+                                      Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">
                                       Loop Helpers
@@ -136,6 +151,11 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/EXTENDING/CUSTOM-BLOCKS.html">
+                                      Custom Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
                                       Custom Functions and Filters
@@ -309,52 +329,6 @@ class FooExtension implements ExtensionInterface, FinderAwareInterface
 }</code></pre>
 <p>In a finder-aware extension, like the one above, is possible to use <strong><code>$this-&gt;find($template)</code></strong> to find templates by their names,
 in the exact same way you can call <code>$engine-&gt;find($template)</code> when you have access to engine object.</p>
-<h2>API Aware Extensions</h2>
-<p>Foil ships with a powerful tool: an API object that helps to integrate Foil in any system, giving access to <strong>all</strong> Foil features.</p>
-<p>If you need to develop an extension that interacts very deep with Foil internal objects,
-you can build an extension that is aware of that API object, obtaining access to all Foil features.</p>
-<p>To do that you need to implement the <code>Foil\Contracts\APIAwareInterface</code> and implement its methods.</p>
-<p>The simplest way to to that is to use the <code>Foil\Traits\APIAwareTrait</code>.</p>
-<p>The <em>skeleton</em> of an API-aware extension looks like so:</p>
-<pre><code class="language-php">namespace MyApp;
-
-use Foil\Contracts\ExtensionInterface;
-use Foil\Contracts\APIAwareInterface;
-use Foil\Traits\APIAwareTrait;
-
-class FooExtension implements ExtensionInterface, APIAwareInterface
-{
-    use APIAwareTrait;
-
-    public function setup(array $args){
-    }
-
-    public function provideFilters(){
-    }
-
-    public function provideFunctions()
-    {
-    }
-
-}</code></pre>
-<p>In an API-aware extension, like the one above, is possible to use <strong><code>$this-&gt;api()</code></strong> to get the API object and call on it all supported methods,
-see <em>"Integrate Foil"</em> docs section to know which they are what they do.</p>
-<h2>The Base Extension Class</h2>
-<p>To speed-up extension development, instead of implementing one or more <em>*Aware</em> interfaces, is possible to extend the <code>Foil\Extensions\Base</code> abstract class.</p>
-<p>That class:</p>
-<ul>
-<li>is API aware, so you can use API object in it to access all Foil features</li>
-<li>
-<p>implements all the 3 methods of <code>ExtensionInterface</code>:</p>
-<ul>
-<li><code>setup()</code> is implemented just saving the arguments received in the <code>$args</code> object property</li>
-<li><code>provideFilters()</code> is implemented by returning an empty array</li>
-<li><code>provideFunctions()</code> is implemented by returning an empty array</li>
-</ul>
-<p>In this way is possible to write extensions that provide only filters (or only functions) overriding only the related method</p>
-</li>
-<li>has a method <code>option()</code> that lets you access to Engine options, e.g. current setting for autoescape, template folders, default file extension and so on</li>
-</ul>
                     </div>
                 </div>
             </div>

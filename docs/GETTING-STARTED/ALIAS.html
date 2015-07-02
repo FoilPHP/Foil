@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Giuseppe Mazzapica">
-    <title>Data / Pass Data To Templates. Foil: PHP Template Engine</title>
+    <title>Getting Started / Alias. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="http://www.foilphp.it/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
                                       Engine
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="http://www.foilphp.it/docs/GETTING-STARTED/ALIAS.html">
                                       Alias
                                   </a>
@@ -81,7 +81,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
                       <ul>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/DATA/PASS-DATA.html">
                                       Pass Data To Templates
                                   </a>
@@ -194,65 +194,35 @@
                     <div id="content" class="col-lg-11">
                                                 <ol class="breadcrumb">
                           <li><a href="http://www.foilphp.it">Foil</a></li>
-                          <li class="active">Data</li>
+                          <li class="active">Getting Started</li>
                         </ol>
                                                 <!--
-currentMenu: "passdata"
-currentSection: "Data"
-title: "Pass Data To Templates"
+currentMenu: "alias"
+currentSection: "Getting Started"
+title: "Alias"
 -->
-<h1>Pass Data To Templates</h1>
-<p>The most obvious and straightforward way to pass data to templates is to pass an associative array
-as second argument for <code>render()</code> engine method.</p>
-<p>Something like:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render(
-    'template-example',
-    [
-      'foo' =&gt; 'Bar',
-      'bar' =&gt; 'Baz',
-      'baz' =&gt; 'Foo'
-    ]
-  );</code></pre>
-<p>using code above the variables <code>'foo'</code>, <code>'bar'</code> and <code>'baz'</code> will be available in the template.</p>
-<p>Another way to pass data to templates is to use the <strong>Foil Context API</strong>. See <em>"Data / Context API"</em> docs section
-to know how it works.</p>
-<p>What it worth to say here is that data assigned via Context API is merged with any data passed to <code>render()</code>
-and that the latter takes precedence on the former.</p>
-<h2>Variables Scope</h2>
-<p>In Foil, layout and partials used in a template, by default, will inherit data assigned to template.
-(To know more about layouts and partials see <em>"Templates"</em> docs section).</p>
-<p>However, both for layouts and partials, is possible to override inherited data.</p>
-<p>That is done passing a data array as second argument to <code>layout()</code> and <code>insert()</code> methods respectively.
-(To know more about these methods see <em>"Templates"</em> docs section).</p>
-<p>Assuming the following code:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render('template-example', ['foo' =&gt; 'Template Foo', 'bar' =&gt; 'Baz']);</code></pre>
-<p>and assuming that in the <code>template-example.php</code> file there is:</p>
-<pre><code class="language-php">// layout() is the method used to declare a layout
-$this-&gt;layout('layout-name', ['foo' =&gt; 'Layout Foo']);
-
-// insert() is the method used to include a partial in current template
-$this-&gt;insert('partial-name', ['foo' =&gt; 'Partial Foo']);</code></pre>
-<p>The variable "foo" will evaluate as:</p>
-<ul>
-<li>"Template Foo" in the <code>template-example.php</code> template file</li>
-<li>"Layout Foo" in the <code>layout-name.php</code> layout file</li>
-<li>"Partial Foo" in the <code>partial-name.php</code> partial file</li>
-</ul>
-<p>the variable "bar" will be "Baz" in all 3 files.</p>
-<p>Note that data inheritance follow template inheritance: partials will inherit data from current context,
-i.e. if a partial is included in a layout, it will inherit data from layout.</p>
-<h2>Layout and Partial Data Filtering</h2>
-<p>As said above, by default, layouts and partials will inherit all data from current context.
-However is possible to disable access to all or some context variables.
-That is done by using an array of allowed context variable names as third argument for <code>layout()</code> or <code>insert()</code>.</p>
-<p>E.g. assuming a layout is declared with following code:</p>
-<pre><code class="language-php">$this-&gt;layout('layout-name', ['var_name' =&gt; 'A variable'], ['foo']);
-
-// same goes for $this-&gt;insert('partial-name', ['var_name' =&gt; 'A variable'], ['foo']);</code></pre>
-<p>in the <code>layout-name.php</code> layout file the only available variables will be <code>'var_name'</code> (explicitly passed to layout) and <code>'foo'</code>, inherited from active context.</p>
-<p>Using an empty array as third argument only context explicitly passed variables (if any) will be available in the layout / partial.</p>
+<h1>Alias</h1>
+<p>Inside templates, all the Foil features are accessed via the <code>$this</code> variable,
+e.g. template variables are accessed like <code>$this-&gt;varName</code> and template function like <code>$this-&gt;functionName()</code>.</p>
+<p>Even if the word <em>"this"</em> is made by just 4 letters, being typed more and more times in a template requires a lot of typing.</p>
+<p>For example, accessing a variable like <code>$variable</code> is pretty shorter than <code>$this-&gt;variable</code>.</p>
+<p>I am strongly convinced that benefits coming from Foil approach completely worth the additional 6 letters needed to access a variable.</p>
+<p>However, starting from version 0.6, Foil provides a way to shorten its syntax.</p>
+<h2>Introducing Alias Variable</h2>
+<p>Alias variable is a global variable available in templates that aliases <code>$this</code>.</p>
+<p>E.g. using the variable <code>$T</code> as alias, a template variable can be accessed using <code>$T-&gt;variable</code>
+as well as a template function using <code>$T-&gt;functionName()</code>.</p>
+<p>The alias must be set, using the <code>'alias'</code> option, when Foil Engine is instantiated:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders' =&gt; ['path/to/templates'],
+  'alias'   =&gt; 'T',
+]);</code></pre>
+<p>the only constraint is that the alias must be a valid variable name. E.g. something like:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders' =&gt; ['path/to/templates'],
+  'alias'   =&gt; 'Foil',
+]);</code></pre>
+<p>is totally fine, and allows to access Foil features in templates using <code>$Foil-&gt;</code> syntax.</p>
                     </div>
                 </div>
             </div>

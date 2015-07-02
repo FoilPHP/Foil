@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Giuseppe Mazzapica">
-    <title>Data / Pass Data To Templates. Foil: PHP Template Engine</title>
+    <title>Blocks &amp; Helpers / Blocks. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="http://www.foilphp.it/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -81,7 +81,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
                       <ul>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/DATA/PASS-DATA.html">
                                       Pass Data To Templates
                                   </a>
@@ -116,7 +116,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Blocks &amp; Helpers</a>
                       <ul>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="http://www.foilphp.it/docs/FUNCTIONS/BLOCKS.html">
                                       Blocks
                                   </a>
@@ -194,65 +194,60 @@
                     <div id="content" class="col-lg-11">
                                                 <ol class="breadcrumb">
                           <li><a href="http://www.foilphp.it">Foil</a></li>
-                          <li class="active">Data</li>
+                          <li class="active">Blocks &amp; Helpers</li>
                         </ol>
                                                 <!--
-currentMenu: "passdata"
-currentSection: "Data"
-title: "Pass Data To Templates"
+currentMenu: "blocks"
+currentSection: "Blocks & Helpers"
+title: "Blocks"
 -->
-<h1>Pass Data To Templates</h1>
-<p>The most obvious and straightforward way to pass data to templates is to pass an associative array
-as second argument for <code>render()</code> engine method.</p>
-<p>Something like:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render(
-    'template-example',
-    [
-      'foo' =&gt; 'Bar',
-      'bar' =&gt; 'Baz',
-      'baz' =&gt; 'Foo'
-    ]
-  );</code></pre>
-<p>using code above the variables <code>'foo'</code>, <code>'bar'</code> and <code>'baz'</code> will be available in the template.</p>
-<p>Another way to pass data to templates is to use the <strong>Foil Context API</strong>. See <em>"Data / Context API"</em> docs section
-to know how it works.</p>
-<p>What it worth to say here is that data assigned via Context API is merged with any data passed to <code>render()</code>
-and that the latter takes precedence on the former.</p>
-<h2>Variables Scope</h2>
-<p>In Foil, layout and partials used in a template, by default, will inherit data assigned to template.
-(To know more about layouts and partials see <em>"Templates"</em> docs section).</p>
-<p>However, both for layouts and partials, is possible to override inherited data.</p>
-<p>That is done passing a data array as second argument to <code>layout()</code> and <code>insert()</code> methods respectively.
-(To know more about these methods see <em>"Templates"</em> docs section).</p>
-<p>Assuming the following code:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render('template-example', ['foo' =&gt; 'Template Foo', 'bar' =&gt; 'Baz']);</code></pre>
-<p>and assuming that in the <code>template-example.php</code> file there is:</p>
-<pre><code class="language-php">// layout() is the method used to declare a layout
-$this-&gt;layout('layout-name', ['foo' =&gt; 'Layout Foo']);
-
-// insert() is the method used to include a partial in current template
-$this-&gt;insert('partial-name', ['foo' =&gt; 'Partial Foo']);</code></pre>
-<p>The variable "foo" will evaluate as:</p>
+<h1>Blocks</h1>
+<p>Blocks are parts of a template that before being outputted pass through a callback.</p>
+<p>Blocks were added in version 0.6.</p>
+<h2>Blocks characteristics</h2>
 <ul>
-<li>"Template Foo" in the <code>template-example.php</code> template file</li>
-<li>"Layout Foo" in the <code>layout-name.php</code> layout file</li>
-<li>"Partial Foo" in the <code>partial-name.php</code> partial file</li>
+<li>a block is opened with <code>block()</code> and closed with <code>endblock()</code></li>
+<li><code>block()</code> takes as 1st argument the name fo the block, and a variadic number of arguments that are then passed to block callback</li>
+<li>blocks can be nested</li>
+<li><code>endblock()</code> may <em>optionally</em> take as 1st argument the name of the block to close. When given, Foil checks that it is the last opened block
+and throws an exception if not. This is useful for nested blocks.</li>
 </ul>
-<p>the variable "bar" will be "Baz" in all 3 files.</p>
-<p>Note that data inheritance follow template inheritance: partials will inherit data from current context,
-i.e. if a partial is included in a layout, it will inherit data from layout.</p>
-<h2>Layout and Partial Data Filtering</h2>
-<p>As said above, by default, layouts and partials will inherit all data from current context.
-However is possible to disable access to all or some context variables.
-That is done by using an array of allowed context variable names as third argument for <code>layout()</code> or <code>insert()</code>.</p>
-<p>E.g. assuming a layout is declared with following code:</p>
-<pre><code class="language-php">$this-&gt;layout('layout-name', ['var_name' =&gt; 'A variable'], ['foo']);
+<h2>Shipped Blocks</h2>
+<p>At the moment there are 2 blocks shipped with Foil:</p>
+<ul>
+<li><code>"spaceless"</code></li>
+<li><code>"repeat"</code></li>
+</ul>
+<h2>Repeat</h2>
+<p>The most simple block is "repeat". This is an  example of how it works:</p>
+<pre><code class="language-php">&lt;?php $this-&gt;block('repeat', 3) ?&gt;
 
-// same goes for $this-&gt;insert('partial-name', ['var_name' =&gt; 'A variable'], ['foo']);</code></pre>
-<p>in the <code>layout-name.php</code> layout file the only available variables will be <code>'var_name'</code> (explicitly passed to layout) and <code>'foo'</code>, inherited from active context.</p>
-<p>Using an empty array as third argument only context explicitly passed variables (if any) will be available in the layout / partial.</p>
+&lt;p&gt;say again&lt;/p&gt;
+
+&lt;?php $this-&gt;endblock() ?&gt;</code></pre>
+<p>The code above will output:</p>
+<pre><code class="language-html">&lt;p&gt;say again&lt;/p&gt;
+&lt;p&gt;say again&lt;/p&gt;
+&lt;p&gt;say again&lt;/p&gt;</code></pre>
+<p>In short, it is very similar to a <code>for</code> loop, and if fact it was added mainly to easily explain how blocks work.</p>
+<h2>Spaceless</h2>
+<p>Inspired by <a href="http://twig.sensiolabs.org/doc/tags/spaceless.html"><code>spaceless</code> Twig tag</a>, it removes whitespaces from a block of HTML.</p>
+<p>May be useful in some situations, e.g. with some CSS frameworks that requires no space between certain elements.</p>
+<p>Example:</p>
+<pre><code class="language-php">&lt;?php $this-&gt;block('spaceless') ?&gt;
+
+    &lt;div&gt;
+        &lt;strong&gt;foo&lt;/strong&gt;
+    &lt;/div&gt;
+
+&lt;?php $this-&gt;endblock() ?&gt;</code></pre>
+<p>Will output:</p>
+<pre><code class="language-html">&lt;div&gt;&lt;strong&gt;foo&lt;/strong&gt;&lt;/div&gt;</code></pre>
+<h2>Custom Blocks</h2>
+<p>In next versions of Foil is possible that more blocks will be added, but the real power of blocks resides in the
+possibility to write custom blocks that are no more than callbacks that perform operations on a block of HTML.</p>
+<p>It is an easy and straightforward way to write functions that accept even big blocks of HTML without but using a nice looking and easily readable syntax in templates.</p>
+<p>How to write custom blocks is documented in <em>"Extending Foil / Custom Blocks"</em> section.</p>
                     </div>
                 </div>
             </div>

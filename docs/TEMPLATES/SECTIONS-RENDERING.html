@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Giuseppe Mazzapica">
-    <title>Data / Pass Data To Templates. Foil: PHP Template Engine</title>
+    <title>Templates / Sections Rendering. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="http://www.foilphp.it/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -66,7 +66,7 @@
                                       Template Inheritance
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="http://www.foilphp.it/docs/TEMPLATES/SECTIONS-RENDERING.html">
                                       Sections Rendering
                                   </a>
@@ -81,7 +81,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
                       <ul>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/DATA/PASS-DATA.html">
                                       Pass Data To Templates
                                   </a>
@@ -194,65 +194,75 @@
                     <div id="content" class="col-lg-11">
                                                 <ol class="breadcrumb">
                           <li><a href="http://www.foilphp.it">Foil</a></li>
-                          <li class="active">Data</li>
+                          <li class="active">Templates</li>
                         </ol>
                                                 <!--
-currentMenu: "passdata"
-currentSection: "Data"
-title: "Pass Data To Templates"
+currentMenu: "rendersections"
+currentSection: "Templates"
+title: "Sections Rendering"
 -->
-<h1>Pass Data To Templates</h1>
-<p>The most obvious and straightforward way to pass data to templates is to pass an associative array
-as second argument for <code>render()</code> engine method.</p>
-<p>Something like:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render(
-    'template-example',
-    [
-      'foo' =&gt; 'Bar',
-      'bar' =&gt; 'Baz',
-      'baz' =&gt; 'Foo'
-    ]
-  );</code></pre>
-<p>using code above the variables <code>'foo'</code>, <code>'bar'</code> and <code>'baz'</code> will be available in the template.</p>
-<p>Another way to pass data to templates is to use the <strong>Foil Context API</strong>. See <em>"Data / Context API"</em> docs section
-to know how it works.</p>
-<p>What it worth to say here is that data assigned via Context API is merged with any data passed to <code>render()</code>
-and that the latter takes precedence on the former.</p>
-<h2>Variables Scope</h2>
-<p>In Foil, layout and partials used in a template, by default, will inherit data assigned to template.
-(To know more about layouts and partials see <em>"Templates"</em> docs section).</p>
-<p>However, both for layouts and partials, is possible to override inherited data.</p>
-<p>That is done passing a data array as second argument to <code>layout()</code> and <code>insert()</code> methods respectively.
-(To know more about these methods see <em>"Templates"</em> docs section).</p>
-<p>Assuming the following code:</p>
-<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
-  -&gt;render('template-example', ['foo' =&gt; 'Template Foo', 'bar' =&gt; 'Baz']);</code></pre>
-<p>and assuming that in the <code>template-example.php</code> file there is:</p>
-<pre><code class="language-php">// layout() is the method used to declare a layout
-$this-&gt;layout('layout-name', ['foo' =&gt; 'Layout Foo']);
-
-// insert() is the method used to include a partial in current template
-$this-&gt;insert('partial-name', ['foo' =&gt; 'Partial Foo']);</code></pre>
-<p>The variable "foo" will evaluate as:</p>
+<h1>Sections Rendering</h1>
+<p>Sometimes may be desirable being able to render just one (or more) section of a template instead of
+just getting the rendering result of whole template.</p>
+<p>Since version 0.6, Foil allows to do that.</p>
+<p>(See <em>"Template Inheritance"</em> to know more about sections.)</p>
+<p>There are two Engine methods dedicated to this task:</p>
 <ul>
-<li>"Template Foo" in the <code>template-example.php</code> template file</li>
-<li>"Layout Foo" in the <code>layout-name.php</code> layout file</li>
-<li>"Partial Foo" in the <code>partial-name.php</code> partial file</li>
+<li><code>renderSection()</code></li>
+<li><code>renderSections()</code></li>
 </ul>
-<p>the variable "bar" will be "Baz" in all 3 files.</p>
-<p>Note that data inheritance follow template inheritance: partials will inherit data from current context,
-i.e. if a partial is included in a layout, it will inherit data from layout.</p>
-<h2>Layout and Partial Data Filtering</h2>
-<p>As said above, by default, layouts and partials will inherit all data from current context.
-However is possible to disable access to all or some context variables.
-That is done by using an array of allowed context variable names as third argument for <code>layout()</code> or <code>insert()</code>.</p>
-<p>E.g. assuming a layout is declared with following code:</p>
-<pre><code class="language-php">$this-&gt;layout('layout-name', ['var_name' =&gt; 'A variable'], ['foo']);
+<h2><code>Engine::renderSection()</code></h2>
+<p>This method can be used to render one or more given sections of a template.</p>
+<p>For example, let's take a simple template like the following:</p>
+<pre><code class="language-php">&lt;?php $this-&gt;section('who') ?&gt;
 
-// same goes for $this-&gt;insert('partial-name', ['var_name' =&gt; 'A variable'], ['foo']);</code></pre>
-<p>in the <code>layout-name.php</code> layout file the only available variables will be <code>'var_name'</code> (explicitly passed to layout) and <code>'foo'</code>, inherited from active context.</p>
-<p>Using an empty array as third argument only context explicitly passed variables (if any) will be available in the layout / partial.</p>
+    &lt;?= $this-&gt;username ?&gt; is the current user.
+
+&lt;?php $this-&gt;stop() ?&gt;
+
+&lt;?php $this-&gt;section('what') ?&gt;
+
+    Current page is &lt;?= $this-&gt;page ?&gt;.
+
+&lt;?php $this-&gt;stop() ?&gt;</code></pre>
+<p>and let's assume it is saved in a <code>foo.php</code> template file.</p>
+<p>Doing:</p>
+<pre><code class="language-php">$data = ['username' =&gt; 'Giuseppe', 'page' =&gt; 'Sections Rendering' ];
+
+$who_section = $engine-&gt;renderSection('foo', 'who', $data);</code></pre>
+<p><code>$who_section</code> will be equal to: <strong><code>"Giuseppe is the current user."</code></strong>.</p>
+<p>So the signature of <code>renderSection()</code> is:</p>
+<ul>
+<li>first argument is the template name</li>
+<li>second argument is the section name(s) to render</li>
+<li>third argument the data to pass to templates</li>
+</ul>
+<p>Passing as second argument a section name, like done above, it will return a string, that is the result of section rendering.</p>
+<p>Passing  as second argument an array of section names, the method returns an associative array where keys
+are section names and values are result of related section rendering.</p>
+<p>E.g. by doing:</p>
+<pre><code class="language-php">$data = ['username' =&gt; 'Giuseppe', 'page' =&gt; 'Sections Rendering' ];
+
+$sections = $engine-&gt;renderSection('foo', ['who', 'what'], $data);</code></pre>
+<p>the value of <code>$sections</code> will be:</p>
+<pre><code class="language-php">[
+    'who'  =&gt; 'Giuseppe is the current user.',
+    'what' =&gt; ' Current page is Sections Rendering.'
+]</code></pre>
+<h2><code>Engine::renderSections()</code></h2>
+<p>This method is very similar to <code>renderSection()</code> when used passing an array of sections.</p>
+<p>However, it does not accepts any section name and returns an array of <strong>all</strong> the sections rendered.</p>
+<p>E.g., assuming same template as above, the code:</p>
+<pre><code class="language-php">$data = ['username' =&gt; 'Giuseppe', 'page' =&gt; 'Sections Rendering' ];
+
+$sections = $engine-&gt;renderSections('foo', $data);</code></pre>
+<p>the value of <code>$sections</code> will be:</p>
+<pre><code class="language-php">[
+    'who'  =&gt; 'Giuseppe is the current user.',
+    'what' =&gt; ' Current page is Sections Rendering.'
+]</code></pre>
+<p>So, the signature of <code>renderSections()</code> is the same of the <code>render()</code> method, but returns the array of
+rendered sections instead of the string that is the result of the whole template rendering.</p>
                     </div>
                 </div>
             </div>

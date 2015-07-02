@@ -36,6 +36,11 @@
                                       Engine
                                   </a>
                               </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/GETTING-STARTED/ALIAS.html">
+                                      Alias
+                                  </a>
+                              </li>
                                                         <li class="active">
                                   <a href="http://www.foilphp.it/docs/GETTING-STARTED/FOLDERS.html">
                                       Folders
@@ -59,6 +64,11 @@
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">
                                       Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/TEMPLATES/SECTIONS-RENDERING.html">
+                                      Sections Rendering
                                   </a>
                               </li>
                                                         <li class="">
@@ -104,8 +114,13 @@
                                                 </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Blocks &amp; Helpers</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/BLOCKS.html">
+                                      Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">
                                       Loop Helpers
@@ -136,6 +151,11 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/EXTENDING/CUSTOM-BLOCKS.html">
+                                      Custom Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
                                       Custom Functions and Filters
@@ -182,30 +202,56 @@ currentSection: "Getting Started"
 title: "Folders"
 -->
 <h1>Folders</h1>
-<p>When a template is required, Foil will search for it inside registered template folders. There are two ways to add folders to the engine:</p>
-<ol>
-<li>to use <code>"folders"</code> option for <code>Foil\engine()</code></li>
-<li>to call <code>addFolder()</code> method on the engine instance that <code>Foil\engine()</code> returns</li>
-</ol>
-<p>Both methods can be used in combination:</p>
+<p>When a template is required, Foil will search for it inside registered template folders.</p>
+<p>An array of folders where to search for templates can be passed to <code>Foil\engine()</code> method (or to <code>Foil::boot()</code> method) as part of the options array, using the key <code>"folders"</code>:</p>
 <pre><code class="language-php">$engine = Foil\engine([
-  'folders' =&gt; ['path/to/templates']
+  'folders' =&gt; ['/path/to/templates']
 ]);
 
-$engine-&gt;addFolder('another/path/to/templates');
-
 $engine-&gt;render('a-template', $some_data);</code></pre>
-<p>In the example above a file named <code>a-template.php</code> is first searched in <code>'path/to/templates'</code> folder and if not found there, Foil will search for it in <code>'another/path/to/templates'</code> folder.</p>
-<p>There is no limit in the number of folders can be added, but note that a large number may slow down template find process, because Foil have to search any folder until it founds the required template.</p>
+<p>The code above looks for the file <code>/path/to/templates/a-template.php</code>.</p>
 <p>It is possible to keep templates <em>in order</em> and at same time register just a few folders by using <strong>subfolders</strong>.</p>
-<p>For example, if you registered the path <code>'path/to/templates'</code> and you have a template named <code>'article'</code> inside the folder <code>'path/to/templates/blog'</code>,
+<p>For example, if you registered the path <code>'/path/to/templates'</code> and you have a template named <code>'article'</code> inside the folder <code>'/path/to/templates/blog'</code>,
 you don't need to register this subdirectory, but just to pass subfolder name to <code>render()</code>:</p>
 <pre><code class="language-php">$engine-&gt;render('blog/article', $some_data);</code></pre>
-<h2>Target specific folders</h2>
-<p>What said above means that if two or more files with same name exist in different folders, only the first found (where folder are searched in registration order) is used. This behavior may not be desirable, e.g. if you want to render a template in a specific folder. Foil allows to target specific folders by assigning ID to folders.</p>
-<p>Both folders registration methods support folder IDs:</p>
+<h2>Change Engine folders after initialization</h2>
+<p>After <code>Engine</code> class have been instantiated, there is still possibility to change the folders where it looks for template files:</p>
 <ul>
-<li>when folders are passed as <code>"folders"</code> argument for <code>Foil\engine()</code> is possible assign IDs to folders using an associative array, where each key is the folder ID.</li>
+<li>using <code>Engine::addFolder()</code> method</li>
+<li>using <code>Engine::setFolders()</code> method</li>
+<li>using <code>Finder::in()</code> method</li>
+</ul>
+<h3>Engine::addFolder()</h3>
+<p>The easiest way is to use <code>Engine::addFolder()</code> method. As its name suggests, this method adds a folder where engine looks for templates, without touching the others.</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders' =&gt; ['/path/to/templates']
+]);
+
+$engine-&gt;addFolder('/another/path/to/templates');
+
+$engine-&gt;render('a-template', $some_data);</code></pre>
+<p>In the example above, the file <code>a-template.php</code> is first searched in <code>'/path/to/templates'</code> folder and if not found there, Foil will search for it in <code>'/another/path/to/templates'</code> folder.</p>
+<p>There is no limit in the number of folders can be added, but note that a large number may slow down template finding process, because Foil have to search any folder until it founds the required template.</p>
+<h3>Engine::setFolders()</h3>
+<p>This method accepts an array of folders and can be used to completely replace any already added folder.</p>
+<h3>Finder::in()</h3>
+<p>This method directly acts on the <code>Finder</code> class that is used by Foil to find templates in filesystem.</p>
+<p>To obtain the instance of <code>Finder</code> where to call the method you need to call the <code>$engine-&gt;finder()</code> method.</p>
+<p><code>Finder::in()</code> method takes 2 arguments, an array of folders (just like <code>Engine::setFolder()</code>) and a boolean value <code>$reset</code>.</p>
+<p>When <code>$reset</code> is true, <code>Finder::in()</code> is exactly equivalent to call <code>Engine::setFolders()</code>, so you may prefer to use the latter, as more easily accessible.</p>
+<p>When <code>$reset</code> is false, all the passed folders are:</p>
+<ul>
+<li>added if the ID associated to them is not yet registered (a sort of <em>batch</em> <code>Engine::addFolder()</code>)</li>
+<li>updated if the ID associated to them is already registered</li>
+</ul>
+<p>To understand what <em>"the ID associated to folders"</em> means read next section.</p>
+<h2>Target specific folders</h2>
+<p>When two or more files with same name exist in different registered folders, only the first found (where folder are searched in registration order) is used.</p>
+<p>This behavior may not be desirable, e.g. if you want to render a template in a specific folder.</p>
+<p>Foil allows to target specific folders by assigning <strong>ID</strong> to folders.</p>
+<p>All folders registration methods support folder IDs:</p>
+<ul>
+<li>when using methods that accept folders as array, IDs are the array keys</li>
 <li>when using <code>addFolder</code> method, the second argument can be a folder ID</li>
 </ul>
 <p>Example:</p>
@@ -216,8 +262,56 @@ you don't need to register this subdirectory, but just to pass subfolder name to
 
 // ID for this folder will be "secondary"
 $engine-&gt;addFolder('another/path/to/templates', 'secondary');</code></pre>
-<p>Once folders are registered with IDs, is possible to target a specific folder inside <code>render()</code> method (and in all the methods that accepts template names) using folder ID and a double column before template name:</p>
+<p>Once folders are registered with IDs, is possible to target a specific folder inside <code>render()</code> method (and in all the methods that accept template names) using folder ID and a double column before template name:</p>
 <pre><code class="language-php">$engine-&gt;render('secondary::template-name', $some_data);</code></pre>
+<h3>Finder::in() and folders names</h3>
+<p>As said above, <code>Finder::in()</code> method accepts an array of folders and its behaviour, when <code>$reset</code> argument is <code>false</code>, depends on the registered folders IDs.</p>
+<p>An example should clarify how it works:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders' =&gt; [
+     'one' =&gt; 'path/to/templates/one',
+     'two' =&gt; 'path/to/templates/two',
+   ]
+]);</code></pre>
+<p>And somewhere after that</p>
+<pre><code class="language-php">$finder = $engine-&gt;finder();
+
+$finder-&gt;in([
+  'three' =&gt; 'path/to/templates/three',
+  'one'   =&gt; 'path/to/templates/alternative/one',
+]);</code></pre>
+<p>After that, the registered folders will be:</p>
+<pre><code class="language-php">[
+  'one'   =&gt; 'path/to/templates/alternative/one', // this have been edited
+  'two'   =&gt; 'path/to/templates/two'
+  'three' =&gt; 'path/to/templates/three'            // this have been added
+]</code></pre>
+<p>So</p>
+<ul>
+<li>the folder with ID <code>'one'</code> has been updated, because its ID was already registered</li>
+<li>the folder with ID <code>'three'</code> has been added, because its ID was not registered</li>
+</ul>
+<p>Please note how <code>Finder::in()</code> was not able to change the order of folders.</p>
+<p>In fact, after <code>Finder::in()</code> was called, the folder with ID <code>'one'</code> is still the first folder
+where Foil will look to templates, even if it points to a different folder.</p>
+<p>If you need to change the order of folders, you need to set <code>$reset</code> argument to <code>true</code> or use <code>Engine::setFolders</code> method.</p>
+<p>Those methods can be used in combination with <code>Finder::dirs()</code> method that return the array of all folders currently in use.</p>
+<p><strong>Please note</strong>: <code>$reset</code> argument was introduced in version <code>0.6</code>.</p>
+<h2>All folders have IDs</h2>
+<p>When registering folders (no matter the method) the folders "ID" is always optional: methods that accepts an array of folders
+do not complain if the array is not an <em>associative</em> array, and when using <code>Engine::addFolder()</code> method, the second argument is optional.</p>
+<p>However, Foil <strong>always assign an ID to a folder</strong> if is not <em>manually</em> assigned.</p>
+<p>The automatically assigned ID is made by the folder name and its direct folder parent name joined with a dot.</p>
+<p>E.g. the ID assigned to the folder <code>/path/to/templates</code> would be <code>to.templates</code>.</p>
+<p>This may brings some problems, e.g. the two paths:</p>
+<ul>
+<li><code>/one/path/to/templates</code></li>
+<li><code>/another/path/to/templates</code></li>
+</ul>
+<p>are assigned to same ID, and Foil will be not capable to distinguish between the two.</p>
+<p>This may appear an awful behavior, however it make pretty easy to access a specific folder by ID in a predictable way
+even when folders are registered with no IDs.</p>
+<p>If you are afraid of (or you are experimenting) such conflicts, always register folders using unique IDs.</p>
                     </div>
                 </div>
             </div>

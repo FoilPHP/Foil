@@ -37,6 +37,11 @@
                                   </a>
                               </li>
                                                         <li class="">
+                                  <a href="http://www.foilphp.it/docs/GETTING-STARTED/ALIAS.html">
+                                      Alias
+                                  </a>
+                              </li>
+                                                        <li class="">
                                   <a href="http://www.foilphp.it/docs/GETTING-STARTED/FOLDERS.html">
                                       Folders
                                   </a>
@@ -59,6 +64,11 @@
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">
                                       Template Inheritance
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/TEMPLATES/SECTIONS-RENDERING.html">
+                                      Sections Rendering
                                   </a>
                               </li>
                                                         <li class="">
@@ -104,8 +114,13 @@
                                                 </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Functions</a>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Blocks &amp; Helpers</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/FUNCTIONS/BLOCKS.html">
+                                      Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">
                                       Loop Helpers
@@ -136,6 +151,11 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
                       <ul>
+                                                        <li class="">
+                                  <a href="http://www.foilphp.it/docs/EXTENDING/CUSTOM-BLOCKS.html">
+                                      Custom Blocks
+                                  </a>
+                              </li>
                                                         <li class="">
                                   <a href="http://www.foilphp.it/docs/EXTENDING/FUNCTIONS-AND-FILTERS.html">
                                       Custom Functions and Filters
@@ -228,6 +248,9 @@ However, template data you can access with <code>$this-&gt;variable_name</code> 
 </li>
 </ul>
 <p>See  <em>"Getting Started / File Extensions"</em> to know more about default extension and  <em>"Getting Started / Folders"</em> to know more about folder IDs.</p>
+<h3>Search multiple templates</h3>
+<p>Since version 0.6, is possible to pass to <code>find()</code> method, an array of template names. The first found among them will be returned.</p>
+<p>Note that <code>Engine::render()</code> method internally uses <code>find()</code>, so it is possible to pass an array of templates to <code>render()</code> method as well.</p>
 <h2>Custom Template Classes</h2>
 <p>Sometimes may be desirable having a custom template class to customize rendering behavior.</p>
 <p>Custom template classes must extend <code>Foil\Contracts\TemplateInterface</code> interface.</p>
