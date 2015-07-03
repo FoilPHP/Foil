@@ -55,7 +55,7 @@ Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Fo
 Foil version **0.6** introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
 core features and especially template functions were not affected.
 
-Please see v0.6 release notes to know more on the topic.
+Please see [v0.6 release notes](https://github.com/FoilPHP/Foil/releases/tag/0.6.0) to know more on the topic.
 
 ---
 
