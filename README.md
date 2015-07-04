@@ -8,7 +8,7 @@ FOIL
 [![travis-ci status](https://img.shields.io/travis/FoilPHP/Foil.svg?style=plastic)](https://travis-ci.org/FoilPHP/Foil)
 [![codecov.io](http://codecov.io/github/FoilPHP/Foil/coverage.svg?branch=master)](http://codecov.io/github/FoilPHP/Foil?branch=master)
 ![Dependencies](https://img.shields.io/requires/github/FoilPHP/Foil.svg?style=plastic)
-[![release](https://img.shields.io/github/release/FoilPHP/foil.svg?style=plastic)](https://github.com/FoilPHP/Foil/releases/tag/0.6.0)
+[![release](https://img.shields.io/github/release/FoilPHP/foil.svg?style=plastic)](https://github.com/FoilPHP/Foil/releases/latest)
 [![license]( 	https://img.shields.io/github/license/FoilPHP/foil.svg?style=plastic)](http://opensource.org/licenses/MIT)
 
 -------
