@@ -15,6 +15,8 @@ use Foil\Contracts\EngineInterface;
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
+ *
+ * @codeCoverageIgnore
  */
 trait EngineAwareTrait
 {

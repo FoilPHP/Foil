@@ -23,6 +23,8 @@ use Foil\Extensions\AuraHtml as AuraHtmlExtension;
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
+ *
+ * @codeCoverageIgnore
  */
 class Extensions implements BootableServiceProvider
 {

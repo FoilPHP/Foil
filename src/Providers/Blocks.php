@@ -22,6 +22,8 @@ use Foil\Blocks\Repeat;
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
  * @package Foil
+ *
+ * @codeCoverageIgnore
  */
 class Blocks implements BootableServiceProviderInterface
 {

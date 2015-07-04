@@ -54,6 +54,7 @@ class Uri implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFilters()
     {
@@ -62,6 +63,7 @@ class Uri implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFunctions()
     {

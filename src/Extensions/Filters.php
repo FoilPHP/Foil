@@ -29,6 +29,7 @@ class Filters implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function setup(array $args = [])
     {
@@ -37,6 +38,7 @@ class Filters implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFilters()
     {
@@ -49,6 +51,7 @@ class Filters implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFunctions()
     {
@@ -68,7 +71,9 @@ class Filters implements ExtensionInterface
     public function first($data)
     {
         if (! is_array($data) && ! is_string($data)) {
-            throw new InvalidArgumentException('Is possible to get first item only for strings and arrays');
+            throw new InvalidArgumentException(
+                'Is possible to get first item only for strings and arrays'
+            );
         }
         if (is_array($data)) {
             $data = array_values($data);
@@ -85,7 +90,9 @@ class Filters implements ExtensionInterface
     public function isFirst($data, $which)
     {
         if (! is_array($data) && ! is_string($data)) {
-            throw new InvalidArgumentException('Is possible to get first item only for strings and arrays');
+            throw new InvalidArgumentException(
+                'Is possible to get first item only for strings and arrays'
+            );
         }
 
         return $this->first($data) === $which;
@@ -98,7 +105,9 @@ class Filters implements ExtensionInterface
     public function last($data)
     {
         if (! is_array($data) && ! is_string($data)) {
-            throw new InvalidArgumentException('Is possible to get last item only for strings and arrays');
+            throw new InvalidArgumentException(
+                'Is possible to get last item only for strings and arrays'
+            );
         }
 
         return is_array($data) ? end($data) : substr($data, strlen($data) - 1);
@@ -112,7 +121,9 @@ class Filters implements ExtensionInterface
     public function isLast($data, $which)
     {
         if (! is_array($data) && ! is_string($data)) {
-            throw new InvalidArgumentException('Is possible to get last item only for strings and arrays');
+            throw new InvalidArgumentException(
+                'Is possible to get last item only for strings and arrays'
+            );
         }
 
         return $this->last($data) === $which;
@@ -155,7 +166,9 @@ class Filters implements ExtensionInterface
     public function chunk(array $data, $number, $fill = null)
     {
         if (! is_int($number)) {
-            throw new InvalidArgumentException('You must provide a number of pieces to chunk the array');
+            throw new InvalidArgumentException(
+                'You must provide a number of pieces to chunk the array'
+            );
         }
         $chunks = array_chunk($data, $number);
         if (is_null($fill)) {

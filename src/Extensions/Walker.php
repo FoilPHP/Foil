@@ -59,6 +59,7 @@ class Walker implements ExtensionInterface
      * Setup the extension using an arguments array that should be provided on registration
      *
      * @param array $args
+     * @codeCoverageIgnore
      */
     public function setup(array $args = [])
     {
@@ -67,6 +68,7 @@ class Walker implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFilters()
     {
@@ -75,6 +77,7 @@ class Walker implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFunctions()
     {

@@ -25,6 +25,8 @@ use Foil\Kernel\Escaper;
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package foil\foil
  * @license http://opensource.org/licenses/MIT MIT
+ *
+ * @codeCoverageIgnore
  */
 class Kernel implements BootableServiceProviderInterface
 {

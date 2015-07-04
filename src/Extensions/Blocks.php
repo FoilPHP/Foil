@@ -40,6 +40,7 @@ class Blocks implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function setup(array $args = [])
     {
@@ -48,6 +49,7 @@ class Blocks implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFilters()
     {

@@ -18,6 +18,8 @@ use Aura\Html\HelperLocatorFactory;
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
  * @package Foil
+ *
+ * @codeCoverageIgnore
  */
 class AuraHtml implements ServiceProviderInterface
 {

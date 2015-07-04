@@ -91,6 +91,7 @@ class AuraHtml implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFilters()
     {
@@ -166,6 +167,7 @@ class AuraHtml implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function setup(array $args = [])
     {
