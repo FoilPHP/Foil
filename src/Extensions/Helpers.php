@@ -130,11 +130,21 @@ class Helpers implements ExtensionInterface, TemplateAware
      * @param  mixed        $default  Default
      * @param  string|array $filter   Array or pipe-separated list of filters
      * @param  string       $strategy Escape strategy, one of 'html', 'js', 'attr', 'css'
+     * @param  string|null  $encoding
      * @return mixed
      */
-    public function escape($var, $default = '', $filter = null, $strategy = 'html')
-    {
-        return $this->escaper->escape($this->raw($var, $default, $filter), $strategy);
+    public function escape(
+        $var,
+        $default = '',
+        $filter = null,
+        $strategy = 'html',
+        $encoding = null
+    ) {
+        return $this->escaper->escape(
+            $this->raw($var, $default, $filter),
+            $strategy,
+            $encoding
+        );
     }
 
     /**
@@ -145,7 +155,7 @@ class Helpers implements ExtensionInterface, TemplateAware
      */
     public function entities($var, $strategy = 'html', $encoding = null)
     {
-        return $this->escaper->escape($var, $strategy);
+        return $this->escaper->escape($var, $strategy, $encoding);
     }
 
     /**
@@ -162,42 +172,45 @@ class Helpers implements ExtensionInterface, TemplateAware
      * Return a value from template context, optionally set a default and filter.
      * Strings are escaped for javascript using AuraPHP Web library.
      *
-     * @param  string       $var     Variable name
-     * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separated list of filters
+     * @param  string       $var      Variable name
+     * @param  mixed        $default  Default
+     * @param  string|array $filter   Array or pipe-separated list of filters
+     * @param  string|null  $encoding
      * @return mixed
      */
-    public function escapeJs($var, $default = '', $filter = null)
+    public function escapeJs($var, $default = '', $filter = null, $encoding = null)
     {
-        return $this->escape($var, $default, $filter, 'js');
+        return $this->escape($var, $default, $filter, 'js', $encoding);
     }
 
     /**
      * Return a value from template context, optionally set a default and filter.
      * Strings are escaped to be safely used inside CSS code using AuraPHP Web library.
      *
-     * @param  string       $var     Variable name
-     * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separated list of filters
+     * @param  string       $var      Variable name
+     * @param  mixed        $default  Default
+     * @param  string|array $filter   Array or pipe-separated list of filters
+     * @param  string|null  $encoding
      * @return mixed
      */
-    public function escapeCss($var, $default = '', $filter = null)
+    public function escapeCss($var, $default = '', $filter = null, $encoding = null)
     {
-        return $this->escape($var, $default, $filter, 'css');
+        return $this->escape($var, $default, $filter, 'css', $encoding);
     }
 
     /**
      * Return a value from template context, optionally set a default and filter.
      * Strings are escaped to be safely used inside HTML attributes using AuraPHP Web library.
      *
-     * @param  string       $var     Variable name
-     * @param  mixed        $default Default
-     * @param  string|array $filter  Array or pipe-separated list of filters
+     * @param  string       $var      Variable name
+     * @param  mixed        $default  Default
+     * @param  string|array $filter   Array or pipe-separated list of filters
+     * @param  string|null  $encoding
      * @return mixed
      */
-    public function escapeAttr($var, $default = '', $filter = null)
+    public function escapeAttr($var, $default = '', $filter = null, $encoding = null)
     {
-        return $this->escape($var, $default, $filter, 'attr');
+        return $this->escape($var, $default, $filter, 'attr', $encoding);
     }
 
     /**
