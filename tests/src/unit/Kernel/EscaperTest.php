@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Foil\Tests\Kernel;
+namespace Foil\Tests\Unit\Kernel;
 
 use Foil\Tests\TestCase;
 use Foil\Kernel\Escaper;
@@ -185,5 +185,28 @@ class EscaperTest extends TestCase
 
         $escaper = new Escaper($this->auraEscaper(), 'utf-8');
         assertSame($str, $escaper->decode($encode));
+    }
+
+    public function testDecodeArray()
+    {
+        $arr = ['<p>a</p>', '<p>b</p>', '<p>c</p>'];
+        $encode = array_map([$this, 'e'], $arr);
+        $encodeObj = new \ArrayIterator($encode);
+
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        assertSame($arr, $escaper->decode($encode));
+        assertSame($arr, $escaper->decode($encodeObj));
+    }
+
+    public function testDecodeObject()
+    {
+        $obj = (object) ['a' => '<p>a</p>', 'b' => '<p>b</p>'];
+        $objStr = Mockery::mock();
+        $objStr->shouldReceive('__toString')->andReturn($this->e('<p>a</p>'));
+
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+
+        assertSame($obj, $escaper->decode($obj));
+        assertSame('<p>a</p>', $escaper->decode($objStr));
     }
 }

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Foil\Tests\Kernel;
+namespace Foil\Tests\Unit\Kernel;
 
 use Foil\Tests\TestCase;
 use Foil\Kernel\Command;
@@ -48,7 +48,10 @@ class CommandTest extends TestCase
     public function testRunFailsIfBadFunctionName()
     {
         $c = new Command($this->escaper());
-        $c->run(true);
+        $this->bindClosure(function () {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->execute([], [], []);
+        }, $c);
     }
 
     /**
@@ -57,11 +60,10 @@ class CommandTest extends TestCase
     public function testRunFailsIfBadFunctionNotExists()
     {
         $c = new Command($this->escaper());
-        $test = function ($str) {
-            echo $str;
-        };
-        $c->registerFunctions(['hello' => $test]);
-        $c->run('goodbye');
+        $this->bindClosure(function () {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->execute('goodbye', [], []);
+        }, $c);
     }
 
     public function testFunctionNoEcho()

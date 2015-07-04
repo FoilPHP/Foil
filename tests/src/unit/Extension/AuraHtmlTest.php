@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Foil\Tests\Extension;
+namespace Foil\Tests\Unit\Extension;
 
 use Foil\Tests\TestCase;
 use Foil\Extensions\AuraHtml;

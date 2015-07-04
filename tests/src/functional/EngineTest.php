@@ -7,8 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Foil\Tests;
+namespace Foil\Tests\Functional;
 
+use Foil\Tests\TestCaseFunctional;
 use Foil\Context\SearchContext;
 use Foil\Context\RegexContext;
 use Mockery;

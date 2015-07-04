@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Foil\Tests\Blocks;
+namespace Foil\Tests\Unit\Blocks;
 
 use Foil\Tests\TestCase;
 use Foil\Blocks\Factory;

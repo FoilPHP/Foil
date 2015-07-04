@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Foil\Tests\Template;
+namespace Foil\Tests\Unit\Template;
 
 use Foil\Template\Alias;
 use Foil\Tests\TestCase;

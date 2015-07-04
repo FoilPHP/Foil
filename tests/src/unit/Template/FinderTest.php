@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Foil\Tests\Template;
+namespace Foil\Tests\Unit\Template;
 
 use Foil\Tests\TestCase;
 use Foil\Template\Finder;
@@ -109,6 +109,14 @@ class FinderTest extends TestCase
         $dirs = $this->finderDirectories(true);
         $finder->in($dirs);
         assertFalse($finder->find('foo::second'));
+    }
+
+    public function testFindInDirFalseIfNoDir()
+    {
+        $finder = new Finder();
+        $dirs = $this->finderDirectories(true);
+        $finder->in($dirs);
+        assertFalse($finder->find('meh::second'));
     }
 
     public function testFind()

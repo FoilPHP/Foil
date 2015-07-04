@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Foil\Tests\Extension;
+namespace Foil\Tests\Unit\Extension;
 
 use Foil\Tests\TestCase;
 use Foil\Extensions\Filters;
@@ -19,7 +19,6 @@ use Foil\Extensions\Filters;
  */
 class FiltersTest extends TestCase
 {
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -56,7 +55,8 @@ class FiltersTest extends TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testChunkFailsInNoNumber(){
+    public function testChunkFailsInNoNumber()
+    {
         $filters = new Filters();
         $filters->chunk([], '3');
     }
