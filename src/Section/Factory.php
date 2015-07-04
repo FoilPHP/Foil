@@ -93,7 +93,7 @@ class Factory
         if (
             ! is_string($class)
             || ! class_exists($class)
-            || ! in_array(ltrim('\\', $this->contract), class_implements($class), true)
+            || ! is_subclass_of($class, $this->contract)
         ) {
             return self::DEFAULT_CLASS;
         }
