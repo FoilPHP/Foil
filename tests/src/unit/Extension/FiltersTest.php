@@ -19,51 +19,68 @@ use Foil\Extensions\Filters;
  */
 class FiltersTest extends TestCase
 {
-    public function testFirst()
-    {
-        $f = new Filters();
-        assertSame('foo', $f->first(['foo', 'bar']));
-        assertSame('foo', $f->first(['a' => 'foo', 'foo' => 'bar']));
-        assertSame('F', $f->first('Foo'));
-    }
 
     /**
      * @expectedException \InvalidArgumentException
      */
     public function testFirstFailsIfBadArgs()
     {
-        $f = new Filters();
-        $f->first(true);
+        $filters = new Filters();
+        $filters->first(true);
+    }
+
+    public function testFirst()
+    {
+        $filters = new Filters();
+        assertSame('foo', $filters->first(['foo', 'bar']));
+        assertSame('foo', $filters->first(['a' => 'foo', 'foo' => 'bar']));
+        assertSame('F', $filters->first('Foo'));
+    }
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testLastFailsIfBadArgs()
+    {
+        $filters = new Filters();
+        $filters->last(true);
     }
 
     public function testLast()
     {
-        $f = new Filters();
-        assertSame('bar', $f->last(['foo', 'bar']));
-        assertSame('bar', $f->last(['a' => 'foo', 'foo' => 'bar']));
-        assertSame('o', $f->last('Foo'));
+        $filters = new Filters();
+        assertSame('bar', $filters->last(['foo', 'bar']));
+        assertSame('bar', $filters->last(['a' => 'foo', 'foo' => 'bar']));
+        assertSame('o', $filters->last('Foo'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testChunkFailsInNoNumber(){
+        $filters = new Filters();
+        $filters->chunk([], '3');
     }
 
     public function testChunk()
     {
-        $f = new Filters();
+        $filters = new Filters();
         $data = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
         $three = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g']];
-        $three_filled = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'fill', 'fill']];
-        $data_filled = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'fill', 'fill', 'fill']];
-        $data_assoc = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D', 'e' => 'E', 'f' => 'F'];
-        $three_assoc = [['A', 'B', 'C'], ['D', 'E', 'F']];
-        $data_assoc_filled = [['A', 'B', 'C', 'D', 'E', 'F', 'fill', 'fill', 'fill', 'fill']];
-        assertSame($three, $f->chunk($data, 3));
-        assertSame([$data], $f->chunk($data, 7));
-        assertSame([$data], $f->chunk($data, 10));
-        assertSame($three_filled, $f->chunk($data, 3, 'fill'));
-        assertSame([$data], $f->chunk($data, 7, 'fill'));
-        assertSame($data_filled, $f->chunk($data, 10, 'fill'));
-        assertSame($three_assoc, $f->chunk($data_assoc, 3));
-        assertSame([array_values($data_assoc)], $f->chunk($data_assoc, 10));
-        assertSame($three_assoc, $f->chunk($data_assoc, 3, 'fill'));
-        assertSame($data_assoc_filled, $f->chunk($data_assoc, 10, 'fill'));
+        $threeFilled = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'fill', 'fill']];
+        $dataFilled = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'fill', 'fill', 'fill']];
+        $dataAssoc = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D', 'e' => 'E', 'f' => 'F'];
+        $threeAssoc = [['A', 'B', 'C'], ['D', 'E', 'F']];
+        $datAssocFilled = [['A', 'B', 'C', 'D', 'E', 'F', 'fill', 'fill', 'fill', 'fill']];
+        assertSame($three, $filters->chunk($data, 3));
+        assertSame([$data], $filters->chunk($data, 7));
+        assertSame([$data], $filters->chunk($data, 10));
+        assertSame($threeFilled, $filters->chunk($data, 3, 'fill'));
+        assertSame([$data], $filters->chunk($data, 7, 'fill'));
+        assertSame($dataFilled, $filters->chunk($data, 10, 'fill'));
+        assertSame($threeAssoc, $filters->chunk($dataAssoc, 3));
+        assertSame([array_values($dataAssoc)], $filters->chunk($dataAssoc, 10));
+        assertSame($threeAssoc, $filters->chunk($dataAssoc, 3, 'fill'));
+        assertSame($datAssocFilled, $filters->chunk($dataAssoc, 10, 'fill'));
     }
 
     /**
@@ -71,66 +88,75 @@ class FiltersTest extends TestCase
      */
     public function testIsFirstFailsIfBadArgs()
     {
-        $f = new Filters();
-        $f->isFirst(true, '');
+        $filters = new Filters();
+        $filters->isFirst(true, '');
     }
 
     public function testIsFirst()
     {
-        $f = new Filters();
+        $filters = new Filters();
         $data = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
         $data_assoc = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D', 'e' => 'E', 'f' => 'F'];
         $str = 'ABCDEFGHIJKL';
-        assertTrue($f->isFirst($data, 'a'));
-        assertTrue($f->isFirst($data_assoc, 'A'));
-        assertTrue($f->isFirst($str, 'A'));
-        assertFalse($f->isFirst($data, 'c'));
-        assertFalse($f->isFirst($data_assoc, 'a'));
-        assertFalse($f->isFirst($str, 'a'));
+        assertTrue($filters->isFirst($data, 'a'));
+        assertTrue($filters->isFirst($data_assoc, 'A'));
+        assertTrue($filters->isFirst($str, 'A'));
+        assertFalse($filters->isFirst($data, 'c'));
+        assertFalse($filters->isFirst($data_assoc, 'a'));
+        assertFalse($filters->isFirst($str, 'a'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testIsLastFailsIfBadArgs()
+    {
+        $filters = new Filters();
+        $filters->isLast(true, '');
     }
 
     public function testIsLast()
     {
-        $f = new Filters();
+        $filters = new Filters();
         $data = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
         $data_assoc = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D', 'e' => 'E', 'f' => 'F'];
         $str = 'ABCDEFGHIJKL';
-        assertTrue($f->isLast($data, 'g'));
-        assertTrue($f->isLast($data_assoc, 'F'));
-        assertTrue($f->isLast($str, 'L'));
-        assertFalse($f->isLast($data, 'f'));
-        assertFalse($f->isLast($data_assoc, 'f'));
-        assertFalse($f->isLast($str, 'l'));
+        assertTrue($filters->isLast($data, 'g'));
+        assertTrue($filters->isLast($data_assoc, 'F'));
+        assertTrue($filters->isLast($str, 'L'));
+        assertFalse($filters->isLast($data, 'f'));
+        assertFalse($filters->isLast($data_assoc, 'f'));
+        assertFalse($filters->isLast($str, 'l'));
     }
 
     public function testIndex()
     {
-        $f = new Filters();
+        $filters = new Filters();
         $data = ['a', 'b', 'c', 'd', 'e', 'f'];
         $data_assoc = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D', 'e' => 'E', 'f' => 'F'];
-        assertSame(1, $f->index($data, 'a'));
-        assertSame(-1, $f->index($data, 'A'));
-        assertSame(1, $f->index($data_assoc, 'A'));
-        assertSame(-1, $f->index($data_assoc, 'H'));
-        assertTrue($f->index($data, 'a', 1));
-        assertFalse($f->index($data, 'a', 0));
-        assertFalse($f->index($data_assoc, 'A', 0));
-        assertFalse($f->index($data_assoc, 'A', 'a'));
+        assertSame(1, $filters->index($data, 'a'));
+        assertSame(-1, $filters->index($data, 'A'));
+        assertSame(1, $filters->index($data_assoc, 'A'));
+        assertSame(-1, $filters->index($data_assoc, 'H'));
+        assertTrue($filters->index($data, 'a', 1));
+        assertFalse($filters->index($data, 'a', 0));
+        assertFalse($filters->index($data_assoc, 'A', 0));
+        assertFalse($filters->index($data_assoc, 'A', 'a'));
     }
 
     public function testIndex0()
     {
-        $f = new Filters();
+        $filters = new Filters();
         $data = ['a', 'b', 'c', 'd', 'e', 'f'];
         $data_assoc = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D', 'e' => 'E', 'f' => 'F'];
-        assertSame(0, $f->index0($data, 'a'));
-        assertSame(-1, $f->index0($data, 'A'));
-        assertSame(0, $f->index0($data_assoc, 'A'));
-        assertSame(-1, $f->index0($data_assoc, 'H'));
-        assertTrue($f->index0($data, 'a', 0));
-        assertTrue($f->index0($data_assoc, 'A', 0));
-        assertFalse($f->index0($data, 'a', 1));
-        assertFalse($f->index0($data_assoc, 'A', 1));
-        assertFalse($f->index0($data_assoc, 'A', 'a'));
+        assertSame(0, $filters->index0($data, 'a'));
+        assertSame(-1, $filters->index0($data, 'A'));
+        assertSame(0, $filters->index0($data_assoc, 'A'));
+        assertSame(-1, $filters->index0($data_assoc, 'H'));
+        assertTrue($filters->index0($data, 'a', 0));
+        assertTrue($filters->index0($data_assoc, 'A', 0));
+        assertFalse($filters->index0($data, 'a', 1));
+        assertFalse($filters->index0($data_assoc, 'A', 1));
+        assertFalse($filters->index0($data_assoc, 'A', 'a'));
     }
 }
