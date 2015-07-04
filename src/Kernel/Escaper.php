@@ -40,7 +40,7 @@ class Escaper implements EscaperInterface
      * @param \Aura\Html\Escaper $escaper
      * @param string             $encoding
      */
-    public function __construct(AuraHtmlEscaper $escaper, $encoding = 'utf8')
+    public function __construct(AuraHtmlEscaper $escaper, $encoding = 'utf-8')
     {
         $this->escaper = $escaper;
         $this->encoding = strtolower($encoding);
@@ -77,7 +77,11 @@ class Escaper implements EscaperInterface
     public function decode($data, $encoding = null)
     {
         if (is_string($data)) {
-            return html_entity_decode($data, ENT_QUOTES, $encoding ?: $this->encoding);
+            return html_entity_decode(
+                $data,
+                ENT_QUOTES,
+                is_string($encoding) ? $encoding : $this->encoding
+            );
         } elseif (is_array($data) || $data instanceof Traversable) {
             $result = [];
             foreach ($data as $i => $item) {
