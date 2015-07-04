@@ -7,6 +7,7 @@ $RECYCLE.BIN/
 .tox
 .idea
 vendor/
+build/
 composer.lock
 phpunit.xml
 website/
