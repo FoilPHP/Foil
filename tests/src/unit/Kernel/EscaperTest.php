@@ -129,6 +129,9 @@ class EscaperTest extends TestCase
 
     public function testMultipleEncoding()
     {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('HHVM do not yet support multi byte encoding.');
+        }
         $escaper = new Escaper($this->auraEscaper(), 'utf-8');
         $str = '体字';
         $big5 = $this->e($str, 'big5');
