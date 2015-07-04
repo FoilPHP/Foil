@@ -15,5 +15,5 @@ script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c phpunit.xml.dist
 
-after_script:
-  - php composer/bin/coveralls -v --exclude-no-stmt
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
