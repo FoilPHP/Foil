@@ -61,6 +61,7 @@ class Helpers implements ExtensionInterface, TemplateAware
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function setup(array $args = [])
     {
@@ -69,12 +70,13 @@ class Helpers implements ExtensionInterface, TemplateAware
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFilters()
     {
         return [
-            'e'      => 'Foil\entities',
-            'escape' => 'Foil\entities'
+            'e'      => [$this, 'entities'],
+            'escape' => [$this, 'entities']
         ];
     }
 
@@ -89,11 +91,11 @@ class Helpers implements ExtensionInterface, TemplateAware
             'eJs'    => [$this, 'escapeJs'],
             'eCss'   => [$this, 'escapeCss'],
             'eAttr'  => [$this, 'escapeAttr'],
-            'escape' => 'Foil\entities',
-            'ee'     => 'Foil\entities',
+            'escape' => [$this, 'entities'],
+            'ee'     => [$this, 'entities'],
             'd'      => [$this, 'decode'],
-            'decode' => 'Foil\decode',
-            'dd'     => 'Foil\decode',
+            'decode' => [$this, 'decodeEntities'],
+            'dd'     => [$this, 'decodeEntities'],
             'in'     => [$this, 'getIn'],
             'raw'    => [$this, 'raw'],
             'a'      => [$this, 'asArray'],
@@ -133,6 +135,27 @@ class Helpers implements ExtensionInterface, TemplateAware
     public function escape($var, $default = '', $filter = null, $strategy = 'html')
     {
         return $this->escaper->escape($this->raw($var, $default, $filter), $strategy);
+    }
+
+    /**
+     * @param  mixed       $var
+     * @param  string      $strategy
+     * @param  string|null $encoding
+     * @return mixed
+     */
+    public function entities($var, $strategy = 'html', $encoding = null)
+    {
+        return $this->escaper->escape($var, $strategy);
+    }
+
+    /**
+     * @param  mixed       $var
+     * @param  string|null $encoding
+     * @return mixed
+     */
+    public function decodeEntities($var, $encoding = null)
+    {
+        return $this->escaper->decode($var, $encoding);
     }
 
     /**
@@ -221,9 +244,9 @@ class Helpers implements ExtensionInterface, TemplateAware
      * If autoescape is set to true strings are escaped for html entities.
      * result is casted to array.
      *
-     * @param  string       $var       Variable name
-     * @param  mixed        $default   Default
-     * @param  string|array $filter    Array or pipe-separated list of filters
+     * @param  string       $var      Variable name
+     * @param  mixed        $default  Default
+     * @param  string|array $filter   Array or pipe-separated list of filters
      * @param  boolean      $forceRaw Should use raw variable?
      * @return mixed
      */
@@ -268,10 +291,10 @@ class Helpers implements ExtensionInterface, TemplateAware
      * Return a value from template context after filter it, optionally set a default.
      * If autoescape is set to true strings are escaped for html entities.
      *
-     * @param  string|array $filters     Array or pipe-separated list of filters
-     * @param  string       $var         Variable name
-     * @param  array|void   $args Array or additional arguments for filters
-     * @param  mixed        $default     Default
+     * @param  string|array $filters Array or pipe-separated list of filters
+     * @param  string       $var     Variable name
+     * @param  array|void   $args    Array or additional arguments for filters
+     * @param  mixed        $default Default
      * @return mixed
      */
     public function filter($filters, $var, array $args = null, $default = '')
