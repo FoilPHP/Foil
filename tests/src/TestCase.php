@@ -12,6 +12,8 @@ namespace Foil\Tests;
 use PHPUnit_Framework_TestCase;
 use Brain\Monkey;
 use Closure;
+use InvalidArgumentException;
+use LogicException;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -45,5 +47,48 @@ class TestCase extends PHPUnit_Framework_TestCase
         $closure = Closure::bind($closure, $object, get_class($object));
 
         return call_user_func_array($closure, $args);
+    }
+
+    /**
+     * @param  string $property
+     * @param         $object
+     * @return mixed
+     */
+    protected function accessPrivateProperty($property, $object)
+    {
+        if (! is_string($property) || ! is_object($object)) {
+            throw new InvalidArgumentException(
+                __METHOD__.' needs a valid property name and a valid object.'
+            );
+        }
+
+        return $this->bindClosure(function ($property) {
+            if (! isset($this->$property)) {
+                throw new LogicException(
+                    "{$property} is not a set on the object."
+                );
+            }
+
+            return $this->$property;
+        }, $object, [$property]);
+    }
+
+    /**
+     * @param  string $property
+     * @param  mixed  $value
+     * @param  object $object
+     * @return mixed
+     */
+    protected function setPrivateProperty($property, $value, $object)
+    {
+        if (! is_string($property) || ! is_object($object)) {
+            throw new InvalidArgumentException(
+                __METHOD__.' needs a valid property name and a valid object.'
+            );
+        }
+
+        return $this->bindClosure(function ($property, $value) {
+            $this->$property = $value;
+        }, $object, [$property, $value]);
     }
 }
