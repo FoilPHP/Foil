@@ -44,10 +44,7 @@ class TestCaseFunctional extends TestCase
             $options
         );
         $app = Foil::boot($options);
-        $this->container = $this->bindClosure(function () use (&$container) {
-            return $this->container;
-        }, $app);
-
+        $this->container = $this->accessPrivateProperty('container', $app);
         $this->engine = $app->engine();
     }
 }
