@@ -73,6 +73,7 @@ class Links implements ExtensionInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function provideFilters()
     {
