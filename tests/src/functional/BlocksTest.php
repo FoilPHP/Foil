@@ -16,6 +16,9 @@ namespace Foil\Tests;
  */
 class BlocksTest extends TestCaseFunctional
 {
+    /**
+     * @coversNothing
+     */
     public function testBlock()
     {
         $this->initFoil();

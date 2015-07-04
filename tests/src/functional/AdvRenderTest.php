@@ -31,6 +31,9 @@ class AdvRenderTest extends TestCaseFunctional
         $this->engine->addFolder($this->templates_path);
     }
 
+    /**
+     * @coversNothing
+     */
     public function testRender()
     {
         $this->registerCallbacks();

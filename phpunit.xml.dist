@@ -1,6 +1,6 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.4/phpunit.xsd"
-         bootstrap="tests/boot.php"
+         bootstrap="./tests/boot.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -9,12 +9,27 @@
     <listeners>
         <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
     </listeners>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory>./inc</directory>
+                <directory>./docs</directory>
+                <directory>./build</directory>
+                <directory>./tests</directory>
+                <directory>./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="./build/logs/coverage.xml"/>
+    </logging>
     <testsuites>
         <testsuite name="U">
-            <directory>tests/src/unit</directory>
+            <directory>./tests/src/unit</directory>
         </testsuite>
         <testsuite name="F">
-            <directory>tests/src/functional</directory>
+            <directory>./tests/src/functional</directory>
         </testsuite>
     </testsuites>
 </phpunit>

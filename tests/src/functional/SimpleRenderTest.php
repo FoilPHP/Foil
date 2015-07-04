@@ -18,6 +18,9 @@ use Foil\Template\Template;
  */
 class SimpleRenderTest extends TestCaseFunctional
 {
+    /**
+     * @coversNothing
+     */
     public function testSimpleRender()
     {
         $this->initFoil();
@@ -25,6 +28,9 @@ class SimpleRenderTest extends TestCaseFunctional
         assertSame('Hello Alone NO YES', $render);
     }
 
+    /**
+     * @coversNothing
+     */
     public function testSectionEvent()
     {
         $this->initFoil();
@@ -43,6 +49,9 @@ class SimpleRenderTest extends TestCaseFunctional
         assertSame('YES MAN', $section);
     }
 
+    /**
+     * @coversNothing
+     */
     public function testLayoutRender()
     {
         $this->initFoil();
@@ -60,6 +69,9 @@ class SimpleRenderTest extends TestCaseFunctional
         assertSame('Buffalo Bill', trim($buffer));
     }
 
+    /**
+     * @coversNothing
+     */
     public function testSimpleRenderDoubleExt()
     {
         $this->initFoil(['ext' => 'tpl.php']);

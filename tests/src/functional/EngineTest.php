@@ -26,12 +26,18 @@ class EngineTest extends TestCaseFunctional
         $this->initFoil();
     }
 
+    /**
+     * @coversNothing
+     */
     public function testInit()
     {
         // $this->engine is set in `TestCaseFunctional::setUp()`
         assertInstanceOf('Foil\Engine', $this->engine);
     }
 
+    /**
+     * @coversNothing
+     */
     public function testUseData()
     {
         $this->engine->useData(['foo' => 'bar'], 'foo', 'bar');
@@ -41,6 +47,9 @@ class EngineTest extends TestCaseFunctional
         assertSame(['foo' => 'bar'], $context->provide());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testContext()
     {
         $this->engine
@@ -62,6 +71,9 @@ class EngineTest extends TestCaseFunctional
         assertSame($expected, $context->provide());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testRegisterExtension()
     {
         $e = Mockery::mock('Foil\Contracts\ExtensionInterface');
@@ -82,6 +94,9 @@ class EngineTest extends TestCaseFunctional
         assertSame('Hello!', $command->filter('foo', 'Hello', ['!']));
     }
 
+    /**
+     * @coversNothing
+     */
     public function testRegisterFunction()
     {
         $cb = function ($a, $b = '') {
@@ -96,6 +111,9 @@ class EngineTest extends TestCaseFunctional
         assertSame($expected, $command->run('foo', '<b>Hello', '</b>'));
     }
 
+    /**
+     * @coversNothing
+     */
     public function testRegisterFilter()
     {
         $cb = function ($original, $a, $b) {
@@ -107,11 +125,17 @@ class EngineTest extends TestCaseFunctional
         assertSame('Hello!!', $command->filter('foo', 'Hello', ['!', '!']));
     }
 
+    /**
+     * @coversNothing
+     */
     public function testRender()
     {
         assertSame('foo,bar', $this->engine->render('foo', ['foo', 'bar']));
     }
 
+    /**
+     * @coversNothing
+     */
     public function testRenderSection()
     {
         $section = $this->engine->renderSection('main', 'three');
