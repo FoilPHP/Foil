@@ -27,6 +27,15 @@ class FiltersTest extends TestCase
         assertSame('F', $f->first('Foo'));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFirstFailsIfBadArgs()
+    {
+        $f = new Filters();
+        $f->first(true);
+    }
+
     public function testLast()
     {
         $f = new Filters();
@@ -55,6 +64,15 @@ class FiltersTest extends TestCase
         assertSame([array_values($data_assoc)], $f->chunk($data_assoc, 10));
         assertSame($three_assoc, $f->chunk($data_assoc, 3, 'fill'));
         assertSame($data_assoc_filled, $f->chunk($data_assoc, 10, 'fill'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testIsFirstFailsIfBadArgs()
+    {
+        $f = new Filters();
+        $f->isFirst(true, '');
     }
 
     public function testIsFirst()

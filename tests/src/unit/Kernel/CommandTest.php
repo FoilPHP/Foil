@@ -28,12 +28,40 @@ class CommandTest extends TestCase
     {
         $escaper = Mockery::mock('Foil\Contracts\EscaperInterface');
         $escaper->shouldReceive('escape')->andReturnUsing(function ($var) {
+            if (is_object($var)) {
+                return method_exists($var, '__toString')
+                    ? (new HtmlEscaper())->__invoke($var->__toString())
+                    : '';
+            }
+
             return is_array($var)
                 ? array_map(new HtmlEscaper(), $var)
                 : (new HtmlEscaper())->__invoke($var);
         });
 
         return $escaper;
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testRunFailsIfBadFunctionName()
+    {
+        $c = new Command($this->escaper());
+        $c->run(true);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testRunFailsIfBadFunctionNotExists()
+    {
+        $c = new Command($this->escaper());
+        $test = function ($str) {
+            echo $str;
+        };
+        $c->registerFunctions(['hello' => $test]);
+        $c->run('goodbye');
     }
 
     public function testFunctionNoEcho()
@@ -43,7 +71,34 @@ class CommandTest extends TestCase
         };
         $c = new Command($this->escaper());
         $c->registerFunctions(['hello' => $test]);
+        $this->expectOutputString('');
         assertSame('', $c->run('hello', 'Hello!'));
+    }
+
+    public function testFunctionObject()
+    {
+        $test1 = function () {
+            return (object) ['foo' => 'bar'];
+        };
+        $test2 = function () {
+            return 'foo';
+        };
+        $c = new Command($this->escaper());
+        $c->registerFunctions(['one' => $test1]);
+        $c->registerFunctions(['two' => $test2]);
+        assertSame('', $c->run('one'));
+        assertSame('foo', $c->run('two'));
+    }
+
+    public function testFunctionEcho()
+    {
+        $test = function ($str) {
+            echo $str;
+        };
+        $c = new Command($this->escaper());
+        $c->registerFunctions(['block' => $test]);
+        $this->expectOutputString('Hello!');
+        $c->run('block', 'Hello!');
     }
 
     public function testFunctionEscape()
@@ -88,6 +143,19 @@ class CommandTest extends TestCase
         $c->registerFunctions(['t2' => $test4]); // override shouldn't be possible anymore
         assertSame('C', $c->run('t1'));
         assertSame('B', $c->run('t2'));
+    }
+
+    public function testFunctionsSafe()
+    {
+        $func = function () {
+            return 'A';
+        };
+        $c = new Command($this->escaper());
+        $c->registerFunctions(['a' => $func, 'b' => $func]);
+        $c->registerFunctions(['c' => $func, 'd' => $func], ['c']);
+        $c->registerFunctions(['e' => $func, 'f' => $func], ['e', 'f']);
+        $c->registerFunctions(['g' => $func, 'h' => $func], true);
+        assertSame(['c', 'e', 'f', 'g', 'h'], $this->accessPrivateProperty('safe', $c));
     }
 
     public function testFilters()

@@ -20,6 +20,23 @@ use Foil\Context\RegexContext;
  */
 class RegexContextTest extends TestCase
 {
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructorFailsIfBadArgument()
+    {
+        new RegexContext(['|^f[\w-]+\.php$|'], ['foo' => 'bar']);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testAcceptFailsIfBadTemplate()
+    {
+        $context = new RegexContext('/.+/');
+        $context->accept(1);
+    }
+
     public function testAccept()
     {
         $c = new RegexContext('|^f[\w-]+\.php$|', ['foo' => 'bar']);

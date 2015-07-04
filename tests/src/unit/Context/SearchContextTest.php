@@ -19,6 +19,23 @@ use Foil\Context\SearchContext;
  */
 class SearchContextTest extends TestCase
 {
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructorFailsIfBadNeedle()
+    {
+        new SearchContext(1);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testAcceptFailsIfBadTemplate()
+    {
+        $c = new SearchContext('foo\bar');
+        $c->accept(true);
+    }
+
     public function testAccept()
     {
         $c = new SearchContext('foo\bar', ['foo' => 'bar']);

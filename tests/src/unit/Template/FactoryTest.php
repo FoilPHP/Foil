@@ -34,6 +34,17 @@ class FactoryTest extends TestCase
         return new Factory(new ArrayObject(), new ArrayObject(), $command, $options);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFactoryFailsIfBadName()
+    {
+        $factory = $this->getTemplateFactory(false);
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $factory->factory([], $engine);
+    }
+
     public function testFactoryStandardClass()
     {
         $factory = $this->getTemplateFactory(false);

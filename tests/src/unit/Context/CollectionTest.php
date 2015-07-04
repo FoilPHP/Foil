@@ -48,6 +48,28 @@ class CollectionTest extends TestCase
         return $con;
     }
 
+    public function testAccept()
+    {
+        $collection = $this->getCollection();
+        assertTrue($collection->accept('template'));
+        assertFalse($collection->accept(1));
+        $collection->disallow();
+        assertFalse($collection->accept('template'));
+    }
+
+    public function testAddHasRemove()
+    {
+        /** @var \Foil\Contracts\ContextInterface $context */
+        $context = Mockery::mock('Foil\Contracts\ContextInterface');
+        $clone = clone $context;
+        $collection = $this->getCollection();
+        $collection->add($context);
+        assertTrue($collection->has($context));
+        assertFalse($collection->has($clone));
+        $collection->remove($context);
+        assertFalse($collection->has($context));
+    }
+
     public function testProvideReturnDataIfNoTemplate()
     {
         $c = $this->getCollection();
@@ -57,10 +79,7 @@ class CollectionTest extends TestCase
     public function testProvideNoStorage()
     {
         $collection = $this->getCollection();
-        $this->bindClosure(function () {
-            /** @noinspection PhpUndefinedFieldInspection */
-            $this->template = 'foo';
-        }, $collection);
+        $this->setPrivateProperty('template', 'foo', $collection);
 
         assertSame(['foo' => 'bar'], $collection->provide());
     }

@@ -12,6 +12,11 @@ namespace Foil\Tests\Kernel;
 
 use Foil\Tests\TestCase;
 use Foil\Kernel\Escaper;
+use Aura\Html\Escaper as AuraEscaper;
+use Aura\Html\Escaper\HtmlEscaper;
+use Aura\Html\Escaper\AttrEscaper;
+use Aura\Html\Escaper\CssEscaper;
+use Aura\Html\Escaper\JsEscaper;
 use Mockery;
 
 /**
@@ -21,31 +26,37 @@ use Mockery;
  */
 class EscaperTest extends TestCase
 {
-    private function e($str, $encoding)
+    /**
+     * @param  mixed  $data
+     * @param  string $encoding
+     * @param  string $strategy
+     * @return string
+     */
+    private function e($data, $encoding = 'utf-8', $strategy = 'html')
     {
-        return htmlentities($str, ENT_QUOTES | ENT_SUBSTITUTE, $encoding);
+        $aura = $this->auraEscaper();
+        $aura->setEncoding($encoding);
+
+        return $aura->$strategy($data);
     }
 
-    private function sut($encoding = 'utf-8')
+    /**
+     * @return \Aura\Html\Escaper
+     */
+    private function auraEscaper()
     {
-        /** @var \Aura\Html\Escaper|\Mockery\CompositeExpectation $aura */
-        $aura = Mockery::mock('Aura\Html\Escaper');
-        $aura
-            ->shouldReceive('setEncoding')
-            ->atLeast()
-            ->once()
-            ->with($encoding)
-            ->andReturnNull();
-        $aura
-            ->shouldReceive('html')
-            ->atLeast()
-            ->once()
-            ->with(Mockery::type('string'))
-            ->andReturnUsing(function ($str) use ($encoding) {
-                return $this->e($str, $encoding);
-            });
+        return new AuraEscaper(
+            new HtmlEscaper(),
+            new AttrEscaper(new HtmlEscaper()),
+            new CssEscaper(),
+            new JsEscaper()
+        );
+    }
 
-        return new Escaper($aura, $encoding);
+    public function testHtmlDefaultStrategy()
+    {
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        assertSame($this->e('<b>Foo</b>'), $escaper->escape('<b>Foo</b>', 'mhe'));
     }
 
     public function testUtf8()
@@ -78,7 +89,7 @@ class EscaperTest extends TestCase
                 ],
             ],
         ];
-        $escaper = $this->sut();
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
         assertSame($expected, $escaper->escape($data));
     }
 
@@ -112,7 +123,64 @@ class EscaperTest extends TestCase
                 ],
             ],
         ];
-        $escaper = $this->sut('iso-8859-1');
+        $escaper = new Escaper($this->auraEscaper(), 'iso-8859-1');
         assertSame($expected, $escaper->escape($data));
+    }
+
+    public function testMultipleEncoding()
+    {
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        $str = '体字';
+        $big5 = $this->e($str, 'big5');
+        $utf8 = $this->e($str, 'utf-8');
+
+        assertSame($utf8, $escaper->escape($str));
+        assertNotSame($big5, $escaper->escape($str));
+        assertSame($big5, $escaper->escape($str, 'html', 'big5'));
+    }
+
+    public function testAttr()
+    {
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        $data = ['class' => ['foo', 'bar'], 'id' => 'foo'];
+        $expected = 'class="foo bar" id="foo"';
+
+        assertSame($expected, $escaper->escape($data, 'attr'));
+    }
+
+    public function testObjectArr()
+    {
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        $data = (object) ['class' => ['foo', 'bar'], 'id' => 'foo'];
+        $expected = 'class="foo bar" id="foo"';
+
+        assertSame($expected, $escaper->escape($data, 'attr'));
+    }
+
+    public function testObjectHtml()
+    {
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        $data = new \ArrayIterator(['<b>a</b>', '<b>c</b>', '<b>d</b>']);
+        $expected = array_map([$this, 'e'], ['<b>a</b>', '<b>c</b>', '<b>d</b>']);
+
+        assertSame($expected, $escaper->escape($data));
+    }
+
+    public function testObjectString()
+    {
+        $mock = Mockery::mock();
+        $mock->shouldReceive('__toString')->andReturn('<p>P</p>');
+
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        assertSame($this->e('<p>P</p>'), $escaper->escape($mock));
+    }
+
+    public function testDecode()
+    {
+        $str = '<p>à""&àà体</p>';
+        $encode = $this->e($str);
+
+        $escaper = new Escaper($this->auraEscaper(), 'utf-8');
+        assertSame($str, $escaper->decode($encode));
     }
 }

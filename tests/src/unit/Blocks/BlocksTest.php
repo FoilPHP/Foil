@@ -54,10 +54,7 @@ class BlocksTest extends TestCase
         $blocks->add('foo', $func);
 
         /** @var array $added */
-        $added = $this->bindClosure(function () {
-            /** @noinspection PhpUndefinedFieldInspection */
-            return $this->blocks;
-        }, $blocks);
+        $added = $this->accessPrivateProperty('blocks', $blocks);
 
         assertArrayHasKey('foo', $added);
         assertSame($block, $added['foo']);
@@ -107,10 +104,7 @@ class BlocksTest extends TestCase
         $blocks->open('foo', ['foo', 'bar']);
 
         /** @var \SplStack $buffers */
-        $buffers = $this->bindClosure(function () {
-            /** @noinspection PhpUndefinedFieldInspection */
-            return $this->buffers;
-        }, $blocks);
+        $buffers = $this->accessPrivateProperty('buffers', $blocks);
 
         assertInstanceOf('\SplStack', $buffers);
         $buffer = $buffers->pop();

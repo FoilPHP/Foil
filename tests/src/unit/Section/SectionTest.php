@@ -19,77 +19,95 @@ use Foil\Section\Section;
  */
 class SectionTest extends TestCase
 {
+    /**
+     * @expectedException \LogicException
+     */
+    public function testReplaceFailsIfNoStarted()
+    {
+        $section = new Section(false);
+        $section->replace();
+    }
+
     public function testReplaceNoMode()
     {
         $this->expectOutputString('');
-        $s = new Section(false);
-        $s->start();
+        $section = new Section(false);
+        $section->start();
         echo 'Lorem Ipsum Dolor Simet';
-        $s->replace();
-        assertSame('Lorem Ipsum Dolor Simet', $s->content());
+        $section->replace();
+        assertSame('Lorem Ipsum Dolor Simet', $section->content());
     }
 
     public function testReplaceModeOutput()
     {
         $this->expectOutputString('Lorem Ipsum Dolor Simet');
-        $s = new Section(Section::MODE_REPLACE | Section::MODE_OUTPUT);
-        $s->start();
+        $section = new Section(Section::MODE_REPLACE | Section::MODE_OUTPUT);
+        $section->start();
         echo 'Lorem Ipsum Dolor Simet';
-        $s->replace();
-        assertSame('Lorem Ipsum Dolor Simet', $s->content());
+        $section->replace();
+        assertSame('Lorem Ipsum Dolor Simet', $section->content());
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testAppendFailsIfNoStarted()
+    {
+        $section = new Section(false);
+        $section->append();
     }
 
     public function testAppendModeReplace()
     {
         $this->expectOutputString('');
-        $s = new Section(Section::MODE_REPLACE);
-        $s->start();
+        $section = new Section(Section::MODE_REPLACE);
+        $section->start();
         echo 'Lorem Ipsum Dolor Simet';
-        $s->append();
-        assertSame('', $s->content());
+        $section->append();
+        assertSame('', $section->content());
     }
 
     public function testAppendNoMode()
     {
         $this->expectOutputString('');
-        $s = new Section(false);
-        $s->start();
+        $section = new Section(false);
+        $section->start();
         echo 'Lorem Ipsum Dolor Simet';
-        $s->append();
-        assertSame('Lorem Ipsum Dolor Simet', $s->content());
+        $section->append();
+        assertSame('Lorem Ipsum Dolor Simet', $section->content());
     }
 
     public function testAppendModeOutput()
     {
         $this->expectOutputString('Lorem Ipsum Dolor Simet');
-        $s = new Section(Section::MODE_APPEND | Section::MODE_OUTPUT);
-        $s->start();
+        $section = new Section(Section::MODE_APPEND | Section::MODE_OUTPUT);
+        $section->start();
         echo 'Lorem Ipsum Dolor Simet';
-        $s->append();
-        assertSame('Lorem Ipsum Dolor Simet', $s->content());
+        $section->append();
+        assertSame('Lorem Ipsum Dolor Simet', $section->content());
     }
 
     public function testStopAsAppend()
     {
         $this->expectOutputString('');
-        $s = new Section();
-        $s->start();
+        $section = new Section();
+        $section->start();
         echo 'Dolor Simet';
-        $s->stop();
-        $s->start();
+        $section->stop();
+        $section->start();
         echo 'Lorem Ipsum ';
-        $s->stop();
-        assertSame('Lorem Ipsum Dolor Simet', $s->content());
+        $section->stop();
+        assertSame('Lorem Ipsum Dolor Simet', $section->content());
     }
 
-    public function testStopAsRemplate()
+    public function testStopAsReplace()
     {
         $this->expectOutputString('');
-        $s = new Section(false, Section::MODE_REPLACE);
-        $s->start();
+        $section = new Section(false, Section::MODE_REPLACE);
+        $section->start();
         echo 'Lorem Ipsum';
-        $s->stop();
-        assertSame(Section::MODE_REPLACE, $s->mode());
-        assertSame('Lorem Ipsum', $s->content());
+        $section->stop();
+        assertSame(Section::MODE_REPLACE, $section->mode());
+        assertSame('Lorem Ipsum', $section->content());
     }
 }

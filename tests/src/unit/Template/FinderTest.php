@@ -19,7 +19,11 @@ use Foil\Template\Finder;
  */
 class FinderTest extends TestCase
 {
-    private function fooDirs($named = false)
+    /**
+     * @param  bool  $named
+     * @return array
+     */
+    private function finderDirectories($named = false)
     {
         $base = realpath(getenv('FOIL_TESTS_BASEPATH'));
         $dirs = [
@@ -30,22 +34,31 @@ class FinderTest extends TestCase
         return (! $named) ? $dirs : array_combine(['foo', 'bar'], $dirs);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInFailsIfBadDir()
+    {
+        $finder = new Finder();
+        $finder->in(['foo']);
+    }
+
     public function testIn()
     {
-        $f1 = new Finder();
-        $unnamed_dirs = $this->fooDirs();
-        $f1->in($unnamed_dirs);
-        $f2 = new Finder();
-        $named_dirs = $this->fooDirs(true);
-        $f2->in($named_dirs);
-        $expected = ['_files.foo' => $unnamed_dirs[0], '_files.bar' => $unnamed_dirs[1]];
-        assertSame($expected, $f1->dirs());
-        assertSame($named_dirs, $f2->dirs());
+        $finder1 = new Finder();
+        $unnamed = $this->finderDirectories();
+        $finder1->in($unnamed);
+        $finder2 = new Finder();
+        $named = $this->finderDirectories(true);
+        $finder2->in($named);
+        $expected = ['_files.foo' => $unnamed[0], '_files.bar' => $unnamed[1]];
+        assertSame($expected, $finder1->dirs());
+        assertSame($named, $finder2->dirs());
     }
 
     public function testInEdit()
     {
-        $dirs = $this->fooDirs(true);
+        $dirs = $this->finderDirectories(true);
         $finder = new Finder();
         $finder->in(['foo' => $dirs['foo']]);
         assertSame(['foo' => $dirs['foo']], $finder->dirs());
@@ -62,28 +75,72 @@ class FinderTest extends TestCase
         assertSame(['foo' => $dirs['foo']], $finder->dirs());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFindFailsIfEmptyTemplate()
+    {
+        $finder = new Finder();
+        $finder->find([]);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFindFailsIfBadTemplate()
+    {
+        $finder = new Finder();
+        $finder->find(true);
+    }
+
     public function testFindInDir()
     {
-        $f = new Finder();
-        $dirs = $this->fooDirs(true);
-        $f->in($dirs);
-        $found = $f->find('bar::foo');
+        $finder = new Finder();
+        $dirs = $this->finderDirectories(true);
+        $finder->in($dirs);
+        $found = $finder->find('bar::foo');
         assertSame('foo.php', basename($found));
         assertSame(0, strpos($found, $dirs['bar']));
     }
 
+    public function testFindInDirFalseIfNoTemplate()
+    {
+        $finder = new Finder();
+        $dirs = $this->finderDirectories(true);
+        $finder->in($dirs);
+        assertFalse($finder->find('foo::second'));
+    }
+
     public function testFind()
     {
-        $f = new Finder();
-        $f->in($this->fooDirs());
-        assertSame('bar.inc', basename($f->find('bar.inc')));
-        assertSame('foo.php', basename($f->find('foo')));
+        $finder = new Finder();
+        $finder->in($this->finderDirectories());
+        assertSame('bar.inc', basename($finder->find('bar.inc')));
+        assertSame('foo.php', basename($finder->find('foo')));
     }
 
     public function testFindWithExt()
     {
-        $f = new Finder('tpl.php');
-        $f->in($this->fooDirs());
-        assertSame('double.tpl.php', basename($f->find('double')));
+        $finder = new Finder('tpl.php');
+        $finder->in($this->finderDirectories());
+        assertSame('double.tpl.php', basename($finder->find('double')));
+    }
+
+    public function testFindMany()
+    {
+        $finder = new Finder();
+        $dirs = $this->finderDirectories(true);
+        $finder->in($dirs);
+        assertSame('foo.php', basename($finder->find(['mhe', 'nope', 'foo'])));
+    }
+
+    public function testFindManyInDirs()
+    {
+        $finder = new Finder();
+        $dirs = $this->finderDirectories(true);
+        $finder->in($dirs);
+        $found = $finder->find(['foo::mhe', 'foo::second', 'bar::second']);
+        assertSame('second.php', basename($found));
+        assertSame('bar', basename(dirname($found)));
     }
 }

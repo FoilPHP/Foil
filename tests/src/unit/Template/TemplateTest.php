@@ -22,6 +22,19 @@ use ArrayObject;
  */
 class TemplateTest extends TestCase
 {
+    public function testCall()
+    {
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $command->shouldReceive('run')->with('foo', 'bar')->once()->andReturn('Foo!');
+
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+
+        assertSame('Foo!', $template->foo('bar'));
+    }
+
     public function testFilter()
     {
         /** @var \Foil\Engine $engine */
@@ -35,6 +48,29 @@ class TemplateTest extends TestCase
 
         $template = new Template('/path', new ArrayObject(), $engine, $command);
         assertSame('baz', $template->filter('first|foo|bar|baz', 'Lorem Ipsum'));
+    }
+
+    public function testFilterArgs()
+    {
+        /** @var \Foil\Engine $engine */
+        $engine = Mockery::mock('Foil\Engine');
+
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $command->shouldReceive('filter')
+                ->once()
+                ->with('first', 'Lorem Ipsum', ['foo'])
+                ->andReturn('Lorem!');
+        $command->shouldReceive('filter')
+                ->once()
+                ->with('last', 'Lorem!', ['bar'])
+                ->andReturn('Ipsum!');
+
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+
+        $filter = $template->filter('first|last', 'Lorem Ipsum', [['foo'], ['bar']]);
+
+        assertSame('Ipsum!', $filter);
     }
 
     public function testRenderNoLayout()
@@ -66,6 +102,20 @@ class TemplateTest extends TestCase
 
         $render = $template->render(['foo', 'bar']);
         assertSame('foo,bar', $render);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testLayoutFailsIfBadFile()
+    {
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $engine->shouldReceive('find')->with('foo')->once()->andReturn(false);
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template->layout('foo');
     }
 
     public function testRenderLayout()
@@ -113,14 +163,93 @@ class TemplateTest extends TestCase
         assertSame('foo,bar', $template->lastBuffer());
     }
 
-    public function testAlias(){
+    public function testSupply()
+    {
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $section = Mockery::mock('Foil\Section\Section');
+        $section->shouldReceive('content')->once()->andReturn('Ok!');
+        $template = new Template('/path', new ArrayObject(['foo' => $section]), $engine, $command);
+
+        assertSame('Ok!', $template->supply('foo'));
+    }
+
+    public function testSupplyDefaultString()
+    {
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+
+        assertSame('Ok!', $template->supply('foo', 'Ok!'));
+    }
+
+    public function testSupplyDefaultCallable()
+    {
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+
+        assertSame('Ok!', $template->supply('foo', function ($section, $tmpl) use ($template) {
+            assertSame('foo', $section);
+            assertSame($template, $tmpl);
+
+            return 'Ok!';
+        }));
+    }
+
+    public function testInsert()
+    {
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+
+        $engine->shouldReceive('fire')
+               ->once()
+               ->with('f.template.prepartial', 'foo', ['foo' => 'foo'], $template)
+               ->andReturnNull();
+        $engine->shouldReceive('fire')
+               ->once()
+               ->with('f.template.afterpartial', $template)
+               ->andReturnNull();
+
+        $engine->shouldReceive('render')
+               ->once()
+               ->with('foo', ['foo' => 'foo'])
+               ->andReturn('Ok!');
+
+        assertSame('Ok!', $template->insert('foo', ['foo' => 'foo']));
+    }
+
+    public function testInsertIfDoNothingIfFileNotExists()
+    {
+        /** @var \Foil\Engine|\Mockery\MockInterface $engine */
+        $engine = Mockery::mock('Foil\Engine');
+        $engine->shouldReceive('find')->with('foo')->once()->andReturn(false);
+        /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
+        $command = Mockery::mock('Foil\Kernel\Command');
+        $template = new Template('/path', new ArrayObject(), $engine, $command);
+
+        assertSame('', $template->insertif('foo'));
+    }
+
+    public function testAlias()
+    {
         /** @var \Foil\Engine $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
         $command->shouldReceive('run')
-            ->with('v', 'foo')
-            ->andReturn('Foo!');
+                ->with('v', 'foo')
+                ->andReturn('Foo!');
 
         $template = new Template('/path', new ArrayObject(), $engine, $command);
 
@@ -128,12 +257,11 @@ class TemplateTest extends TestCase
 
         $file = realpath(getenv('FOIL_TESTS_BASEPATH').'/_files/foo/alias.php');
 
-        $collected = '';
-        $this->bindClosure(function($file) use(&$collected) {
+        $this->bindClosure(function ($file) {
             /** @noinspection PhpUndefinedMethodInspection */
-            $collected = $this->collect($file);
+            $this->collect($file);
         }, $template, [$file]);
 
-        assertSame('Foo!', trim($collected));
+        assertSame('Foo!', $template->buffer());
     }
 }

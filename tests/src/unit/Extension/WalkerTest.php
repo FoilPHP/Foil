@@ -114,6 +114,16 @@ class WalkerTest extends TestCase
         );
     }
 
+    public function testWalkWrapDefault()
+    {
+        $w = $this->getWalker();
+        $expected = '<li>A</li><li>B</li><li>C</li>';
+        assertSame(
+            $expected,
+            $w->walkWrap(['A', 'B', 'C'], '', '<li>%s</li>')
+        );
+    }
+
     public function testWalkWrapIf()
     {
         $w = $this->getWalker();
