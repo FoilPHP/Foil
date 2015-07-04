@@ -111,7 +111,7 @@ class Collection implements ContextCollectionInterface
      */
     public function has(ContextInterface $context)
     {
-        $this->storage->contains($context);
+        return $this->storage->contains($context);
     }
 
     /**
