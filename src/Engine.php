@@ -171,7 +171,8 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      */
     public function addFolder($path, $name = null)
     {
-        $this->finder()->in([$name => $path]);
+        $folders = is_string($name) ? [$name => $path] : [$path];
+        $this->finder()->in($folders);
 
         return $this;
     }
