@@ -13,6 +13,7 @@ use Foil\Contracts\ExtensionInterface as Extension;
 use Foil\Contracts\EscaperInterface;
 use Foil;
 use InvalidArgumentException;
+use LogicException;
 
 /**
  * Class that holds all the functions and filters registered in extensions.
@@ -142,8 +143,9 @@ class Command
         }
         $this->$which = array_merge($this->$which, $filtered);
         if ($which === 'functions' && ! empty($safe)) {
-            $areSafe = is_array($safe) ? array_intersect($safe,
-                array_keys($filtered)) : array_keys($filtered);
+            $areSafe = is_array($safe)
+                ? array_intersect($safe, array_keys($filtered))
+                : array_keys($filtered);
             $this->safe = array_merge($this->safe, $areSafe);
         }
     }
@@ -165,7 +167,7 @@ class Command
         if (array_key_exists($callback, $which)) {
             return call_user_func_array($which[$callback], $args);
         }
-        throw new InvalidArgumentException('"'.$callback.'" is not a registered Foil callback.');
+        throw new LogicException('"'.$callback.'" is not a registered Foil callback.');
     }
 
     /**
