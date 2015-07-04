@@ -8,7 +8,6 @@ $RECYCLE.BIN/
 .idea/
 vendor/
 build/
-composer.lock
 phpunit.xml
 website/
 couscous-theme/
