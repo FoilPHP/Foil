@@ -26,10 +26,10 @@
     </logging>
     <testsuites>
         <testsuite name="U">
-            <directory>./tests/src/unit</directory>
+            <directory>./tests/src/Unit</directory>
         </testsuite>
         <testsuite name="F">
-            <directory>./tests/src/functional</directory>
+            <directory>./tests/src/Functional</directory>
         </testsuite>
     </testsuites>
 </phpunit>
