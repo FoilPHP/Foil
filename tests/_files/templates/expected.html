@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Foil is Awesome!</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+
+        <div>
+            <ul>
+                <li><a href="http://www.example.com">First Item</a></li>
+                <li><a href="#">Second Item</a></li>
+            </ul>
+        </div>
+
+        <div>
+
+            <p>Deep var test: Lorem Ipsum Dolor</p>
+
+            <p>Default test: I am a default.</p>
+
+            <p>__get test: TEST ME!</p>
+
+            <p>Raw test: <strong>This is a strong tag html content</strong></p>
+
+            <p>Autoescape test: &lt;strong&gt;This is a strong tag html content&lt;/strong&gt;</p>
+
+            <p>Filter test: I AM LOWERCASE</p>
+
+            <p>Advanced test: HELLO WORLD!</p>
+
+        </div>
+
+        <div>
+            Here something for you.
+        </div>
+
+        <div>
+            <p>OVERRIDE a section defined in a PARTIAL</p>
+
+            <p>
+                I am a partial. And this: &quot;TEST ME!&quot; is a var I share with template, but
+                this &quot;I am a partial var!&quot; is a specific partial var.
+            </p>
+
+        </div>
+
+        <div>
+            <p>
+                I am another partial.
+                This: &quot;I am a partial var too.&quot; is a specific partial var.
+                This: &quot;TEST ME!&quot; is a var I share with template.
+                A shared var skipped: &quot;Foil is Awesome!&quot;.
+            </p>
+        </div>
+
+        <div>
+            <p>Should BE SUPPLYED by layout.</p>
+        </div>
+
+        <div>
+            I am here.
+        </div>
+
+        <div>
+
+            <p>MAIN LAYOUT, first section</p>
+
+            <div>
+
+                <p>Should REPLACE layout first-child layout section.</p>
+
+            </div>
+
+            <p>MAIN LAYOUT, first section after child</p>
+
+            <p>Should BE APPENDED to layout first section.</p>
+
+        </div>
+
+        <div>
+
+            <p>Should REPLACE layout second section.</p>
+
+            <div>
+                <p>Extended layout third section.</p>
+                <p>Should BE APPENDED to extended layout third section.</p>
+            </div>
+
+        </div>
+
+        <div>
+            
+            <p>EXTENDED LAYOUT, Out of any section, output a deep var Another deep var.</p>
+            
+            <div>
+                
+                <p>
+                    I am another partial.
+                    This: &quot;!!!&quot; is a specific partial var.
+                    This: &quot;TEST ME!&quot; is a var I share with template.
+                    A shared var skipped: &quot;&quot;.
+                </p>
+                
+                <p>FINAL TEMPLATE, Out of any section, ouput a var TEST ME!</p>
+                
+            </div>
+        </div>
+
+    </body>
+</html>
