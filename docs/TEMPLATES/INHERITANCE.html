@@ -365,10 +365,10 @@ Foil supports this workflow with no limit on inheritance levels.</p>
 &lt;?php $this-&gt;stop() ?&gt;</code></pre>
 <p>However this looks pretty <em>inelegant</em> and probably worsens readability.</p>
 <p>A better way to do the trick is to use the <code>supply()</code> method: it accepts a section name and returns the section content only if it is defined.</p>
-<pre><code class="language-php">&lt;?php $this-&gt;supply('foo') // Outputs the content of 'foo' section if it is defined ?&gt;</code></pre>
+<pre><code class="language-php">&lt;?= $this-&gt;supply('foo') // Outputs the content of 'foo' section if it is defined ?&gt;</code></pre>
 <h3>Supply with Default</h3>
 <p><code>supply()</code> accepts as second argument a <strong>default content</strong> to be used if the section is not defined.</p>
-<pre><code class="language-php">&lt;?php $this-&gt;supply('posts', 'Sorry, no post found.') ?&gt;</code></pre>
+<pre><code class="language-php">&lt;?= $this-&gt;supply('posts', 'Sorry, no post found.') ?&gt;</code></pre>
 <p>This is a comfortable and readable way to obtain template inheritance when the default content can be contained in one line,
 for multi-line section content (way more common in real world applications) the <code>section()</code> / <code>stop()</code> method is the suggested way to go.</p>
 <h3>Supply with Callback Default</h3>
@@ -378,7 +378,7 @@ the callback runs and the result is used as <code>supply()</code> result. This a
 <pre><code class="language-php">$callback = function($section, $template) {
   return $template-&gt;insert($section.'-default');
 }
-&lt;?php $this-&gt;supply('a-section-name', $callback) ?&gt;</code></pre>
+&lt;?= $this-&gt;supply('a-section-name', $callback) ?&gt;</code></pre>
 <p>As shown in example above, callback passed as default argument will receive as first argument the section name, and as second argument the template object.</p>
 <p>This allows powerful routine for default, e.g. in the example above, if a section is not defined, a partial named <code>"{$section}-default.php"</code> is loaded.</p>
 <p>Note that if I'd <em>directly</em> used <code>$template-&gt;insert('a-section-name-default')</code> as default argument the partial fetching
