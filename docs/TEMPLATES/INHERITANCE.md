@@ -238,7 +238,7 @@ However this looks pretty *inelegant* and probably worsens readability.
 A better way to do the trick is to use the `supply()` method: it accepts a section name and returns the section content only if it is defined.
 
 ```php
-<?php $this->supply('foo') // Outputs the content of 'foo' section if it is defined ?>
+<?= $this->supply('foo') // Outputs the content of 'foo' section if it is defined ?>
 ```
 
 ### Supply with Default
@@ -246,7 +246,7 @@ A better way to do the trick is to use the `supply()` method: it accepts a secti
 `supply()` accepts as second argument a **default content** to be used if the section is not defined.
 
 ```php
-<?php $this->supply('posts', 'Sorry, no post found.') ?>
+<?= $this->supply('posts', 'Sorry, no post found.') ?>
 ```
 
 This is a comfortable and readable way to obtain template inheritance when the default content can be contained in one line,
@@ -263,7 +263,7 @@ Example:
 $callback = function($section, $template) {
   return $template->insert($section.'-default');
 }
-<?php $this->supply('a-section-name', $callback) ?>
+<?= $this->supply('a-section-name', $callback) ?>
 ```
 
 As shown in example above, callback passed as default argument will receive as first argument the section name, and as second argument the template object.
