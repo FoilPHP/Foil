@@ -73,13 +73,13 @@ For example, let's assume in a layout, named `home.php`, there's the following c
 and in the partials `partials/sidebar.php` there is the code:
 
 ```php
-<?php $this->start('sidebar-top') ?>
+<?php $this->section('sidebar-top') ?>
   <div>
     <h3>Sidebar</h3>
   </div>
 <?php $this->stop() ?>
 
-<?php $this->start('sidebar-main') ?>
+<?php $this->section('sidebar-main') ?>
   <div>
     <p>Default sidebar.</p>
   </div>
@@ -92,7 +92,7 @@ sections even if they were defined in a partial:
 ```php
 <?php $this->layout('home') ?>
 
-<?php $this->start('sidebar-main') ?>
+<?php $this->section('sidebar-main') ?>
   <div>
     <p>Custom sidebar.</p>
   </div>
