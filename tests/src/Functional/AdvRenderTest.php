@@ -20,6 +20,7 @@ use Foil\Context\RegexContext;
  */
 class AdvRenderTest extends TestCaseFunctional
 {
+
     private $templates_path;
 
     public function setUp()
@@ -102,7 +103,7 @@ class AdvRenderTest extends TestCaseFunctional
         $context_failed = new RegexContext('/[0-9]+/', ['i_do_not_exist' => 'NOT SHOULD BE HERE']);
         $this->engine->useContext($context);
         $this->engine->useContext($context_failed);
-        $this->engine->useContext('/\.php$/', ['title' => 'Foil is Awesome!', ], true);
+        $this->engine->useContext('/\.php$/', ['title' => 'Foil is Awesome!',], true);
     }
 
     /**

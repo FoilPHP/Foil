@@ -145,37 +145,37 @@ class Links implements ExtensionInterface
     private function setupHost(array $args, $which = 'host')
     {
         $checks = [
-            function(array $args, $which) {
+            function (array $args, $which) {
                 return ! isset($args[$which]) || is_null($args[$which]);
             },
-            function(array $args, $which) {
+            function (array $args, $which) {
                 return empty($args[$which]);
             },
-            function(array $args, $which) {
+            function (array $args, $which) {
                 return is_string($args[$which]) && strtolower($args[$which]) !== 'auto';
             },
-            function(array $args, $which) {
+            function (array $args, $which) {
                 return $args[$which] === true || is_string($args[$which]);
-            }
+            },
         ];
         $actions = [
-            function($var, $which) {
+            function ($var, $which) {
                 $this->$var = $which === 'host' ? false : null;
             },
-            function($var) {
+            function ($var) {
                 $this->$var = false;
             },
-            function($var, $which, array $args) {
+            function ($var, $which, array $args) {
                 $parse = parse_url($args[$which]);
                 $host = isset($parse['host']) ? $parse['host'] : $parse['path'];
                 $this->$var = $this->clean($host);
             },
-            function($var) {
+            function ($var) {
                 $this->$var = $this->clean(filter_input(INPUT_SERVER, 'SERVER_NAME'));
             },
         ];
 
-        foreach($checks as $i => $check) {
+        foreach ($checks as $i => $check) {
             if ($check($args, $which)) {
                 $args = [
                     $which === 'assets_host' ? 'assetsHost' : 'host',

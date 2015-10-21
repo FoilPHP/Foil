@@ -21,6 +21,7 @@ use Aura\Html\HelperLocatorFactory;
  */
 class AuraHtmlTest extends TestCase
 {
+
     private function sut($register_tag_functions = false)
     {
         return new AuraHtml((new HelperLocatorFactory())->newInstance(), $register_tag_functions);

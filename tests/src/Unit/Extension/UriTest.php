@@ -19,6 +19,7 @@ use Foil\Extensions\Uri;
  */
 class UriTest extends TestCase
 {
+
     public function testHome()
     {
         $u = new Uri();

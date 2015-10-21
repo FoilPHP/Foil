@@ -22,9 +22,8 @@ use Foil\Template\Alias;
  */
 interface AliasAllowedTemplateInterface extends TemplateInterface
 {
-
     /**
-     * @param \Foil\Template\Alias $alias
+     * @param  \Foil\Template\Alias                          $alias
      * @return \Foil\Contracts\AliasAllowedTemplateInterface
      */
     public function alias(Alias $alias);

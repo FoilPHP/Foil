@@ -20,6 +20,7 @@ use Foil\Tests\TestCase;
  */
 class BlockTest extends TestCase
 {
+
     public function testOpen()
     {
         $block = new Block('strtoupper');

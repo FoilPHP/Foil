@@ -23,6 +23,7 @@ use Mockery;
  */
 class EngineTest extends TestCase
 {
+
     /**
      * @param  \Foil\Kernel\Events   $events
      * @param  \Foil\Template\Finder $finder
@@ -35,7 +36,7 @@ class EngineTest extends TestCase
         $stack = Mockery::mock('Foil\Template\Stack');
 
         /** @var \Foil\Template\Finder|\Mockery\MockInterface $finder */
-        $finder = $finder ?: Mockery::mock('Foil\Template\Finder');
+        $finder = $finder ? : Mockery::mock('Foil\Template\Finder');
         if (is_null($events)) {
             /** @var \Foil\Kernel\Events|\Mockery\MockInterface $events */
             $events = Mockery::mock('Foil\Kernel\Events');

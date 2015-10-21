@@ -19,6 +19,7 @@ use Foil\Template\Template;
  */
 class SimpleRenderTest extends TestCaseFunctional
 {
+
     /**
      * @coversNothing
      */

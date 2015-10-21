@@ -22,10 +22,11 @@ use Mockery;
  */
 class HelpersTest extends TestCase
 {
+
     /**
-     * @param  array                    $data
-     * @param  bool|string              $strict
-     * @param  bool                     $autoescape
+     * @param  array       $data
+     * @param  bool|string $strict
+     * @param  bool        $autoescape
      * @return \Foil\Extensions\Helpers
      */
     private function getHelpers($data = [], $strict = false, $autoescape = true)
@@ -241,7 +242,7 @@ class HelpersTest extends TestCase
     {
         $helpers = $this->getHelpers([
             'string' => '<p>foo</p>',
-            'object' => (object) ['id' => 'foo'],
+            'object' => (object)['id' => 'foo'],
         ]);
         assertSame([htmlentities('<p>foo</p>')], $helpers->asArray('string'));
         assertSame(['id' => 'foo'], $helpers->asArray('object'));
@@ -249,7 +250,7 @@ class HelpersTest extends TestCase
 
     public function testAsArrayRaw()
     {
-        $helpers = $this->getHelpers(['object' => (object) ['id' => '<p>foo</p>']]);
+        $helpers = $this->getHelpers(['object' => (object)['id' => '<p>foo</p>']]);
         assertSame(['id' => '<p>foo</p>'], $helpers->asArrayRaw('object'));
     }
 

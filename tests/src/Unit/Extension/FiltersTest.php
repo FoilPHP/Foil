@@ -19,6 +19,7 @@ use Foil\Extensions\Filters;
  */
 class FiltersTest extends TestCase
 {
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -35,6 +36,7 @@ class FiltersTest extends TestCase
         assertSame('foo', $filters->first(['a' => 'foo', 'foo' => 'bar']));
         assertSame('F', $filters->first('Foo'));
     }
+
     /**
      * @expectedException \InvalidArgumentException
      */

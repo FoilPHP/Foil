@@ -1,16 +1,16 @@
 <?php $this->layout('main', ['foo' => 'Bar!']) ?>
 
 <?php $this->section('one') ?>
-World <?= $this->foo ?>
+    World <?= $this->foo ?>
 <?php $this->stop() ?>
 
 <?php $this->section('two') ?>
-I Win
+    I Win
 <?php $this->replace() ?>
 
-Buffalo Bill
+    Buffalo Bill
 
 <?php $this->section('three') ?>
-MAN
+    MAN
 <?php
 $this->stop();

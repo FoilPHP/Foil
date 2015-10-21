@@ -1,14 +1,14 @@
 <?php $this->section('one') ?>
-Hello <?= $this->foo.' ' ?>
+    Hello <?= $this->foo.' ' ?>
 <?php $this->stop() ?>
 
-Alone
+    Alone
 
 <?php $this->section('two') ?>
-NO
+    NO
 <?php $this->stop() ?>
 
 <?php $this->section('three') ?>
-YES
+    YES
 <?php
 $this->stop();

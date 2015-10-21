@@ -113,7 +113,7 @@ class AuraHtml implements ExtensionInterface
     }
 
     /**
-     * @param string $tag
+     * @param  string                              $tag
      * @return mixed
      * @throws \Aura\Html\Exception\HelperNotFound
      * @link https://github.com/auraphp/Aura.Html/blob/2.x/README-HELPERS.md
