@@ -74,6 +74,12 @@ class Sections implements ExtensionInterface, EngineAwareInterface
      */
     public function setup(array $args = [])
     {
+        $this->events->on('f.renderered', function () {
+            $this->stack = new SplStack();
+            $this->names = new SplStack();
+            $this->factory->flush();
+        });
+
         return;
     }
 
