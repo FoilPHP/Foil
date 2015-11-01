@@ -22,6 +22,7 @@ use ArrayObject;
  */
 class TemplateTest extends TestCase
 {
+
     public function testCall()
     {
         /** @var \Foil\Engine $engine */

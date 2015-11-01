@@ -22,6 +22,7 @@ use LogicException;
  */
 class TestCase extends PHPUnit_Framework_TestCase
 {
+
     protected function setUp()
     {
         parent::setUp();
@@ -56,14 +57,14 @@ class TestCase extends PHPUnit_Framework_TestCase
      */
     protected function accessPrivateProperty($property, $object)
     {
-        if (! is_string($property) || ! is_object($object)) {
+        if ( ! is_string($property) || ! is_object($object)) {
             throw new InvalidArgumentException(
                 __METHOD__.' needs a valid property name and a valid object.'
             );
         }
 
         return $this->bindClosure(function ($property) {
-            if (! isset($this->$property)) {
+            if ( ! isset($this->$property)) {
                 throw new LogicException(
                     "{$property} is not a set on the object."
                 );
@@ -81,7 +82,7 @@ class TestCase extends PHPUnit_Framework_TestCase
      */
     protected function setPrivateProperty($property, $value, $object)
     {
-        if (! is_string($property) || ! is_object($object)) {
+        if ( ! is_string($property) || ! is_object($object)) {
             throw new InvalidArgumentException(
                 __METHOD__.' needs a valid property name and a valid object.'
             );

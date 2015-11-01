@@ -85,7 +85,7 @@ class Factory
     /**
      * Factory and/or returns template objects.
      *
-     * @param  string                            $path       Full path to template file
+     * @param  string                            $path      Full path to template file
      * @param  \Foil\Engine                      $engine
      * @param  string                            $className A custom template class name
      * @return \Foil\Contracts\TemplateInterface

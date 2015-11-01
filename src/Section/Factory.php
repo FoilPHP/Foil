@@ -58,8 +58,8 @@ class Factory
     /**
      * Factory a section instance (if it was not already factored) and return it.
      *
-     * @param  string                           $name       Section name
-     * @param  int|bool                         $mode       Section mode, one of the mode const
+     * @param  string                           $name      Section name
+     * @param  int|bool                         $mode      Section mode, one of the mode const
      * @param  string                           $className Full qualified section class name
      * @return \Foil\Contracts\SectionInterface
      * @throws InvalidArgumentException
@@ -99,5 +99,10 @@ class Factory
         }
 
         return $class;
+    }
+
+    public function flush()
+    {
+        $this->sections = new \ArrayObject();
     }
 }

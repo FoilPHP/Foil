@@ -19,7 +19,6 @@ use InvalidArgumentException;
  */
 final class Alias
 {
-
     const REGEX = '#^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$#';
 
     /**
@@ -49,7 +48,7 @@ final class Alias
      */
     private function validate($alias)
     {
-        if ( ! is_string($alias) || ! preg_match(self::REGEX, $alias)) {
+        if (! is_string($alias) || ! preg_match(self::REGEX, $alias)) {
             throw new InvalidArgumentException('Alias must be a valid variable name.');
         }
     }

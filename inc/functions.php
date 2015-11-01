@@ -46,15 +46,16 @@ if (! function_exists('Foil\engine')) {
 
 if (! function_exists('Foil\render')) {
     /**
-     * @param  string $path    Full path or just name (requires folders option) for the template
-     * @param  array  $data    Template context
-     * @param  array  $options Options for the engine
+     * @param  string $path      Full path or just name (requires folders option) for the template
+     * @param  array  $data      Template context
+     * @param  array  $options   Options for the engine
      * @param  array  $providers
      * @return string
      */
     function render($path, array $data = [], array $options = [], array $providers = [])
     {
         $foil = Foil::boot($options, $providers);
+
         return $foil->engine()->render($path, $data);
     }
 }

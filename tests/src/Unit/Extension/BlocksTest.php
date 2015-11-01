@@ -20,6 +20,7 @@ use Mockery;
  */
 class BlocksTest extends TestCase
 {
+
     public function testProvideFunctions()
     {
         /** @var \Foil\Blocks\Blocks $blocks */

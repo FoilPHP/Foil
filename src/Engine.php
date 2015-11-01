@@ -124,7 +124,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      *
      * @param  string       $functionName
      * @param  callable     $function
-     * @param  boolean      $safe          Can function output html?
+     * @param  boolean      $safe         Can function output html?
      * @return \Foil\Engine Itself for fluent interface
      */
     public function registerFunction($functionName, callable $function, $safe = false)
@@ -287,13 +287,16 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      */
     private function doRender($path, array $data = [], $class = null)
     {
-        if ($this->status() === self::STATUS_IDLE) {
+        $status = $this->status();
+        if ($status === self::STATUS_IDLE) {
             $this->statusTransitions();
+        } elseif ($status & self::STATUS_IDLE) {
+            $this->status = self::STATUS_IN_LAYOUT;
         }
         $template = $this->stack()->factory($path, $this, $class);
         $this->events->fire('f.template.render', $template, $data);
         $output = trim($template->render($data));
-        $this->events->fire('f.template.renderered', $template, $output);
+        $this->events->fire('f.template.renderered', $template, $output, $this->status);
 
         return $output;
     }
@@ -326,7 +329,8 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
         $this->events->on('f.template.renderered', function () {
             $this->stack()->pop();
             if ($this->stack()->count() === 0) {
-                $this->status = self::STATUS_RENDERED;
+                $this->status = self::STATUS_RENDERED | self::STATUS_IDLE;
+                $this->events->fire('f.renderered', $this);
             }
         });
     }

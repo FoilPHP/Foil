@@ -18,6 +18,7 @@ use Foil\Foil;
  */
 class TestCaseFunctional extends TestCase
 {
+
     /**
      * @var \Foil\Engine
      */

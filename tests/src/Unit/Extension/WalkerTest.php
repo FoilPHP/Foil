@@ -22,8 +22,9 @@ use ArrayIterator;
  */
 class WalkerTest extends TestCase
 {
+
     /**
-     * @param  bool                                           $autoescape
+     * @param  bool $autoescape
      * @return \Foil\Extensions\Walker|\Mockery\MockInterface
      */
     private function getWalker($autoescape = true)

@@ -21,6 +21,7 @@ use Mockery;
  */
 class EngineTest extends TestCaseFunctional
 {
+
     public function setUp()
     {
         parent::setUp();

@@ -19,6 +19,7 @@ use Foil\Extensions\Links;
  */
 class LinksTest extends TestCase
 {
+
     public function testProvideFunctions()
     {
         $links = new Links();
@@ -67,7 +68,8 @@ class LinksTest extends TestCase
             'assets_host' => 'static.example.com',
         ]);
         assertSame('http://example.com/url/to/pdf/foo.pdf', $links->link('foo.pdf', 'pdf'));
-        assertSame('https://example.com/url/to/pdf/foo.pdf', $links->link('foo.pdf', 'pdf', 'https'));
+        assertSame('https://example.com/url/to/pdf/foo.pdf',
+            $links->link('foo.pdf', 'pdf', 'https'));
     }
 
     public function testAssetNothing()

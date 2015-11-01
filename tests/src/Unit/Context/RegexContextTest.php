@@ -20,6 +20,7 @@ use Foil\Context\RegexContext;
  */
 class RegexContextTest extends TestCase
 {
+
     /**
      * @expectedException \InvalidArgumentException
      */

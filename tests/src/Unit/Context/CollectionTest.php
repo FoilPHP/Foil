@@ -20,6 +20,7 @@ use Mockery;
  */
 class CollectionTest extends TestCase
 {
+
     /**
      * @return \Foil\Context\Collection
      */
