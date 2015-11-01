@@ -72,7 +72,7 @@ class EngineTest extends TestCase
             $events
                 ->shouldReceive('fire')
                 ->once()
-                ->with('f.template.renderered', $template, $render)
+                ->with('f.template.renderered', $template, $render, Mockery::type('int'))
                 ->andReturnNull();
         }
 
