@@ -287,8 +287,11 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      */
     private function doRender($path, array $data = [], $class = null)
     {
-        if ($this->status() === self::STATUS_IDLE) {
+        $status = $this->status();
+        if ($status === self::STATUS_IDLE) {
             $this->statusTransitions();
+        } elseif ($status & self::STATUS_IDLE) {
+            $this->status = self::STATUS_IN_LAYOUT;
         }
         $template = $this->stack()->factory($path, $this, $class);
         $this->events->fire('f.template.render', $template, $data);
