@@ -241,13 +241,13 @@ That can be done with <code>insertif()</code> that accepts exact same arguments 
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 <p>and in the partials <code>partials/sidebar.php</code> there is the code:</p>
-<pre><code class="language-php">&lt;?php $this-&gt;start('sidebar-top') ?&gt;
+<pre><code class="language-php">&lt;?php $this-&gt;section('sidebar-top') ?&gt;
   &lt;div&gt;
     &lt;h3&gt;Sidebar&lt;/h3&gt;
   &lt;/div&gt;
 &lt;?php $this-&gt;stop() ?&gt;
 
-&lt;?php $this-&gt;start('sidebar-main') ?&gt;
+&lt;?php $this-&gt;section('sidebar-main') ?&gt;
   &lt;div&gt;
     &lt;p&gt;Default sidebar.&lt;/p&gt;
   &lt;/div&gt;
@@ -256,7 +256,7 @@ That can be done with <code>insertif()</code> that accepts exact same arguments 
 sections even if they were defined in a partial:</p>
 <pre><code class="language-php">&lt;?php $this-&gt;layout('home') ?&gt;
 
-&lt;?php $this-&gt;start('sidebar-main') ?&gt;
+&lt;?php $this-&gt;section('sidebar-main') ?&gt;
   &lt;div&gt;
     &lt;p&gt;Custom sidebar.&lt;/p&gt;
   &lt;/div&gt;
