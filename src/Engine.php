@@ -198,14 +198,23 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      */
     public function render($template, array $data = [])
     {
-        if (is_file($template)) {
+        $isString = is_string($template);
+
+        if ($isString && is_file($template)) {
             return $this->renderTemplate($template, $data);
+        }
+        if (! $isString && ! is_array($template)) {
+            throw new InvalidArgumentException('Template must be a string or an array of strings.');
         }
         $path = $this->find($template);
         if ($path) {
             return $this->doRender($path, $data);
         }
-        throw new RuntimeException($template.' is not a valid template name.');
+        if ($isString) {
+            throw new RuntimeException($template.' is not a valid template name.');
+        }
+
+        throw new RuntimeException('Not found any valid template in the array provided.');
     }
 
     /**
