@@ -20,6 +20,7 @@ use Foil\Template\Finder;
  */
 interface FinderAwareInterface
 {
+
     /**
      * Return the finder instance
      *
@@ -28,10 +29,10 @@ interface FinderAwareInterface
     public function finder();
 
     /**
-     * Return the finder instance
+     * Find a template
      *
      * @param  string $template Template name to find
-     * @return Finder
+     * @return string The full path of the found template, empty string if template not found
      */
     public function find($template);
 
