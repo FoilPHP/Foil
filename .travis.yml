@@ -4,12 +4,11 @@ php:
   - 5.4
   - 5.5
   - 5.6
-  - 7
+  - 7.0
   - hhvm
 
 before_script:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install --no-interaction
+  - composer install
 
 script:
   - mkdir -p build/logs
