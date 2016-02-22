@@ -22,7 +22,6 @@ use Mockery;
  */
 class FactoryTest extends TestCase
 {
-
     /**
      * @expectedException \InvalidArgumentException
      */

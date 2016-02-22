@@ -18,7 +18,6 @@ use Foil\Tests\TestCaseFunctional;
  */
 class BlocksTest extends TestCaseFunctional
 {
-
     /**
      * @coversNothing
      */

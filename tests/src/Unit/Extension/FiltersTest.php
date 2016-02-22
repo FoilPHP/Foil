@@ -19,7 +19,6 @@ use Foil\Extensions\Filters;
  */
 class FiltersTest extends TestCase
 {
-
     /**
      * @expectedException \InvalidArgumentException
      */

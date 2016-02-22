@@ -26,7 +26,6 @@ use Mockery;
  */
 class EscaperTest extends TestCase
 {
-
     /**
      * @param  mixed  $data
      * @param  string $encoding
@@ -155,7 +154,7 @@ class EscaperTest extends TestCase
     public function testObjectArr()
     {
         $escaper = new Escaper($this->auraEscaper(), 'utf-8');
-        $data = (object)['class' => ['foo', 'bar'], 'id' => 'foo'];
+        $data = (object) ['class' => ['foo', 'bar'], 'id' => 'foo'];
         $expected = 'class="foo bar" id="foo"';
 
         assertSame($expected, $escaper->escape($data, 'attr'));
@@ -201,7 +200,7 @@ class EscaperTest extends TestCase
 
     public function testDecodeObject()
     {
-        $obj = (object)['a' => '<p>a</p>', 'b' => '<p>b</p>'];
+        $obj = (object) ['a' => '<p>a</p>', 'b' => '<p>b</p>'];
         $objStr = Mockery::mock();
         $objStr->shouldReceive('__toString')->andReturn($this->e('<p>a</p>'));
 

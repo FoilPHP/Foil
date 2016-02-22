@@ -19,7 +19,6 @@ use Foil\Kernel\Events;
  */
 class EventsTest extends TestCase
 {
-
     public function testFire()
     {
         $e = new Events();

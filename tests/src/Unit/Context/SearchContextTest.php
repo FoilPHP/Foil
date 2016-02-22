@@ -19,7 +19,6 @@ use Foil\Context\SearchContext;
  */
 class SearchContextTest extends TestCase
 {
-
     /**
      * @expectedException \InvalidArgumentException
      */

@@ -19,7 +19,6 @@ use Foil\Extensions\Links;
  */
 class LinksTest extends TestCase
 {
-
     public function testProvideFunctions()
     {
         $links = new Links();

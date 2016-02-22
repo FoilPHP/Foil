@@ -20,7 +20,6 @@ use Mockery;
  */
 class BlocksTest extends TestCase
 {
-
     /**
      * @expectedException \InvalidArgumentException
      */

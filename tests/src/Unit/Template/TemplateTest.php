@@ -13,7 +13,6 @@ use Foil\Tests\TestCase;
 use Foil\Template\Template;
 use Foil\Template\Alias;
 use Mockery;
-use ArrayObject;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -22,7 +21,6 @@ use ArrayObject;
  */
 class TemplateTest extends TestCase
 {
-
     public function testCall()
     {
         /** @var \Foil\Section\Factory $sections */

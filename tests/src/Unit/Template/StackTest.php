@@ -20,7 +20,6 @@ use Mockery;
  */
 class StackTest extends TestCase
 {
-
     public function testFactory()
     {
         /** @var \Foil\Template\Factory|\Mockery\MockInterface $factory */

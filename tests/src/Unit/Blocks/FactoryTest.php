@@ -21,7 +21,6 @@ use Mockery;
  */
 class FactoryTest extends TestCase
 {
-
     public function testFactory()
     {
         $factory = new Factory();
