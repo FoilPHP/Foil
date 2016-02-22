@@ -28,11 +28,13 @@ class FactoryTest extends TestCase
      */
     private function getTemplateFactory($class = false)
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
         /** @var \Foil\Kernel\Command $command */
         $command = Mockery::mock('Foil\Kernel\Command');
         $options = ['template_class' => $class];
 
-        return new Factory(new ArrayObject(), new ArrayObject(), $command, $options);
+        return new Factory(new ArrayObject(), $sections, $command, $options);
     }
 
     /**

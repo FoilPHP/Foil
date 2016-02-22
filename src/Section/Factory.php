@@ -69,15 +69,37 @@ class Factory
         if (! is_string($name)) {
             throw new InvalidArgumentException('Section name must be in a string.');
         }
-        if (! $this->sections->offsetExists($name)) {
+        if (! $this->has($name)) {
             $class = $this->getClass($className);
             $this->sections[$name] = new $class($mode, $this->defaultMode);
         } else {
             $merge = $mode === SectionInterface::MODE_REPLACE ? false : true;
-            $this->sections[$name]->setMode($mode, $merge);
+            $this->get($name)->setMode($mode, $merge);
         }
 
         return $this->sections[$name];
+    }
+
+    /**
+     * Checks if a section was already factored.
+     *
+     * @param  string $name
+     * @return bool
+     */
+    public function has($name)
+    {
+        return $this->sections->offsetExists($name);
+    }
+
+    /**
+     * Checks if a section was already factored.
+     *
+     * @param  string $name
+     * @return bool
+     */
+    public function get($name)
+    {
+        return $this->sections->offsetGet($name);
     }
 
     /**

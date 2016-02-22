@@ -25,19 +25,24 @@ class TemplateTest extends TestCase
 
     public function testCall()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
         /** @var \Foil\Engine $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
         $command->shouldReceive('run')->with('foo', 'bar')->once()->andReturn('Foo!');
 
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
 
         assertSame('Foo!', $template->foo('bar'));
     }
 
     public function testFilter()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
+
         /** @var \Foil\Engine $engine */
         $engine = Mockery::mock('Foil\Engine');
 
@@ -47,12 +52,15 @@ class TemplateTest extends TestCase
                 ->with(Mockery::type('string'), Mockery::any(), [])
                 ->andReturnValues(['foo', 'bar', null, 'baz']);
 
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
         assertSame('baz', $template->filter('first|foo|bar|baz', 'Lorem Ipsum'));
     }
 
     public function testFilterArgs()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
+
         /** @var \Foil\Engine $engine */
         $engine = Mockery::mock('Foil\Engine');
 
@@ -67,7 +75,7 @@ class TemplateTest extends TestCase
                 ->with('last', 'Lorem!', ['bar'])
                 ->andReturn('Ipsum!');
 
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
 
         $filter = $template->filter('first|last', 'Lorem Ipsum', [['foo'], ['bar']]);
 
@@ -76,6 +84,9 @@ class TemplateTest extends TestCase
 
     public function testRenderNoLayout()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
+
         // the file foo.php contains the code `echo implode(',', $this->data());`
         $base = realpath(getenv('FOIL_TESTS_BASEPATH')).DIRECTORY_SEPARATOR;
         $path = $base.implode(DIRECTORY_SEPARATOR, ['_files', 'foo', 'foo.php']);
@@ -85,7 +96,7 @@ class TemplateTest extends TestCase
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
 
-        $template = new Template($path, new ArrayObject(), $engine, $command);
+        $template = new Template($path, $sections, $engine, $command);
 
         $command->shouldReceive('filter')
                 ->with(Mockery::type('string'), Mockery::any(), [])
@@ -110,12 +121,14 @@ class TemplateTest extends TestCase
      */
     public function testLayoutFailsIfBadFile()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
         /** @var \Foil\Engine|\Mockery\MockInterface $engine */
         $engine = Mockery::mock('Foil\Engine');
         $engine->shouldReceive('find')->with('foo')->once()->andReturn(false);
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
         $template->layout('foo');
     }
 
@@ -127,12 +140,15 @@ class TemplateTest extends TestCase
         // the file foo.php contains the code `echo implode('|', $this->data());`
         $layout = $base.implode(DIRECTORY_SEPARATOR, ['_files', 'foo', 'bar.inc']);
 
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
+
         /** @var \Foil\Engine|\Mockery\MockInterface $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
 
-        $template = new Template($path, new ArrayObject(), $engine, $command);
+        $template = new Template($path, $sections, $engine, $command);
 
         $engine->shouldReceive('fire')
                ->with('f.template.prerender', $template)
@@ -166,35 +182,48 @@ class TemplateTest extends TestCase
 
     public function testSupply()
     {
+        $section = Mockery::mock('Foil\Section\Section');
+        $section->shouldReceive('content')->once()->andReturn('Ok!');
+
+        /** @var \Foil\Section\Factory|\Mockery\MockInterface $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
+        $sections->shouldReceive('has')->once()->with('foo')->andReturn(true);
+        $sections->shouldReceive('get')->once()->with('foo')->andReturn($section);
+
         /** @var \Foil\Engine|\Mockery\MockInterface $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
-        $section = Mockery::mock('Foil\Section\Section');
-        $section->shouldReceive('content')->once()->andReturn('Ok!');
-        $template = new Template('/path', new ArrayObject(['foo' => $section]), $engine, $command);
+
+        $template = new Template('/path', $sections, $engine, $command);
 
         assertSame('Ok!', $template->supply('foo'));
     }
 
     public function testSupplyDefaultString()
     {
+        /** @var \Foil\Section\Factory|\Mockery\MockInterface $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
+        $sections->shouldReceive('has')->once()->with('foo')->andReturn(false);
         /** @var \Foil\Engine|\Mockery\MockInterface $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
 
         assertSame('Ok!', $template->supply('foo', 'Ok!'));
     }
 
     public function testSupplyDefaultCallable()
     {
+        /** @var \Foil\Section\Factory|\Mockery\MockInterface $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
+        $sections->shouldReceive('has')->once()->with('foo')->andReturn(false);
         /** @var \Foil\Engine|\Mockery\MockInterface $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
 
         assertSame('Ok!', $template->supply('foo', function ($section, $tmpl) use ($template) {
             assertSame('foo', $section);
@@ -206,12 +235,14 @@ class TemplateTest extends TestCase
 
     public function testInsert()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
         /** @var \Foil\Engine|\Mockery\MockInterface $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
 
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
 
         $engine->shouldReceive('fire')
                ->once()
@@ -232,18 +263,22 @@ class TemplateTest extends TestCase
 
     public function testInsertIfDoNothingIfFileNotExists()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
         /** @var \Foil\Engine|\Mockery\MockInterface $engine */
         $engine = Mockery::mock('Foil\Engine');
         $engine->shouldReceive('find')->with('foo')->once()->andReturn(false);
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
         $command = Mockery::mock('Foil\Kernel\Command');
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
 
         assertSame('', $template->insertif('foo'));
     }
 
     public function testAlias()
     {
+        /** @var \Foil\Section\Factory $sections */
+        $sections = Mockery::mock('Foil\Section\Factory');
         /** @var \Foil\Engine $engine */
         $engine = Mockery::mock('Foil\Engine');
         /** @var \Foil\Kernel\Command|\Mockery\MockInterface $command */
@@ -252,7 +287,7 @@ class TemplateTest extends TestCase
                 ->with('v', 'foo')
                 ->andReturn('Foo!');
 
-        $template = new Template('/path', new ArrayObject(), $engine, $command);
+        $template = new Template('/path', $sections, $engine, $command);
 
         $template->alias(new Alias('T'));
 
