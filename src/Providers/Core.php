@@ -82,7 +82,7 @@ class Core implements ServiceProviderInterface
         $container['template.factory'] = function ($c) {
             return new TemplateFactory(
                 $c['template.templates'],
-                $c['section.sections'],
+                $c['section.factory'],
                 $c['command'],
                 $c['options']
             );

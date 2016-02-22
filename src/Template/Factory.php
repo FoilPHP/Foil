@@ -11,6 +11,7 @@ namespace Foil\Template;
 
 use Foil\Engine;
 use Foil\Kernel\Command;
+use Foil\Section\Factory as SectionFactory;
 use ArrayAccess;
 use InvalidArgumentException;
 use Foil\Contracts\AliasAllowedTemplateInterface as Aliasable;
@@ -38,7 +39,7 @@ class Factory
     private $templates;
 
     /**
-     * @var \ArrayAccess
+     * @var \Foil\Section\Factory
      */
     private $sections;
 
@@ -58,15 +59,15 @@ class Factory
     private $alias;
 
     /**
-     * @param \ArrayAccess         $templates
-     * @param \ArrayAccess         $sections
-     * @param \Foil\Kernel\Command $command
-     * @param array                $options
-     * @param null|string          $contract
+     * @param \ArrayAccess          $templates
+     * @param \Foil\Section\Factory $sections
+     * @param \Foil\Kernel\Command  $command
+     * @param array                 $options
+     * @param null|string           $contract
      */
     public function __construct(
         ArrayAccess $templates,
-        ArrayAccess $sections,
+        SectionFactory $sections,
         Command $command,
         array $options,
         $contract = null

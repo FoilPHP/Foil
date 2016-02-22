@@ -20,7 +20,6 @@ use Foil\Template\Finder;
  */
 interface FinderAwareInterface
 {
-
     /**
      * Return the finder instance
      *

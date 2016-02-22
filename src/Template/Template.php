@@ -12,7 +12,7 @@ namespace Foil\Template;
 use Foil\Contracts\AliasAllowedTemplateInterface;
 use Foil\Engine;
 use Foil\Kernel\Command;
-use ArrayAccess;
+use Foil\Section\Factory as SectionFactory;
 use Foil\Traits;
 use InvalidArgumentException;
 
@@ -31,7 +31,7 @@ class Template implements AliasAllowedTemplateInterface
     private $path;
 
     /**
-     * @var \ArrayAccess
+     * @var \Foil\Section\Factory
      */
     private $sections;
 
@@ -71,14 +71,14 @@ class Template implements AliasAllowedTemplateInterface
     private $lastBuffer = '';
 
     /**
-     * @param                      $path
-     * @param \ArrayAccess         $sections
-     * @param \Foil\Engine         $engine
-     * @param \Foil\Kernel\Command $command
+     * @param string                $path
+     * @param \Foil\Section\Factory $sections
+     * @param \Foil\Engine          $engine
+     * @param \Foil\Kernel\Command  $command
      */
     public function __construct(
         $path,
-        ArrayAccess $sections,
+        SectionFactory $sections,
         Engine $engine,
         Command $command
     ) {
@@ -169,8 +169,8 @@ class Template implements AliasAllowedTemplateInterface
      */
     public function supply($section, $default = '')
     {
-        if ($this->sections->offsetExists($section)) {
-            return $this->sections[$section]->content();
+        if ($this->sections->has($section)) {
+            return $this->sections->get($section)->content();
         }
         while (is_callable($default)) {
             $default = $default($section, $this);
