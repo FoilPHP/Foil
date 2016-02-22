@@ -19,9 +19,8 @@ use Foil\Template\Finder;
  */
 class FinderTest extends TestCase
 {
-
     /**
-     * @param  bool $named
+     * @param  bool  $named
      * @return array
      */
     private function finderDirectories($named = false)
@@ -32,7 +31,7 @@ class FinderTest extends TestCase
             $base.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, ['_files', 'bar']),
         ];
 
-        return ( ! $named) ? $dirs : array_combine(['foo', 'bar'], $dirs);
+        return (! $named) ? $dirs : array_combine(['foo', 'bar'], $dirs);
     }
 
     /**

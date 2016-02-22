@@ -21,7 +21,6 @@ use Mockery;
  */
 class CommandTest extends TestCase
 {
-
     /**
      * @return \Foil\Contracts\EscaperInterface $escaper
      */
@@ -81,7 +80,7 @@ class CommandTest extends TestCase
     public function testFunctionObject()
     {
         $test1 = function () {
-            return (object)['foo' => 'bar'];
+            return (object) ['foo' => 'bar'];
         };
         $test2 = function () {
             return 'foo';

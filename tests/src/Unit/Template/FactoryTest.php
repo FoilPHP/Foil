@@ -21,9 +21,8 @@ use Mockery;
  */
 class FactoryTest extends TestCase
 {
-
     /**
-     * @param  string|bool $class
+     * @param  string|bool            $class
      * @return \Foil\Template\Factory
      */
     private function getTemplateFactory($class = false)

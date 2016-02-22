@@ -20,7 +20,6 @@ use Foil\Tests\TestCase;
  */
 class AliasTest extends TestCase
 {
-
     /**
      * @expectedException \InvalidArgumentException
      */

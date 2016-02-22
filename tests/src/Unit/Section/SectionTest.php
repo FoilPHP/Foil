@@ -19,7 +19,6 @@ use Foil\Section\Section;
  */
 class SectionTest extends TestCase
 {
-
     /**
      * @expectedException \LogicException
      */

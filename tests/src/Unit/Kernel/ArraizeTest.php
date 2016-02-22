@@ -24,7 +24,6 @@ use Foil\Tests\Target;
  */
 class ArraizeTest extends TestCase
 {
-
     private function e($var)
     {
         return call_user_func(new HtmlEscaper(), $var);
@@ -36,8 +35,8 @@ class ArraizeTest extends TestCase
         assertSame([$this->e('<b>foo bar</b>')], \Foil\arraize('<b>foo bar</b>', true));
         assertSame([1], \Foil\arraize(1));
         assertSame([true], \Foil\arraize(true));
-        assertSame([(string)1], \Foil\arraize(1, true, [], true));
-        assertSame([(string)true], \Foil\arraize(true, true, [], true));
+        assertSame([(string) 1], \Foil\arraize(1, true, [], true));
+        assertSame([(string) true], \Foil\arraize(true, true, [], true));
         assertSame([], \Foil\arraize(null));
         assertSame([], \Foil\arraize(false));
         assertSame([], \Foil\arraize(''));
@@ -132,7 +131,7 @@ class ArraizeTest extends TestCase
         $storage1 = new \SplObjectStorage();
         $storage1->attach(new \stdClass());
         $storage2 = new \SplObjectStorage();
-        $storage2->attach((object)['foo' => '<b>bar</b>']);
+        $storage2->attach((object) ['foo' => '<b>bar</b>']);
         $data = [
             'lev1'     => new \ArrayIterator([
                 'lev1.1' => '<b>lev1.1</b>',
@@ -141,7 +140,7 @@ class ArraizeTest extends TestCase
             ]),
             'lev2'     => [
                 'lev2.2' => [
-                    'lev2.2.1' => (object)['a' => '<b>a</b>', 'b' => '<b>b</b>'],
+                    'lev2.2.1' => (object) ['a' => '<b>a</b>', 'b' => '<b>b</b>'],
                     'lev2.2.2' => [1, true, null],
                 ],
             ],

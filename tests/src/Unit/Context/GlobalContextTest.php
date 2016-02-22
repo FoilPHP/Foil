@@ -19,7 +19,6 @@ use Foil\Context\GlobalContext;
  */
 class GlobalContextTest extends TestCase
 {
-
     public function testAccept()
     {
         $c = new GlobalContext(['foo' => 'bar']);
