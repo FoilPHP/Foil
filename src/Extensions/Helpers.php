@@ -265,7 +265,7 @@ class Helpers implements ExtensionInterface, TemplateAware
      */
     public function asArray($var, $default = [], $filter = null, $forceRaw = false)
     {
-        $raw = $this->raw($var, (array) $default, $filter);
+        $raw = $this->raw($var, $default, $filter);
 
         return \Foil\arraize($raw, ($this->autoescape && ! $forceRaw));
     }
