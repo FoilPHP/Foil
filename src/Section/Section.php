@@ -79,8 +79,7 @@ class Section implements SectionInterface
             $this->mode = self::MODE_REPLACE;
         }
         $buffer = ob_get_clean();
-        $this->content or $this->content = $buffer;
-        $this->content = ($this->mode & self::MODE_APPEND) ? $buffer.$this->content : $this->content;
+        $this->content = ($this->mode & self::MODE_APPEND) ? $buffer.$this->content : $buffer;
         if ($this->mode & self::MODE_OUTPUT) {
             echo $this->content();
         }
