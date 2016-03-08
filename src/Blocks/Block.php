@@ -67,7 +67,7 @@ class Block implements BlockInterface
         }
         $args = $this->args;
         $this->opened--;
-        $this->args = [];
+        $this->opened === 0 and $this->args = [];
         array_unshift($args, ob_get_clean());
         $block = call_user_func_array($this->callback, $args);
 
