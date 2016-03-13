@@ -97,10 +97,11 @@ class Sections implements ExtensionInterface, EngineAwareInterface
     public function provideFunctions()
     {
         return [
-            'section' => [$this, 'section'],
-            'stop'    => [$this, 'stop'],
-            'append'  => [$this, 'append'],
-            'replace' => [$this, 'replace']
+            'section'      => [$this, 'section'],
+            'stop'         => [$this, 'stop'],
+            'append'       => [$this, 'append'],
+            'replace'      => [$this, 'replace'],
+            'clear'        => [$this, 'clear']
         ];
     }
 
@@ -156,6 +157,18 @@ class Sections implements ExtensionInterface, EngineAwareInterface
         $section = $this->end($name);
         $section->replace();
         $this->events->fire('f.sections.content', $this->last, $section->content());
+    }
+
+    /**
+     * Empty a section content.
+     * Useful when a layout defines a section that is not wanted on template.
+     *
+     * @param string|null $name
+     */
+    public function clear($name = null)
+    {
+        $this->section($name);
+        $this->replace($name);
     }
 
     /**
