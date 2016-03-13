@@ -94,4 +94,14 @@ class SimpleRenderTest extends TestCaseFunctional
         $this->initFoil(['ext' => 'tpl.php']);
         assertSame('I have 2 extensions', trim($this->engine->render('double')));
     }
+
+    /**
+     * @coversNothing
+     */
+    public function testClearSection()
+    {
+        $this->initFoil();
+        $render = trim(preg_replace('/[\s]+/', ' ', $this->engine->render('clear')));
+        assertSame('Alone YES', trim($render));
+    }
 }
