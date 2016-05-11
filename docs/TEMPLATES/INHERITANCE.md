@@ -83,7 +83,7 @@ E.g. if the child template above is rendered, `<head>` tag will contain:
   <link rel="stylesheet" href="style.css" />
   <title>My Home Page</title>
   <style type="text/css">
-    .important { color: #336699; }
+    #welcome { color: #ff0000; }
   </style>
 </head>
 ```
