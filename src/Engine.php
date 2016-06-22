@@ -9,7 +9,7 @@
  */
 namespace Foil;
 
-use Foil\Contracts\EngineInterface;
+use Foil\Contracts\WritableEngineInterface;
 use Foil\Contracts\TemplateAwareInterface as TemplateAware;
 use Foil\Contracts\FinderAwareInterface as FinderAware;
 use Foil\Contracts\ExtensionInterface as Extension;
@@ -28,7 +28,7 @@ use InvalidArgumentException;
  * @method Engine useData()
  * @method Engine useContext()
  */
-class Engine implements EngineInterface, TemplateAware, FinderAware
+class Engine implements WritableEngineInterface, TemplateAware, FinderAware
 {
     use Traits\TemplateAwareTrait;
     use Traits\FinderAwareTrait;
@@ -61,8 +61,8 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     }
 
     /**
-     * @param  string       $name
-     * @param  array        $arguments
+     * @param  string $name
+     * @param  array  $arguments
      * @return \Foil\Engine Itself for fluent interface
      */
     public function __call($name, array $arguments)
@@ -93,9 +93,9 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Register an extension
      *
-     * @param  Extension    $extension
-     * @param  array        $options   Extension options
-     * @param  mixed        $safe      Array of safe functions names, true or false for all / none
+     * @param  Extension $extension
+     * @param  array     $options Extension options
+     * @param  mixed     $safe    Array of safe functions names, true or false for all / none
      * @return \Foil\Engine Itself for fluent interface
      */
     public function loadExtension(Extension $extension, array $options = [], $safe = false)
@@ -108,8 +108,8 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Register a single filter
      *
-     * @param  string       $filterName
-     * @param  callable     $filter
+     * @param  string   $filterName
+     * @param  callable $filter
      * @return \Foil\Engine Itself for fluent interface
      */
     public function registerFilter($filterName, callable $filter)
@@ -122,9 +122,9 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Register a single function
      *
-     * @param  string       $functionName
-     * @param  callable     $function
-     * @param  boolean      $safe         Can function output html?
+     * @param  string   $functionName
+     * @param  callable $function
+     * @param  boolean  $safe Can function output html?
      * @return \Foil\Engine Itself for fluent interface
      */
     public function registerFunction($functionName, callable $function, $safe = false)
@@ -137,8 +137,8 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Register a block.
      *
-     * @param  string       $name
-     * @param  callable     $callback
+     * @param  string   $name
+     * @param  callable $callback
      * @return \Foil\Engine Itself for fluent interface
      */
     public function registerBlock($name, callable $callback)
@@ -151,7 +151,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Set folders where to search for templates
      *
-     * @param  array        $folders
+     * @param  array $folders
      * @return \Foil\Engine
      */
     public function setFolders(array $folders)
@@ -165,8 +165,8 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
      * Add a template folder. Is possible to give a name to the folder to be able to specifically
      * call templates from there.
      *
-     * @param  string       $path
-     * @param  string|void  $name
+     * @param  string      $path
+     * @param  string|void $name
      * @return \Foil\Engine Itself for fluent interface
      */
     public function addFolder($path, $name = null)
@@ -180,7 +180,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Find a template in registered folders.
      *
-     * @param  string|array   $template
+     * @param  string|array $template
      * @return string|boolean Full path of template if found, false otherwise
      */
     public function find($template)
@@ -191,10 +191,10 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
     /**
      * Render a given template with given data.
      *
-     * @param  string|array     $template
-     * @param  array            $data
+     * @param  string|array $template
+     * @param  array        $data
      * @return string
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public function render($template, array $data = [])
     {
@@ -215,6 +215,37 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
         }
 
         throw new RuntimeException('Not found any valid template in the array provided.');
+    }
+
+    /**
+     * @param string $template
+     * @param array  $data
+     * @param null   $target
+     * @return bool
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     */
+    public function write($template, array $data = [], $target = null)
+    {
+        $content = $this->render($template, $data);
+        if ($content === '') {
+            return false;
+        }
+
+        switch (true) {
+            case is_null($target):
+                return (print $content) > 0;
+            case is_resource($target) :
+                return fwrite($target, $content) > 0;
+            case is_file($target) && is_writeable($target) :
+                return file_put_contents($target, $content) > 0;
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            '%s is not a valid target for %s',
+            gettype($target),
+            __METHOD__
+        ));
     }
 
     /**
