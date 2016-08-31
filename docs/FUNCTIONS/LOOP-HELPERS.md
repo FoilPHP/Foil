@@ -73,7 +73,7 @@ Outputs:
 ## `walkIf()` / `wif()`
 
 `walkIf()` (alias `wif()`) is very similar to `walk()`, but it accepts a condition to run the loop: if given condition is a falsey value
-then the helper return nothing. Condition may be also passed as a callback whose returned value is used to choose if run the loop or not.
+then the helper returns nothing. Condition may be also passed as a callback whose returned value is used to choose to run the loop or not.
 
 ```php
 // prints menu items as list items if $user['allowed'] template var is true
