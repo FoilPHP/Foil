@@ -27,7 +27,7 @@ They are:
 - `walkWrapIf` (alias `wwif()`)
 
 Each of them accepts as first argument the variable to loop through.
-It can be passed as a variable name, using Foil dot syntax, or is also possible to pass an array or a traversable object.
+It can be passed as a variable name, using Foil dot syntax, or it is also possible to pass an array or a traversable object.
 
 ## `walk()` / `w()`
 
