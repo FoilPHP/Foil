@@ -17,7 +17,7 @@ Foil Loop Helpers are functions that, basically, call `sprintf` on each element 
 
 The variable to loop is retrieved using Foil dot syntax, simplifying the process of getting data from nested structures without the need to check for variable existence or proper type.
 
-Every helper as two names, an extended one (for the ones who prefer readability) and a shorter alias (for the ones who prefer concise code).
+Every helper has two names, an extended one (for the ones who prefer readability) and a shorter alias (for the ones who prefer concise code).
 
 They are:
 
