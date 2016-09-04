@@ -17,7 +17,7 @@ Foil Loop Helpers are functions that, basically, call `sprintf` on each element 
 
 The variable to loop is retrieved using Foil dot syntax, simplifying the process of getting data from nested structures without the need to check for variable existence or proper type.
 
-Every helper as two names, an extended one (for the ones who prefer readability) and a shorter alias (for the ones who prefer concise code).
+Every helper has two names, an extended one (for the ones who prefer readability) and a shorter alias (for the ones who prefer concise code).
 
 They are:
 
@@ -27,7 +27,7 @@ They are:
 - `walkWrapIf` (alias `wwif()`)
 
 Each of them accepts as first argument the variable to loop through.
-It can be passed as a variable name, using Foil dot syntax, or is also possible to pass an array or a traversable object.
+It can be passed as a variable name, using Foil dot syntax, or it is also possible to pass an array or a traversable object.
 
 ## `walk()` / `w()`
 
@@ -73,7 +73,7 @@ Outputs:
 ## `walkIf()` / `wif()`
 
 `walkIf()` (alias `wif()`) is very similar to `walk()`, but it accepts a condition to run the loop: if given condition is a falsey value
-then the helper return nothing. Condition may be also passed as a callback whose returned value is used to choose if run the loop or not.
+then the helper returns nothing. Condition may be also passed as a callback whose returned value is used to choose to run the loop or not.
 
 ```php
 // prints menu items as list items if $user['allowed'] template var is true
