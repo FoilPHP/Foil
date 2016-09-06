@@ -62,7 +62,7 @@ if (! function_exists('Foil\render')) {
 
 if (! function_exists('Foil\arraize')) {
     /**
-     * @param  array $data
+     * @param  mixed $data
      * @param  bool  $escape
      * @param  array $transformers
      * @param  bool  $toString
