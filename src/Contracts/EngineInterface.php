@@ -27,8 +27,6 @@ interface EngineInterface
     /**
      * Find a template full path for a given template name.
      * Templates will be searched in all registered folders.
-     * If extension is not given default one is added.
-     * File with matching names but not accepted exceptions will be skipped.
      *
      * @param string $template
      */
