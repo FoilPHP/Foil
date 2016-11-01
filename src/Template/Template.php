@@ -286,7 +286,7 @@ class Template implements AliasAllowedTemplateInterface
         /** @noinspection PhpIncludeInspection */
         require $path;
         $this->lastBuffer = $this->buffer;
-        $this->buffer = trim(ob_get_clean());
+        $this->buffer = ob_get_clean();
 
         return $this->buffer;
     }
