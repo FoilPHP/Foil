@@ -25,7 +25,7 @@ class SimpleRenderTest extends TestCaseFunctional
     public function testSimpleRender()
     {
         $this->initFoil();
-        $render = preg_replace('/[\s]+/', ' ', $this->engine->render('main'));
+        $render = trim( preg_replace('/[\s]+/', ' ', $this->engine->render('main')) );
         assertSame('Hello Alone NO YES', $render);
     }
 
@@ -38,7 +38,7 @@ class SimpleRenderTest extends TestCaseFunctional
         $render1 = preg_replace('/[\s]+/', ' ', $this->engine->render('main'));
         $render2 = preg_replace('/[\s]+/', ' ', $this->engine->render('main'));
         $render3 = preg_replace('/[\s]+/', ' ', $this->engine->render('main'));
-        assertSame('Hello Alone NO YES', $render1);
+        assertSame('Hello Alone NO YES', trim( $render1 ));
         assertSame($render1, $render2);
         assertSame($render2, $render3);
     }
@@ -81,7 +81,7 @@ class SimpleRenderTest extends TestCaseFunctional
         );
         $render1 = preg_replace('/[\s]+/', ' ', $this->engine->render('second', ['foo' => 'Foo!']));
         $render2 = preg_replace('/[\s]+/', ' ', $this->engine->render('second', ['foo' => 'Foo!']));
-        assertSame('Hello Bar! World Foo! Alone I Win YES MAN', $render1);
+        assertSame('Hello Bar! World Foo! Alone I Win YES MAN', trim($render1));
         assertSame($render1, $render2);
         assertSame('Buffalo Bill', trim($buffer));
     }
