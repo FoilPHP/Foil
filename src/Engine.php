@@ -304,7 +304,7 @@ class Engine implements EngineInterface, TemplateAware, FinderAware
         }
         $template = $this->stack()->factory($path, $this, $class);
         $this->events->fire('f.template.render', $template, $data);
-        $output = trim($template->render($data));
+        $output = $template->render($data);
         $this->events->fire('f.template.renderered', $template, $output, $this->status);
 
         return $output;
