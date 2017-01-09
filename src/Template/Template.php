@@ -247,6 +247,32 @@ class Template implements AliasAllowedTemplateInterface
     }
 
     /**
+     * Adding support to allow for the removal of using
+     * $this context in rendered templates.
+     */
+    public function extractRender(array $data = [])
+    {
+        $this->api()->fire('f.template.prerender', $this);
+        $this->setData(array_merge($this->data(), $data));
+        $output = $this->extractCollect($this->path());
+        while ($this->layoutPath()) {
+            $layout = $this->layoutPath();
+            $this->setData($this->buildContext(
+                $this->layout_data[$layout]['data'],
+                $this->layout_data[$layout]['only']
+            ));
+            $this->layout = null;
+            // listener for this event makes sections work in output mode
+            $this->api()->fire('f.template.renderlayout', $layout, $this);
+            $output = $this->extractCollect($layout);
+        }
+
+        $this->api()->fire('f.template.rendered', $this);
+
+        return $output;
+    }
+
+    /**
      * @inheritdoc
      */
     public function buffer()
@@ -286,6 +312,26 @@ class Template implements AliasAllowedTemplateInterface
         /** @noinspection PhpIncludeInspection */
         require $path;
         $this->lastBuffer = $this->buffer;
+        $this->buffer = trim(ob_get_clean());
+
+        return $this->buffer;
+    }
+
+    /**
+     * Load a template file, save the collected buffer in $buffer var and return it
+     * extract $this->data() to allow removal of $this context in templates.
+     * Method called only by extractRender()
+     *
+     * @param  string $path Template file path
+     * @return string
+     * @access private
+     */
+    private function extractCollect($path)
+    {
+        ob_start();
+        extract($this->data());
+        require $path;
+        $this->last_buffer = $this->buffer;
         $this->buffer = trim(ob_get_clean());
 
         return $this->buffer;
