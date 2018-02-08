@@ -39,26 +39,11 @@ Moreover, using compiled engines to use even a simple PHP function one needs to 
 
 On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.
 
-## Why not Plates?
-
-Then I discovered [Plates](http://platesphp.com/), and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.
-
-Trying to do something *serious* with Plates, I encountered several problems which I had not when using compiled template engines.
-
-I wrote [a blog post](http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/) to explain why I am not happy with Plates anymore and so I decided to write Foil.
+---
 
 # Requirements
 
 Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.
-
----
-
-# Backward Incompatibility Notice
-
-Foil version **0.6** introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.
-
-Please see [v0.6 release notes](https://github.com/FoilPHP/Foil/releases/tag/0.6.0) to know more on the topic.
 
 ---
 
