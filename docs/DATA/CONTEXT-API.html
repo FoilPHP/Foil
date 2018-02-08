@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Data / Context API. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -86,7 +86,7 @@
                                       Pass Data To Templates
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/DATA/CONTEXT-API.html">
                                       Context API
                                   </a>
@@ -192,53 +192,92 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Data</li>
+                        </ol>
+                                                <h1 id="context-api">Context API</h1>
+<p>Pass data to Foil engine <code>render()</code> method is the simplest and preferred way to pass data to templates.</p>
+<p>However, often one needs to pass some data to <em>any</em> template rendered or to <em>some</em> templates under specific conditions.
+For example, if you want to pass the current user object to any template on a backend system.</p>
+<p>Foil context API is just a way to pass data to any template or groups of templates without having to pass that data to <code>render()</code> engine method.</p>
+<p>There are two ways to use Foil context API:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li>via engine methods <code>useData()</code> and <code>useContext()</code></li>
+<li>via Foil API</li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>The latter is a simple but powerful tool to use <strong>all</strong> Foil features (so not only context API) and facilitate the integration of Foil in any application.
+It is documented in <em>&quot;Integrate Foil / API&quot;</em> docs section.</p>
+<h2><code>useData()</code></h2>
+<p>This engine method accepts an array of data, that will be available in <strong>all</strong> templates.</p>
+<pre><code class="language-php">$engine-&gt;useData(['app_name' =&gt; 'My Awesome App']);</code></pre>
+<p>Using code above, any template that is rendered using that engine object will have access to <code>'app_name'</code> variable.</p>
+<p>Note that in case of name conflict between data assigned via context API and data directly passed to template, the latter takes precedence:</p>
+<pre><code class="language-php">$engine-&gt;render('a-template', ['app_name' =&gt; 'My Super Awesome App']);</code></pre>
+<p>Using code above, in the <code>a-template.php</code> template, <code>'app_name'</code> variable will be equal to <em>'My Super Awesome App'</em>.</p>
+<h2><code>useContext()</code></h2>
+<p>This method is used to pass some data to a set of templates. Templates to pass data to can be selected in 2 ways:</p>
+<ul>
+<li>all templates whose file path contain a string or matches a regex</li>
+<li>using a custom context class</li>
+</ul>
+<p>To match all templates whose file path contain a string you need to pass the string to search as 1st argument to <code>useContext()</code> and the data to pass as 2nd argument.</p>
+<p>For example:</p>
+<pre><code class="language-php">$engine-&gt;useContext('/admin/', ['owner' =&gt; get_current_user()]);</code></pre>
+<p>Using code above all templates whose path contain the string <code>"/admin/"</code> will have access to the <code>'owner'</code> variable.</p>
+<p>If you pass <code>true</code> as 3rd argument the string search is done using regex:</p>
+<pre><code class="language-php">$engine-&gt;useContext('/\.phtml$/', ['foo' =&gt; 'Bar'], true);</code></pre>
+<p>Using code above all templates whose extension is <code>.phtml</code> will have access to <code>'foo'</code> variable.</p>
+<h2 id="custom-context-objects">Custom Context Objects</h2>
+<p>A possible issue with code above is that the code used to retrieve the data that is passed as 2nd argument to <code>useContext()</code> is always ran,
+even if the template that is rendered doesn't satisfy the condition (so will not receive that data).</p>
+<p>This is non-issue if data passed is hardcoded, e.g. like in the <code>['foo' =&gt; 'Bar']</code> example above, but if data needs to be retrieved using <em>expensive</em> code, makes no sense
+run it if the template will not satisfy the condition.</p>
+<p>To overcome this problem is possible to write custom context classes. They are classes that extends <code>Foil\Contracts\ContextInterface</code>.</p>
+<p>That interface has just 2 methods:</p>
+<ul>
+<li><code>accept($template)</code></li>
+<li><code>provide()</code></li>
+</ul>
+<p><code>accept()</code> receives the template path that is going to be rendered, if it returns <code>true</code> all data returned by <code>provide()</code> (that must be an array) is passed to template.</p>
+<p>Let's see an usage example:</p>
+<pre><code class="language-php">namespace MyApp;
+
+use Foil\Contracts\ContextInterface;
+
+class BlogMenuContext implements ContextInterface
+{
+    private $menu;
+
+    public function __construct(MenuModel $menu)
+    {
+        $this-&gt;menu = $menu;
+    }
+
+    public function accept($template)
+    {
+        return strstr($template, DIRECTORY_SEPARATOR.'blog') !== false;
+    }
+
+    public function provide()
+    {
+        return ['menu' =&gt; $this-&gt;menu-&gt;getItems()];
+    }
+}</code></pre>
+<p>The <code>accept()</code> method in class above receives template path and return true only if it contains <em>&quot;/blog&quot;</em>.</p>
+<p><strong>Only in that case</strong> <code>provide()</code> method runs and, using menu model, gets menu items that are passed to template in <code>'menu'</code> variable.</p>
+<p>If this class is available, it can be used passing an instance of it to <code>useContext()</code> engine method:</p>
+<pre><code class="language-php">$engine-&gt;useContext(new BlogMenuContext());</code></pre>
+<p>You can think at context classes as a sort of <em>inverted controllers</em>: normally controllers pass data to views based on external conditions (e.g. which route matched),
+when using context classes are the views that <em>claims</em> data.</p>
+<p>This approach makes a lot of sense for view-specific data that there is no reason a controller is aware of.
+For example, why a controller should be aware which styles or scripts a template uses?</p>
+<p>A similar approach is used in <a href="http://laravel.com/docs/4.2/responses#view-composers">Laravel View Composers</a>, but Foil context API is more flexible because</p>
+<ul>
+<li>is framework agnostic</li>
+<li>context classes are not aware of view object, so is possible to use any kind of view object or no view object at all</li>
+<li>how to match a template is left to user, where in Lavarel is only possible to exactly match a template name or a set of template names</li>
+</ul>
                     </div>
                 </div>
             </div>

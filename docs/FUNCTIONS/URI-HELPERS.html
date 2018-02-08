@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Blocks &amp; Helpers / URI Helpers. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -136,7 +136,7 @@
                                       Link Helpers
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/FUNCTIONS/URI-HELPERS.html">
                                       Uri Helpers
                                   </a>
@@ -192,53 +192,120 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Blocks &amp; Helpers</li>
+                        </ol>
+                                                <h1 id="uri-helpers">URI Helpers</h1>
+<p>Inspired to <a href="http://platesphp.com/extensions/uri/">Plates URI extension</a> these helpers allow to easily deal with current url in templates.
+For example to set current HTML class for a link in a menu based on the page being viewed, and so on.</p>
+<p>URI helpers are shipped with Foil but they are <strong>not</strong> enabled by default.</p>
+<p>To enable them you need to load an extension that is shipped with Foil (more on Foil extensions under <em>&quot;Extending Foil&quot;</em> docs section).</p>
+<pre><code class="language-php">$engine-&gt;loadExtension(new \Foil\Extensions\Uri(), $args);</code></pre>
+<p>The <code>$args</code> is an array of configurations that changes how the helpers will work. More on this below.</p>
+<h2 id="pathinfo">Pathinfo</h2>
+<p>By default the extension will retrieve path info information using <code>$_SERVER</code> superglobal variable, but, for any reason, you might set a custom path info using <code>'pathinfo'</code> option.</p>
+<p>An example using Symfony HttpFoundation component:</p>
+<pre><code class="language-php">/** @var Symfony\Component\HttpFoundation\Request $request */
+$engine-&gt;loadExtension(new \Foil\Extensions\Uri(), ['pathinfo' =&gt; $request-&gt;getPathInfo()]);</code></pre>
+<h2 id="main">Main <code>uri()</code> method</h2>
+<p>There is only one main method for URI helpers, it is <code>uri()</code>. It returns an object on which is possible to call 3 different methods:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li><code>is()</code></li>
+<li><code>has()</code></li>
+<li><code>match()</code></li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>All 3 helpers take as</p>
+<ul>
+<li>1st argument a condition to match</li>
+<li>2nd argument something to return if condition matches. Optional, default to <code>true</code></li>
+<li>3rd argument something to return if condition doesn't match. Optional, default to <code>""</code> (empty string)</li>
+</ul>
+<p>Note that all the conditions are not performed comparing full urls, but urls <em>path</em>.</p>
+<p>E.g. if you're viewing the url <code>http://example.com/page</code> the 3 helpers will perform conditions check on <code>"page"</code>.
+When viewing home page (<code>http://example.com</code>) the 3 helpers will perform conditions check on <code>"/"</code>.</p>
+<p>What said right above is valid by default, but thanks to the <code>'home'</code> option is possible to set an home path so that all conditions check will be done assuming that path as home page.</p>
+<p>For example, assuming the extension is loaded like so:</p>
+<pre><code class="language-php">$engine-&gt;loadExtension(new \Foil\Extensions\Uri(), ['home' =&gt; 'blog']);</code></pre>
+<p>when viewing the url <code>http://example.com/blog/page</code> the 3 helpers will perform conditions check on <code>"page"</code> and the url <code>http://example.com/blog</code> will be considered by helpers as <code>"/"</code>.</p>
+<h2><code>is()</code></h2>
+<p>Most basic usage of this helper is to check identity between current url path and a path passed to it.</p>
+<p>Assuming the url being visited is <code>http://example.com/a/page</code> (and no <code>'home'</code> option is used), in a template</p>
+<pre><code class="language-php">$this-&gt;uri()-&gt;is('a/page'); // returns true
+
+$this-&gt;uri()-&gt;is('a/page', 'Yes'); // returns "Yes"
+
+$this-&gt;uri()-&gt;is('another/page', 'Yes'); // returns ""
+
+$this-&gt;uri()-&gt;is('another/page', 'Yes', 'No'); // returns "No"</code></pre>
+<p>Another way to use the helper is to set condition via a 2 items array, where the 1s item is an index (1-based) for url chunks and the 2nd item is the chunk to check for.
+With <em>chunks</em> here is intended the array obtained <em>exploding</em> the url path by <code>/</code>.</p>
+<p>For example, assuming same url as above</p>
+<pre><code class="language-php">$this-&gt;uri()-&gt;is([1, 'a']); // returns true
+
+$this-&gt;uri()-&gt;is([2, 'page']); // returns true
+
+$this-&gt;uri()-&gt;is([1, 'a'], 'Yes'); // returns "Yes"
+
+$this-&gt;uri()-&gt;is([1, 'foo'], 'Yes', 'No'); // returns "No"</code></pre>
+<p>Remember that is possible to use <code>'home'</code> option to set a path to be used as <em>base</em> for all helpers checks.</p>
+<p>For example, assuming the extension is loaded like so</p>
+<pre><code class="language-php">$engine-&gt;loadExtension(new \Foil\Extensions\Uri(), ['home' =&gt; 'blog']);</code></pre>
+<p>If url being visited is <code>http://example.com/blog/archive</code></p>
+<pre><code class="language-php">$this-&gt;uri()-&gt;is('blog/archive'); // returns ""
+
+$this-&gt;uri()-&gt;is('archive'); // returns true
+
+$this-&gt;uri()-&gt;is([1, 'blog']); // returns ""
+
+$this-&gt;uri()-&gt;is([1, 'archive']); // returns true</code></pre>
+<h2><code>has()</code></h2>
+<p>This is simplest helper of the extension. It accepts as condition only a string and matches the condition if current url <strong>starts</strong> with given string.</p>
+<p>Assuming the url being visited is <code>http://example.com/a/page</code> (and no <code>'home'</code> option is used), in a template</p>
+<pre><code class="language-php">$this-&gt;uri()-&gt;has('a'); // returns true
+
+$this-&gt;uri()-&gt;has('a/page', 'Yes'); // returns "Yes"
+
+$this-&gt;uri()-&gt;has('page'); // returns ""
+
+$this-&gt;uri()-&gt;has('a/page/deep', 'Yes', 'No'); // returns "No"</code></pre>
+<p>In the menu example above in the page this function could be used to set as selected &quot;About Us&quot; parent item when any of its children items is visited,
+for a (probably) better readable alternative to <code>is()</code> and url chunk argument.</p>
+<p>Below there is an use case example where this helper is used in combination with <code>is()</code> to assign selected HTML class to links in a menu:</p>
+<pre><code class="language-php">&lt;ul&gt;
+    &lt;li&gt;
+        &lt;a href="&lt;?= $this-&gt;link('/') ?&gt;" &lt;?= $this-&gt;uri()-&gt;is('/', 'class="selected"') ?&gt;&gt;Home&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;a href="&lt;?= $this-&gt;link('about') ?&gt;" &lt;?= $this-&gt;uri-&gt;has('about', 'class="selected"') ?&gt;&gt;About Us&lt;/a&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;a href="&lt;?= $this-&gt;link('about/company') ?&gt;" &lt;?= $this-&gt;uri()-&gt;is('about/company', 'class="selected"') ?&gt;&gt;Company&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href="&lt;?= $this-&gt;link('about/staff') ?&gt;" &lt;?= $this-&gt;uri()-&gt;is('about/staff', 'class="selected"') ?&gt;&gt;Staff&lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;a href="&lt;?= $this-&gt;link('contacts') ?&gt;" &lt;?= $this-&gt;uri()-&gt;is('contacts', 'class="selected"') ?&gt;&gt;Contact Us&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<p>Note how &quot;About Us&quot; item is set as selected when any of its child items is visited
+thanks to <code>has()</code>, whereas child items are selected when exact url is visited thanks to <code>is()</code>.</p>
+<p><code>link()</code> helper used above is documented in the <em>&quot;Functions / Links Helpers&quot;</em> docs section.</p>
+<h2><code>match()</code></h2>
+<p>This helpers matches a given regex to current url path. When writing regex remember that:</p>
+<ul>
+<li>there's <strong>no</strong> need to add regex boundary chars</li>
+<li>to match home page regex must match <code>'/'</code></li>
+<li>the url path that will be checked with regex will have no trailing or leading slash (apart from the homepage which <em>is</em> a slash).
+For example if the url being visited is <code>http://example.com/a/page/</code> the matching will be performed against <code>'a/page'</code></li>
+</ul>
+<p>Assuming the url being visited is <code>http://example.com/a/page</code> (and no <code>'home'</code> option is used), in a template</p>
+<pre><code class="language-php">$this-&gt;uri()-&gt;match('^a/.+'); // returns true
+
+$this-&gt;uri()-&gt;has('[0-9]+', 'Yes', 'No'); // returns "No"</code></pre>
                     </div>
                 </div>
             </div>

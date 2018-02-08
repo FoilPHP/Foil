@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Blocks &amp; Helpers / Link Helpers. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -131,7 +131,7 @@
                                       Array Helpers
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/FUNCTIONS/LINK-HELPERS.html">
                                       Link Helpers
                                   </a>
@@ -192,53 +192,99 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Blocks &amp; Helpers</li>
+                        </ol>
+                                                <h1 id="link-helpers">Link Helpers</h1>
+<p>In templates, absolute and relative urls have its own pro and cons to be used for internal links.</p>
+<p>Relative links are more <em>portable</em> and require less typing, but sometimes they can't work (e.g in case <code>mod_rewrite</code> or similar is used to handle urls).</p>
+<p>Foil link helpers are functions that allow to output internal links taking the best from both absolute and relative links.</p>
+<p>There are just 2 helpers:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li><code>link()</code></li>
+<li><code>asset()</code></li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>Link helpers are shipped with Foil but they are <strong>not</strong> enabled by default.</p>
+<p>To enable them you need to load an extension that is shipped with Foil (more on Foil extensions under <em>&quot;Extending Foil&quot;</em> docs section).</p>
+<pre><code class="language-php">$engine-&gt;loadExtension(new \Foil\Extensions\Links(), $args);</code></pre>
+<p><code>$args</code> is an array of configurations that changes how the helpers will work. More on this below.</p>
+<h2><code>link()</code></h2>
+<p>This helper provides 2 benefits:</p>
+<ul>
+<li>allow to easily output long urls with few chars</li>
+<li>allow to write absolute urls typing only the relative part</li>
+</ul>
+<p>There are 3 options that regulate how helper work, they are:</p>
+<ul>
+<li><code>'host'</code> (string) Is the base host. Used to output absolute urls only typing the relative part.
+Optional, if not provided the helper will use the current host.</li>
+<li><code>'scheme'</code> (string) Is the default scheme ('http', 'https'..) to be used for links.
+When set to <code>false</code> urls will use no scheme, starting with <code>//:</code>.
+Optional, if not provided the helper will use the current scheme.
+Note that this is the <em>default</em> scheme, but is possible to use a different scheme for any url.</li>
+<li><code>'urls'</code> (array) A set of default relative paths, in a way that is possible to output very long urls with few chars.</li>
+</ul>
+<p>Assuming the extension is loaded like so:</p>
+<pre><code class="language-php">$args = [
+    'host'   =&gt; 'example.com',
+    'scheme' =&gt; 'http',
+    'urls'   =&gt; [
+        'admin' =&gt; '/path/to/admin',
+        'blog'  =&gt; '/path/to/blog'
+    ],
+];
+$engine-&gt;loadExtension(new \Foil\Extensions\Links(), $args);</code></pre>
+<p>In a template:</p>
+<pre><code class="language-php">$this-&gt;link('foo'); // "http://example.com/foo"
+
+$this-&gt;link('profile', 'admin'); // "http://example.com/path/to/admin/foo"
+
+$this-&gt;link('dashboard', 'admin', 'https'); // "https://example.com/path/to/admin/foo"
+
+$this-&gt;link('2014/hello-world', 'blog'); // "http://example.com/path/to/blog/2014/hello-world"</code></pre>
+<p>Nice thing is that to configure different urls for different environments or to change host is just a matter of change a singular option with no need to change templates.</p>
+<h2><code>asset()</code></h2>
+<p>This helper is similar in purpose to <code>link()</code> but it's developed with specific functions for assets (styles, scripts and images).</p>
+<p>Configuration for assets is independent from configuration for urls, so if your assets are in CDN your life will be easy when you'll need to output that long urls.</p>
+<p>There are 4 options that regulate how <code>asset()</code> work, they are:</p>
+<ul>
+<li><code>'assets_host'</code> (string) Base host to be used for assets. Is independent from regular urls host for maximum flexibility. Optional, default to <code>'host'</code> option.</li>
+<li><code>'assets_url'</code> (string) This is the relative to <code>'assets_host'</code> part of assets url. Optional, no default.</li>
+<li><code>'assets_path'</code> (string) This is the base filesystem path to your assets. This is needed when cache bust is used to read assets files last update time.  </li>
+<li>
+<p><code>'cache_bust'</code> (mixed) This allow <em>cache busted</em> assets.
+This feature is largely inspired to <a href="http://platesphp.com/extensions/asset/">Plates asset extension</a> and it works by appending the timestamp of the file last update to its URL.
+For example, <code>/css/style.css</code> becomes <code>/css/style.1421281020.css</code></p>
+<p>Please note that you need to properly configure <code>'assets_path'</code> and <strong>setup your HTTP server</strong> to use this function.</p>
+<p>For server configuration see examples on <a href="http://platesphp.com/extensions/asset/#filename-caching">Plates site</a>.</p>
+<p>In Foil you can configure cache bust for:</p>
+<ul>
+<li>all assets, by set this option to <code>true</code> or <code>false</code></li>
+<li>specific kind of assets, by set this option to <code>'images'</code> or <code>'styles'</code> or <code>'scripts'</code></li>
+<li>specific file extensions, by set this option to an array of supported extensions, e.g. <code>['css','js']</code></li>
+</ul>
+</li>
+</ul>
+<p>Default HTTP scheme configuration for assets is configured via <code>'scheme'</code> option, the same used for <code>links()</code>.</p>
+<p>Assuming the extension is loaded like so:</p>
+<pre><code class="language-php">$args = [
+  'assets_host' =&gt; 'static.example.com',
+  'assets_url'  =&gt; '/assets',
+  'scheme'      =&gt; false,
+  'assets_path' =&gt; dirname(__DIR__).'/assets',
+  'cache_bust'  =&gt; ['css','js'],
+];
+$engine-&gt;loadExtension(new \Foil\Extension\Links(), $args);</code></pre>
+<p>In a template:</p>
+<pre><code class="language-php">$this-&gt;asset('images/foo.jpg'); // "//static.example.com/assets/images/foo.jpg"
+
+$this-&gt;asset('images/foo.jpg', 'http'); // "http://static.example.com/assets/images/foo.jpg"
+
+$this-&gt;asset('css/style.css'); // "//static.example.com/assets/css/style.1421281020.css"
+
+$this-&gt;asset('js/custom.js'); // "//static.example.com/assets/js/custom.1423959420.js"</code></pre>
+<p>Remember that you need to configure your HTTP server to use the cache bust feature.</p>
                     </div>
                 </div>
             </div>

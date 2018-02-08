@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Extending Foil / Custom Blocks. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -151,7 +151,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Extending Foil</a>
                       <ul>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/EXTENDING/CUSTOM-BLOCKS.html">
                                       Custom Blocks
                                   </a>
@@ -192,53 +192,68 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
-<ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
-</ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Extending Foil</li>
+                        </ol>
+                                                <h1 id="custom-blocks">Custom Blocks</h1>
+<p>Custom blocks are callback that perform operations on a block of HTML that is delimited in templates using
+<code>block()</code> and <code>endblock()</code> template methods.</p>
+<p>Please have a look at the section &quot;<em>Blocks &amp; Helpers / Blocks</em>&quot; to know more about blocks.</p>
+<h2 id="add-a-custom-block">Add a custom block</h2>
+<p>Adding a block callback is as easy as pass a block name and a block callback to the <code>Engine::registerBlock()</code> method.</p>
+<p>For example, let's write a callback that takes a block of text, and output every new line in a separate <code>&lt;li&gt;</code> tag, all wrapped in a <code>&lt;ul&gt;</code> tag.</p>
+<pre><code class="language-php">$engine-&gt;registerBlock(
+   'eol2ul',
+   function($html) {
+      // remove white space at boundaries an normalize end of lines
+      $trim = trim(str_replace("\r\n", "\n", $html));
+      // explode by end of lines
+      $exploded = explode("\n", $trim);
+      // implode lines into a list
+      return '&lt;ul&gt;&lt;li&gt;'.implode('&lt;/li&gt;&lt;li&gt;', $exploded).'&lt;/li&gt;&lt;/ul&gt;';
+   }
+);</code></pre>
+<p>After that, in a template:</p>
+<pre><code class="language-php">&lt;?php $this-&gt;block('eol2ul') ?&gt;
+
+a
+b
+c
+
+&lt;?php $this-&gt;endblock() ?&gt;</code></pre>
+<p>Will output:</p>
+<pre><code class="language-html">&lt;ul&gt;
+    &lt;li&gt;a&lt;/li&gt;
+    &lt;li&gt;b&lt;/li&gt;
+    &lt;li&gt;c&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<h2 id="blocks-with-arguments">Blocks with arguments</h2>
+<p>Blocks callbacks may accept a variadic number of arguments that can be passed to <code>block()</code> function right after block name.</p>
+<p>A simple example that will covert given words in a block of text to links to the Google search url for that word:</p>
+<pre><code class="language-php">$engine-&gt;registerBlock(
+   'googleize',
+   function() {
+      $args = func_get_args();
+      $html = array_shift($args); // block of HTMl is first argument
+      $words = $args; // all the words passed ot open() are now in $args array
+      $format = '&lt;a href="https://www.google.com#q=%s" target="_blank"&gt;%s&lt;/a&gt;';
+      foreach($words as $word) {
+        $html = str_replace($word, sprintf($format, urlencode($word), $word), $html);
+      }
+      return $html;
+   }
+);</code></pre>
+<p>In template...</p>
+<pre><code class="language-php">&lt;?php $this-&gt;block('googleize', 'Lorem', 'adipiscing') ?&gt;
+
+Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.
+
+&lt;?php $this-&gt;endblock() ?&gt;</code></pre>
+<p>The output will be:</p>
+<pre><code class="language-html">&lt;a href="https://www.google.com#q=Lorem" target="_blank"&gt;Lorem&lt;/a&gt; ipsum dolor sit amet,
+consectetur &lt;a href="https://www.google.com#q=adipiscing" target="_blank"&gt;adipiscing&lt;/a&gt; elit.</code></pre>
                     </div>
                 </div>
             </div>

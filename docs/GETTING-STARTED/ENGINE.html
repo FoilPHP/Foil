@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Getting Started / Engine. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
                                       Installation
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/GETTING-STARTED/ENGINE.html">
                                       Engine
                                   </a>
@@ -192,53 +192,44 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Getting Started</li>
+                        </ol>
+                                                <h1 id="engine">Engine</h1>
+<p>There are very few components in Foil you should interact with. The most important is the Foil <strong>Engine</strong>.</p>
+<h2 id="obtaining-an-engine-instance">Obtaining an Engine instance</h2>
+<p>An instance of that class can be obtained using:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li><strong><code>Foil\engine()</code></strong> function..</li>
+<li><strong><code>Foil\Foil::boot()</code></strong> method. It returns an instance of <code>Foil\Foil</code> class. That class has a method <code>engine()</code> that returns an instance of the engine.</li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>You need to pass to both an array of arguments that let you configure how Foil engine will work.</p>
+<p>The two methods works in same way, the <code>Foil\Foil::boot()</code> method was introduced in version <code>v0.6</code>.</p>
+<h3 id="with-engine-function">With Engine Function</h3>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders' =&gt; ['path/to/templates']
+]);</code></pre>
+<h3 id="with">With <code>boot()</code> Method (since v0.6)</h3>
+<pre><code class="language-php">$foil = Foil\Foil::boot([
+    'folders' =&gt; ['path/to/templates']
+]);
+$engine = $foil-&gt;engine();</code></pre>
+<h2 id="render-a-template-file-with-some-data">Render a template file with some data</h2>
+<p>Having an instance of the engine, render a template with some data is just a matter of:</p>
+<pre><code>echo $engine-&gt;render('a-template', $some_data);</code></pre>
+<p>The code above is a very simple (and working) example on how to instantiate Foil engine and use it to render a template with some data.</p>
+<ul>
+<li>
+<p><code>render()</code> method here takes just template name (no file extension, no folder): engine will search for the template in registered template folders. Foil engine will also add default extension, that is <code>.php</code>, to file name. This behavior can be customized using engine options.</p>
+</li>
+<li><code>$some_data</code> must be an associative array. Array keys will be variable names in the template. There are powerful tools in Foil to interact with template data inside template file. Moreover, directly passing data to <code>render()</code> is not the only way to add context for templates, Foil comes with a context API that lets you pre-assign data to templates under specific conditions.</li>
+</ul>
+<h2 id="warning">Warning</h2>
+<p>The function <code>engine()</code> in versions older than <code>v0.6</code> used to return the <em>same</em> instance of the engine when called more times during same request.</p>
+<p>This was changed in version <code>v0.6</code>, and now every time <code>Foil\engine()</code> is called it returns a <em>&quot;fresh&quot;</em> instance of the engine, that has nothing
+shared with any previously got instance.</p>
+<p>Create an instance of the engine may consume some resources, so re-using the same instance can be a good idea, however, that task is now left to implementers that are free to do that as they prefer.</p>
                     </div>
                 </div>
             </div>

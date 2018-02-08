@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Blocks &amp; Helpers / HTML &amp; Form Helpers. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -141,7 +141,7 @@
                                       Uri Helpers
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/FUNCTIONS/HTML-HELPERS.html">
                                       HTML and Form Helpers
                                   </a>
@@ -192,53 +192,108 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Blocks &amp; Helpers</li>
+                        </ol>
+                                                <h1 id="html-amp-form-helpers">HTML &amp; Form Helpers</h1>
+<p>Foil (v0.4+) integrates <a href="https://github.com/auraphp/Aura.Html">Aura.HTML</a> library that is used for <strong>escape</strong> (and autoescape) routine.</p>
+<p>Moreover, Aura.HTML <strong><a href="https://github.com/auraphp/Aura.Html/blob/2.x/readme-helpers.html">html</a> and
+<a href="https://github.com/auraphp/Aura.Html/blob/2.x/readme-forms.html">form</a> helpers</strong> are supported via a shipped extension.</p>
+<h2><code>html()</code></h2>
+<p>By default, Foil has just one helper that works as interface for all Aura.HTML helpers. It is <code>html()</code>.</p>
+<p>The supported helpers are:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li>anchor / anchorRaw</li>
+<li>base</li>
+<li>img</li>
+<li>label</li>
+<li>links</li>
+<li>metas</li>
+<li>ol</li>
+<li>scripts</li>
+<li>styles</li>
+<li>tag</li>
+<li>title</li>
+<li>ul</li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>Please refers to <a href="https://github.com/auraphp/Aura.Html/blob/2.x/readme-helpers.html">Aura.HTML docs</a> to
+know more.</p>
+<p>The first argument for <code>html()</code> must be the helper name (one from the list above), all other arguments required by Aura.HTML helpers are supported.</p>
+<p>For example, to render an <code>&lt;img&gt;</code> tag is possible to do:</p>
+<pre><code class="language-php">$this-&gt;html('img', '/images/hello.jpg', ['id' =&gt; 'image-id']);</code></pre>
+<p>That will render:</p>
+<pre><code class="language-html">&lt;img src="/images/hello.jpg" alt="hello" id="image-id"&gt;</code></pre>
+<p>The example comes from <a href="https://github.com/auraphp/Aura.Html/blob/2.x/readme-helpers.html#img">Aura.HTML docs</a>,
+refers to that docs page to know how to similarly use all the supported helpers.</p>
+<h2 id="short-html-helpers">Short HTML Helpers</h2>
+<p>Setting an Engine option, <code>"html_tags_functions"</code>, to <code>true</code>, Foil will register additional HTML helpers,
+that allow to call the supported Aura.HTML helpers straight on template instance (<code>$this</code>).</p>
+<p>For example, to print same <code>&lt;img&gt;</code> tag as above:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders'             =&gt; ['path/to/templates'],
+  'html_tags_functions' =&gt; true
+]);
+
+echo $engine-&gt;render('example');
+
+// and inside path/to/templates/example.php
+&lt;?= $this-&gt;img('/images/hello.jpg', ['id' =&gt; 'image-id']) ?&gt;</code></pre>
+<p>All the other tags are supported in same way.</p>
+<h3 id="note-for">Note for <code>a()</code> helper</h3>
+<p>Aura.HTML has the helper <code>a()</code> to print an <code>&lt;a&gt;</code> HTML tag. However, <code>a()</code> is already a Foil helper,
+used to force a template variable to be an array (see <em>Data / Helpers</em>), for this reason to print an
+anchor tag when <code>'html_tags_functions'</code> option is true use <code>anchor()</code> function, that is supported by
+Aura.HTML as well.</p>
+<h2 id="form-helpers">Form Helpers</h2>
+<p>Aura.HTML has some <a href="https://github.com/auraphp/Aura.Html/blob/2.x/readme-forms.html#html-5-input-elements">form helpers</a> that
+can be used to render HTML5 form inputs.</p>
+<p>They are:</p>
+<ul>
+<li>button</li>
+<li>checkbox</li>
+<li>color</li>
+<li>date</li>
+<li>datetime</li>
+<li>datetime-local</li>
+<li>email</li>
+<li>file</li>
+<li>hidden</li>
+<li>image</li>
+<li>month</li>
+<li>number</li>
+<li>password</li>
+<li>radio</li>
+<li>range</li>
+<li>reset</li>
+<li>search</li>
+<li>select (including options)</li>
+<li>submit</li>
+<li>tel</li>
+<li>text</li>
+<li>textarea</li>
+<li>time</li>
+<li>url</li>
+<li>week</li>
+</ul>
+<p>Foil supports all of them via <code>html()</code> helper. For example:</p>
+<pre><code class="language-php">$this-&gt;html('submit', ['name' =&gt; 'foo','value' =&gt; 'bar']);</code></pre>
+<p>That will render:</p>
+<pre><code class="language-html">&lt;input type="submit" name="foo" value="bar" /&gt;</code></pre>
+<p>So the first argument for <code>html()</code> must be the input name, the second argument must be an array of all
+the arguments supported by Aura.HTML.</p>
+<p>Note that Aura.HTML requires the argument <code>'type'</code> to be set to the input type ('text', 'submit'...)
+that is not required by  Foil <code>html()</code> helper because input type is passed as first argument.</p>
+<p>An alternative way to render form inputs (more similar to Aura.HTML syntax) is to use the generic <code>'input'</code>
+as first argument for <code>html()</code>, then pass the input type as part of arguments array.</p>
+<p>For example:</p>
+<pre><code class="language-php">$this-&gt;html('input', ['type' =&gt; 'submit', 'name' =&gt; 'foo','value' =&gt; 'bar']);</code></pre>
+<h2><code>input()</code> Helper</h2>
+<p>When <code>'html_tags_functions'</code> option is <code>true</code> (see &quot;Short HTML Helpers&quot; above) form input names are <strong>not</strong> available
+as template functions, because something like <code>$this-&gt;submit()</code> or <code>$this-&gt;text()</code> is hardly recognized as something
+that prints a form input.</p>
+<p>However, activating <code>'html_tags_functions'</code> options is possible to use <code>input()</code> helper. For example:</p>
+<pre><code class="language-php">$this-&gt;input(['type' =&gt; 'submit', 'name' =&gt; 'foo','value' =&gt; 'bar']);</code></pre>
                     </div>
                 </div>
             </div>

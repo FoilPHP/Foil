@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Blocks &amp; Helpers / Loop Helpers. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -121,7 +121,7 @@
                                       Blocks
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/FUNCTIONS/LOOP-HELPERS.html">
                                       Loop Helpers
                                   </a>
@@ -192,53 +192,83 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Blocks &amp; Helpers</li>
+                        </ol>
+                                                <h1 id="loop-helpers">Loop Helpers</h1>
+<p>PHP has some language constructs to handle arrays, like <code>for</code>, <code>foreach</code> or <code>while</code> and also quite a lot array functions, like <code>array_map</code>, <code>array_walk</code>, <code>array_reduce</code> and a lot of others.
+However array functions have some flaws:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li>don't support traversable or iterators objects</li>
+<li>aren't consistent in signature, e.g. some of them accepts array as first argument, some as second</li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>Moreover, in templates, you need to check for variable existence and proper type to avoid errors e.g. passing a string or a boolean to any of them will cause an error.</p>
+<p>Foil Loop Helpers are functions that, basically, call <code>sprintf</code> on each element of arrays or traversable objects.</p>
+<p>The variable to loop is retrieved using Foil dot syntax, simplifying the process of getting data from nested structures without the need to check for variable existence or proper type.</p>
+<p>Every helper has two names, an extended one (for the ones who prefer readability) and a shorter alias (for the ones who prefer concise code).</p>
+<p>They are:</p>
+<ul>
+<li><code>walk()</code> (alias <code>w()</code>)</li>
+<li><code>walkIf</code> (alias <code>wif()</code>)</li>
+<li><code>walkWrap</code> (alias <code>ww()</code>)</li>
+<li><code>walkWrapIf</code> (alias <code>wwif()</code>)</li>
+</ul>
+<p>Each of them accepts as first argument the variable to loop through.
+It can be passed as a variable name, using Foil dot syntax, or it is also possible to pass an array or a traversable object.</p>
+<h2><code>walk()</code> / <code>w()</code></h2>
+<p>The simplest loop helper is <code>walk()</code> (alias <code>w()</code>). It calls <code>sprintf</code> to every item of structure, applying a given format string.</p>
+<p>Format string must contain at least a placeholder, that will be replaced with the value from the structure that is being walked.
+It is possible to use a format with more than one placeholder and pass to the helper the additional values to fill the placeholders.</p>
+<pre><code class="language-php">// assuming 'items' template variable is range('a', 'c')
+
+echo $this-&gt;walk('items', '&lt;li&gt;%s&lt;/li&gt;'); // echo &lt;li&gt;a&lt;/li&gt;&lt;li&gt;b&lt;/li&gt;&lt;li&gt;c&lt;/li&gt;
+
+echo $this-&gt;walk('items', '&lt;li&gt;%2$s: %1$s&lt;/li&gt;', 'Item'); // echo &lt;li&gt;Item: a&lt;/li&gt;&lt;li&gt;Item: b&lt;/li&gt;&lt;li&gt;Item: c&lt;/li&gt;</code></pre>
+<p>If items variable in code above was not defined, empty, or not traversable, code above would print nothing, without any error.</p>
+<p>Another nice feature of <code>walk()</code> (and other loop helpers) is that if each item of the array is an array as well, loop helpers will call <code>vsprintf</code> (instead of <code>sprintf</code>) for each every item. This is better explained with an example:</p>
+<pre><code class="language-php">/*
+Assuming 'people' template var is equal to:
+
+[
+  ['Tom', 'London', 30],
+  ['Dick', 'New York', 33],
+  ['Harry', 'Berlin', 25]
+]
+*/
+
+$this-&gt;walk('people', '&lt;p&gt;%1$s is %3$d years old and comes from %2$s&lt;/p&gt;');
+
+/*
+Outputs:
+
+&lt;p&gt;Tom is 30 years old and comes from London&lt;/p&gt;
+&lt;p&gt;Dick is 33 years old and comes from New York&lt;/p&gt;
+&lt;p&gt;Harry is 25 years old and comes from Berlin&lt;/p&gt;
+*/</code></pre>
+<h2><code>walkIf()</code> / <code>wif()</code></h2>
+<p><code>walkIf()</code> (alias <code>wif()</code>) is very similar to <code>walk()</code>, but it accepts a condition to run the loop: if given condition is a falsey value
+then the helper returns nothing. Condition may be also passed as a callback whose returned value is used to choose to run the loop or not.</p>
+<pre><code class="language-php">// prints menu items as list items if $user['allowed'] template var is true
+echo $this-&gt;wif('menu.items', $this-&gt;v('user.allowed'), '&lt;li&gt;%s&lt;/li&gt;');
+
+// prints menu items as list items if a_custom_callback() function returns true
+echo $this-&gt;wif('menu.items', 'a_custom_callback', '&lt;li&gt;%s&lt;/li&gt;');</code></pre>
+<p>As demonstrated in code above, combining loop helpers with data helpers is possible to write in one line effective template parts that had required
+a lot more code using only PHP functions.</p>
+<h2><code>walkWrap()</code> / <code>ww()</code></h2>
+<p>This helper acts just like <code>walk()</code>, but accepts an additional format string to wrap looped items.
+Nice thing is that if the variable to loop is not defined or empty, even the &quot;wrapper&quot; code is not printed, saving an <code>if</code> block.</p>
+<pre><code class="language-php">echo $this-&gt;ww('menu.items', '&lt;ul&gt;%s&lt;/ul&gt;', '&lt;li&gt;%s&lt;/li&gt;');
+
+// previous line is equivalent to:
+
+if ($this-&gt;v('menu.items')) {
+  echo '&lt;ul&gt;' . $this-&gt;w('menu.items', '&lt;li&gt;%1$s&lt;/li&gt;') . '&lt;/ul&gt;';
+}</code></pre>
+<h2><code>walkWrapIf()</code> / <code>wwif()</code></h2>
+<p>As you can guess from the name, this helper is a combination of <code>walkWrap()</code> and <code>walkIf()</code>.</p>
+<pre><code class="language-php">echo $this-&gt;wwif('menu.items', $this-&gt;v('user.allowed'), '&lt;ul&gt;%s&lt;/ul&gt;', '&lt;li&gt;%s&lt;/li&gt;');</code></pre>
                     </div>
                 </div>
             </div>

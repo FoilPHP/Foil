@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Templates / Overview. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -56,7 +56,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Templates</a>
                       <ul>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/TEMPLATES/OVERVIEW.html">
                                       Overview
                                   </a>
@@ -192,53 +192,76 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Templates</li>
+                        </ol>
+                                                <h1 id="templates">Templates</h1>
+<p>In this documentation the word &quot;templates&quot; is used to refer to <em>template files</em>, that are the PHP files that contain markup.</p>
+<p>Internally, Foil also has a class named &quot;Template&quot; but in your code you might never need to <em>directly</em> interact with that class.
+As better explained in the <em>&quot;Integrate Foil&quot;</em> docs section, you can integrate Foil with your code passing around Foil engine object and/or Foil API object.</p>
+<p>It worth to say here that template files are included in the context of templates objects.</p>
+<p>To better understand this concept, look at the following pseudo-code:</p>
+<pre><code class="language-php">namespace Foil\Template;
+
+class Template {
+
+  function __construct($template_path)
+  {
+    $this-&gt;path = $template_path;
+  }
+
+  function render()
+  {
+    return include($this-&gt;path);
+  }
+}</code></pre>
+<p>Pseudo-code above is an over-semplification of what happen internally in Foil when a template is rendered.
+I shown it to better explain some basic concepts of Foil templates:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li>templates are just regular PHP files, treated as regular PHP files, you can and should use any PHP code: it will just work</li>
+<li>the variable <code>$this</code> inside template files refers to an instance of Foil template class.
+However, template data you can access with <code>$this-&gt;variable_name</code> or template functions like <code>$this-&gt;function_name()</code> are <strong>not</strong> real object properties or methods, but they are handled using PHP overloading methods <a href="http://php.net/manual/en/language.oop5.overloading.php#object.get"><code>__get</code></a> and <a href="http://php.net/manual/en/language.oop5.overloading.php#object.call"><code>__call</code></a></li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>A note on <strong>namespaces</strong>. In PHP every file has its own namespace, so even if template files are included in the context of template objects don't assume <code>Foil\Template</code> as current namespace inside templates: if you don't define any namespace in template files (and you probably shouldn't) namespace will be the root one.</p>
+<h2 id="get-templates-path-inside-a-template">Get Templates Path (inside a template)</h2>
+<p>If inside a template you need to know the <em>real</em> absolute path of the file you can just use <strong><code>$this-&gt;path()</code></strong>.</p>
+<p>Any template can have a layout (see <em>&quot;Templates / Inheritance&quot;</em>).
+<strong><code>$this-&gt;layoutPath()</code></strong> inside a template file returns the real absolute path of template layout.</p>
+<h2 id="get-templates-path-outside-any-template">Get Templates Path (outside any template)</h2>
+<p>Having access to the Foil engine instance, is possible to get a template path using <code>find()</code> engine method that takes a template name and return the absolute path of template file.</p>
+<pre><code class="language-php">$engine-&gt;find('a-template'); // returns: /path/to/templates/a-template.php</code></pre>
+<p>Same method can be used to check if a template file exists: it returns <code>false</code> if template doesn't exist.</p>
+<p><code>find()</code> follows all the rules for Foil methods that accept template names:</p>
+<ul>
+<li>to pass the template file extension is optional, if not provided default extension will be used</li>
+<li>if there are more templates with same name, but in different folders, the absolute path of the first template found is returned, where folders are searched in registration order</li>
+<li>
+<p>to search a template in a specific folder is possible to use the <em>double colon syntax</em>:</p>
+<pre><code class="language-php"> $engine-&gt;find('folder-id::template-name');</code></pre>
+<p>to do that, the folder have to be registered into the engine using folder ID.</p>
+</li>
+</ul>
+<p>See  <em>&quot;Getting Started / File Extensions&quot;</em> to know more about default extension and  <em>&quot;Getting Started / Folders&quot;</em> to know more about folder IDs.</p>
+<h3 id="search-multiple-templates">Search multiple templates</h3>
+<p>Since version 0.6, is possible to pass to <code>find()</code> method, an array of template names. The first found among them will be returned.</p>
+<p>Note that <code>Engine::render()</code> method internally uses <code>find()</code>, so it is possible to pass an array of templates to <code>render()</code> method as well.</p>
+<h2 id="custom-template-classes">Custom Template Classes</h2>
+<p>Sometimes may be desirable having a custom template class to customize rendering behavior.</p>
+<p>Custom template classes must extend <code>Foil\Contracts\TemplateInterface</code> interface.</p>
+<p>There are 2 ways to make Foil use custom template classes.</p>
+<p>First method is to use <code>Engine::renderTemplate()</code> method instead of <code>Engine::render()</code> method.</p>
+<p>In fact, <code>renderTemplate()</code> accepts a third argument <code>$class</code> that can be a custom template class name.</p>
+<p>Note that <code>renderTemplate()</code> needs the full path of template file as first argument, where <code>render()</code> needs only template name.
+However, is possible to use <code>Engine::find()</code> to retrieve the full path of a template.</p>
+<pre><code class="language-php">$engine-&gt;renderTemplate( $engine-&gt;find('template-name'), $data, 'My\Custom\TemplateClass' );</code></pre>
+<p>When a custom template class have to be used for all templates, it's far easier change the default template class used by Foil.</p>
+<p>That can be done via the <code>'template_class'</code> engine option:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders'        =&gt; ['path/to/templates'],
+  'template_class' =&gt; 'My\Custom\TemplateClass'
+]);</code></pre>
+<p>After that any call to <code>$engine-&gt;render()</code> will use the custom template class.</p>
                     </div>
                 </div>
             </div>

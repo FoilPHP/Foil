@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Data / Retrieve Data Inside Templates. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -91,7 +91,7 @@
                                       Context API
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/DATA/RETRIEVE-DATA.html">
                                       Retrieve Data Inside Templates
                                   </a>
@@ -192,53 +192,108 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Data</li>
+                        </ol>
+                                                <h1 id="retrieve-data-inside-templates">Retrieve Data Inside Templates</h1>
+<p>There are two main ways to retrieve data inside a template</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li>get data as template instance properties (accessed via <code>$this</code>)</li>
+<li>use helpers</li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>The latter is explained in the <em>&quot;Data / Helpers&quot;</em> docs section.</p>
+<p>First method is easily explained via an example.</p>
+<p>Assuming a Foil template rendering is launched like so:</p>
+<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
+  -&gt;render('template-example', ['foo' =&gt; 'Bar', 'bar' =&gt; 'Baz']);</code></pre>
+<p>inside <code>template-example.php</code></p>
+<pre><code class="language-php">echo $this-&gt;foo;</code></pre>
+<p>outputs &quot;Bar&quot;.</p>
+<p>It worth noting that if a variable is not defined, no notice or warning is thrown, saving you from check for variable existence.</p>
+<p>E.g. in previous example</p>
+<pre><code class="language-php">echo $this-&gt;a_non_defined_var;</code></pre>
+<p>will just echo nothing.</p>
+<h2 id="automatic-escaping">Automatic Escaping</h2>
+<p>By default, template data is automatically escaped, i.e. it is HTML-encoded with support for UTF-8.</p>
+<p>Assuming a Foil template rendering is launched like so:</p>
+<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
+  -&gt;render('template-example', ['bold' =&gt; '&lt;strong&gt;I am "bold"&lt;/strong&gt;']);</code></pre>
+<p>inside the template <code>$this-&gt;bold</code> will be equal to</p>
+<pre><code class="language-html">&amp;lt;strong&amp;gt;I am &amp;quot;bold&amp;quot;&amp;lt;/strong&amp;gt;</code></pre>
+<p>The escaping is based on <a href="https://github.com/auraphp/Aura.Html">AuraPhp/HTML</a> library.</p>
+<h2 id="automatic-escaping-gotchas">Automatic Escaping Gotchas</h2>
+<p>Given that escape data that may possibly come from user input (even when saved in a database) <strong>is really important</strong> to avoid vulnerability to XSS attacks,
+you need to be sure <strong>all</strong> strings you output are escaped. For the purpose you need to make a choice:</p>
+<ul>
+<li>Turn automatic escape OFF, and remember to use escape helpers to escape <strong>anything</strong> before output to HTML</li>
+<li>Leave automatic escape ON, and be sure to carefully read following paragraphs to understand Foil automatic escape limitations and practices to overcome them</li>
+</ul>
+<blockquote>
+<p><strong>Foil is capable to automatically escape only strings and arrays (even deeply nested) that contain strings.</strong></p>
+</blockquote>
+<p>If you use objects as template context and use that object vars or methods to output strings, those strings <strong>can't</strong> be automatically escaped by Foil.</p>
+<p>So, if you want to use Foil automatic escape you have 2 options to choose from:</p>
+<ul>
+<li>be sure that any object whose methods or properties are used in template outputs escaped content</li>
+<li>only pass arrays or strings as template data</li>
+</ul>
+<p>The second option may appear limiting, because a lot of times template data comes from persistent data layer (mostly database) libraries that return objects.</p>
+<p>However, convert that collections of objects into array before passing them to a Foil template is all but a bad idea, because:</p>
+<ul>
+<li>it will make you able to use automatic escape with no worries</li>
+<li>it will make printing data a lot easier, thanks to the dot syntax support that Foil helpers provide for nested arrays (see <em>&quot;Data / Helpers&quot;</em> to know more on the topic)</li>
+<li>it will decouple your templates from data layer objects, improving maintainability and general quality of your code</li>
+</ul>
+<h2 id="introducing">Introducing <em>Arraization</em></h2>
+<p>Foil has a simple, but pretty powerful tool to converts any kind of data into an array.</p>
+<p>(Of course, you are not forced to use it, in fact you can use any method or any library you like for the purpose.)</p>
+<p>The <em>Foil way</em> is pretty simple but powerful, it is accessed via a single function: <strong><code>arraize()</code></strong>.</p>
+<p>It does the conversion is done in very flexible way that may work out of the box with a lot of libraries. (Just as example it will work out of the box with <a href="http://laravel.com/docs/4.2/eloquent">Eloquent</a> models).</p>
+<p>I want to remark that to use this system is absolutely <strong>not required</strong> to use Foil.</p>
+<p>For this reason, and also to make it more readable, full explanation on how <code>arraize()</code> works is in a separate docs section, if you're interested see <em>&quot;Data / Arraization&quot;</em>.</p>
+<h2 id="double-quote-around-html-attributes">Double Quote Around HTML Attributes</h2>
+<p>No matter if you escape a variable thanks to automatic escaping or using escape helpers, when you output something inside HTML attributes is <strong>important</strong> that you wrap it using <strong>double quotes</strong>:</p>
+<pre><code class="language-html">&lt;!-- double quotes: GOOD --&gt;
+&lt;div id="&lt;?= $this-&gt;autoescaped_string ?&gt;"&gt;
+
+&lt;!-- double quotes: GOOD --&gt;
+&lt;div id="&lt;?= $this-&gt;e('a_string') ?&gt;"&gt;
+
+&lt;!-- single quotes: BAD --&gt;
+&lt;div id='&lt;?= $this-&gt;e("a_string") ?&gt;'&gt;
+
+&lt;!-- no quotes: BAD --&gt;
+&lt;div id=&lt;?= $this-&gt;escape($a_string) ?&gt;&gt;</code></pre>
+<p><code>e()</code> and <code>escape()</code> helpers are documented in <em>&quot;Data/ Helpers&quot;</em> docs section.</p>
+<h2 id="turn-automatic-escape-off">Turn Automatic Escape Off</h2>
+<p>Automatic escape can be turned off by setting <code>"autoescape"</code> engine option to false:</p>
+<pre><code class="language-php">$engine = Foil\engine([
+  'folders'    =&gt; 'path/to/templates',
+  'autoescape' =&gt; false                // turn autoescape off
+])</code></pre>
+<h2 id="raw-output">Raw Output</h2>
+<p>To output HTML content when autoescape is turned on, is possible to use <code>raw()</code> template function</p>
+<pre><code class="language-php">$this-&gt;raw('some_html_content');</code></pre>
+<p>Code above will return the string saved in <code>$this-&gt;some_html_content</code> with non-escaped HTML tags.</p>
+<p>Just <strong>be sure to sanitize any content possibly coming from users</strong> when using this function.</p>
+<p><code>raw()</code> is one of the Foil template helpers, there are some and all are documented in <em>&quot;Data / Helpers&quot;</em> section.</p>
+<h2 id="strict-variables">Strict Variables</h2>
+<p>As of 0.3 Foil supports <code>strict_variables</code> engine option. By setting it is possible to throw an exception or a notice when a non-defined variable is used.
+That might be useful for debug because default behavior that silently ignores undefined variables can make hard to find code issues.</p>
+<p>Option supported values are:</p>
+<ul>
+<li><code>false</code>: default behavior, undefined variables are ignored</li>
+<li><code>true</code>: if an undefined variable is required, Foil throws an exception</li>
+<li><code>'notice'</code> if an undefined variable is required, Foil triggers a notice (execution is not halted)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-php">
+$engine = Foil\engine([
+  'strict_variables' =&gt; true
+]);
+
+echo $engine-&gt;render('a-template', $some_data);</code></pre>
                     </div>
                 </div>
             </div>

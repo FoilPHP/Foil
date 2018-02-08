@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Data / Data Filters. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -101,7 +101,7 @@
                                       Data Helpers
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/DATA/FILTERS.html">
                                       Data Filters
                                   </a>
@@ -192,53 +192,160 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Data</li>
+                        </ol>
+                                                <h1 id="filters">Filters</h1>
+<p>Filters are callbacks that modify a given value and return the modified value.</p>
+<p>Foils ships with several ready-made filters, but is possible to easily add custom filters.
+See <em>&quot;Extending Foil&quot;</em> docs section to know more about custom filters.</p>
+<h2 id="foil-filters">Foil Filters</h2>
+<p>Filters that comes with Foil are:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li><code>'e'</code>, html-encodes a string, or any string contained in an array</li>
+<li><code>'first'</code>, returns first item of an array or first char of a string</li>
+<li><code>'last'</code>, returns last item of an array or last char of a string</li>
+<li><code>'chunk'</code>, chunks an array by returning an array of arrays with the given number of items. It is also possible to provide a value to fill missing items. It works very similar to <a href="http://twig.sensiolabs.org/doc/filters/batch.html"><code>batch</code> Twig filter</a>.</li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<h2 id="apply-filters">Apply Filters</h2>
+<p>There are three ways to apply filters in Foil, and all supports filter &quot;waterfall&quot;, that is apply more filters at once, where next filter in the list receives result of the previous.</p>
+<p>Filters can be applied with:</p>
+<ul>
+<li><code>filter()</code> template method</li>
+<li><code>f()</code> template helper</li>
+<li>passing filter as 3rd argument for any of the data helpers. See <em>&quot;Data / Helpers&quot;</em> for more info.</li>
+</ul>
+<p>Both <code>filter()</code> and <code>f()</code> accept as first argument one or more filters, as array or as pipe-separated list.</p>
+<p>Second arguments for both functions is the variable to filter, but <code>filter()</code> accepts the variable <em>value</em> to filter, where <code>f()</code> accepts the variable <em>name</em>.</p>
+<p>The two lines the template code below are equivalent.</p>
+<pre><code class="language-php">$this-&gt;filter('e|first', $this-&gt;foo);
+
+$this-&gt;f('e|first', 'foo');</code></pre>
+<p><code>f()</code> helper supports dot syntax to access variables in nested arrays.</p>
+<p>Again, the two lines the template code below are equivalent.</p>
+<pre><code class="language-php">$this-&gt;filter('e|first', $this-&gt;raw('a.pretty.deep.var'));
+
+$this-&gt;f('e|first', 'a.pretty.deep.var');</code></pre>
+<p>See <em>&quot;Data / Helpers&quot;</em> to know more about Foil dot syntax and <code>raw()</code> helper used in code above.</p>
+<h2 id="examples">Examples</h2>
+<p>Below there are some examples of Foil filters usage.</p>
+<p>The following Foil engine bootstrap code is used as context for all examples:</p>
+<pre><code class="language-php">$data = [
+  'some'   =&gt; [
+      'pretty' =&gt; [
+          'deep' =&gt; [
+              'vars' =&gt; [
+                  'lorem' =&gt; '&lt;b&gt;Lorem&lt;/b&gt;',
+                  'ipsum' =&gt; '&lt;b&gt;Ipsum&lt;/b&gt;',
+                  'dolor' =&gt; '&lt;b&gt;Dolor&lt;/b&gt;',
+                  'sit'   =&gt; '&lt;b&gt;Sit&lt;/b&gt;',
+                  'amet'  =&gt; '&lt;b&gt;Amet&lt;/b&gt;',
+              ]
+          ]
+      ]
+  ]
+];
+
+$engine = Foil\engine([
+  'folders'    =&gt; 'path/to/templates',
+  'autoescape' =&gt; false
+]);
+
+echo $engine-&gt;render('template', $data);</code></pre>
+<h2><code>"first"</code></h2>
+<pre><code class="language-php">$this-&gt;filter('first', $this-&gt;v('some.pretty.deep.vars')); // '&lt;b&gt;Lorem&lt;/b&gt;'
+
+$this-&gt;f('first', 'some.pretty.deep.vars'); // '&lt;b&gt;Lorem&lt;/b&gt;'
+
+$this-&gt;filter('first|e', $this-&gt;v('some.pretty.deep.vars')); // '&amp;lt;b&amp;gt;Lorem&amp;lt;/b&amp;gt;'
+
+$this-&gt;f(['first', 'e'], 'some.pretty.deep.vars'); // // '&amp;lt;b&amp;gt;Lorem&amp;lt;/b&amp;gt;'</code></pre>
+<h2><code>"last"</code></h2>
+<pre><code class="language-php">$this-&gt;filter('last', $this-&gt;v('some.pretty.deep.vars')); // '&lt;b&gt;Amet&lt;/b&gt;'
+
+$this-&gt;f('last', 'some.pretty.deep.vars'); // '&lt;b&gt;Amet&lt;/b&gt;'
+
+$this-&gt;filter('last|e', $this-&gt;v('some.pretty.deep.vars')); // '&amp;lt;b&amp;gt;Amet&amp;lt;/b&amp;gt;'
+
+$this-&gt;f(['last', 'e'], 'some.pretty.deep.vars'); // // '&amp;lt;b&amp;gt;Amet&amp;lt;/b&amp;gt;'</code></pre>
+<h2><code>"chunk"</code></h2>
+<pre><code class="language-php">echo '&lt;table&gt;';
+foreach ($this-&gt;f('chunk', 'some.pretty.deep.vars', [2]) as $row) {
+  echo '&lt;tr&gt;';
+  foreach($row as $column) {
+    printf('&lt;td&gt;%s&lt;/td&gt;', $column);
+  }
+  echo '&lt;/tr&gt;';
+}
+echo '&lt;/table&gt;';
+
+/*
+will echo:
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;b&gt;Lorem&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;Ipsum&lt;/b&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;b&gt;Dolor&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;Sit&lt;/b&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;b&gt;Amet&lt;/b&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+*/</code></pre>
+<p><code>"chunk"</code> also accepts an additional argument to be used as <em>filler</em> for missing items, e.g. if in code above I'd used:</p>
+<pre><code class="language-php">foreach ($this-&gt;f('chunk', 'some.pretty.deep.vars', [2, '&lt;b&gt;Fill With Me&lt;/b&gt;']) as $row) {</code></pre>
+<p>the output would be:</p>
+<pre><code class="language-html">&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;b&gt;Lorem&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;Ipsum&lt;/b&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;b&gt;Dolor&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;Sit&lt;/b&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;b&gt;Amet&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;Fill With Me&lt;/b&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+<h2 id="filters-additional-arguments">Filters Additional Arguments</h2>
+<p>As demonstrated in the <code>"chunk"</code> example above, to pass arguments to filter callbacks both <code>filter()</code> and <code>f()</code> functions accept a third argument that is the array of additional arguments to pass to filter callback.</p>
+<p><code>"chunk"</code> is the only filter that comes with Foil that accepts additional arguments, but any of the custom filters you may write can accept additional arguments too.</p>
+<p>When in &quot;waterfall&quot; mode, third argument for <code>f()</code> and <code>filter()</code> must be an array of arrays, that must have as many items as the filter count, in a way that every filter has its own array of arguments.</p>
+<p>Please note that in &quot;waterfall&quot; mode if even only one filter needs additional arguments you have to pass additional arguments array for all filters, even for ones doesn't need them, in which case you'll pass an empty array.</p>
+<p>Let's assume you created two custom filters: <code>"filter_one"</code> that doesn't accepts additional arguments, and <code>"filter_two"</code> that accepts 2 additional arguments.</p>
+<p>You can use them in &quot;waterfall&quot; mode, with code like the following:</p>
+<pre><code class="language-php">$this-&gt;f(
+ 'chunk|escape|filter_one|filter_two',
+ 'some.pretty.deep.vars',
+ [
+     [2, 'Filler'], // additional args for "chunk"
+     [],            // additional args for "escape"
+     [],            // additional args for "filter_one"
+     ['foo', 'bar'] // additional args for "filter_two"
+ ]
+);</code></pre>
+<h2 id="default-value-for">Default Value For <code>f()</code></h2>
+<p><code>f()</code> accepts as the value to filter a variable name, that may or may not be defined.
+By default, <code>f()</code> will consider undefined variables equal to an empty string and <strong>will pass that empty string to filters</strong>.
+It means that <code>f()</code> may return something even if the variable name passed to it is not defined.</p>
+<p>To avoid that you may use the <code>filter()</code> function instead, after checking the value to filter, e.g.</p>
+<pre><code class="language-php">$value = $this-&gt;v('some.pretty.deep.vars');
+echo $value ? $this-&gt;filter('custom_filter', $value) : '';</code></pre>
+<p><code>f()</code> also accepts a 4th argument, that is the value to be used as default if the required variable is not defined</p>
+<pre><code class="language-php">$this-&gt;f(
+  'first|escape|custom_filter',
+  'some.pretty.deep.vars',
+  null,
+  'I am a default'
+);</code></pre>
+<p>Please note that if you don't need to pass additional filter arguments, but you need a default value, like in the example above, 3rd argument for <code>f()</code> must be <code>null</code>, any other value will cause an error.</p>
                     </div>
                 </div>
             </div>

@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Templates / Partials. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -71,7 +71,7 @@
                                       Sections Rendering
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/TEMPLATES/PARTIALS.html">
                                       Partials
                                   </a>
@@ -192,53 +192,70 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
-<ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
-</ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Templates</li>
+                        </ol>
+                                                <h1 id="partials">Partials</h1>
+<p>Partials are template files that are included in other templates.</p>
+<p>They are commonly used for small parts that are repeated among templates or layouts.</p>
+<p>By default partials have access to all current context (template variables), but is possible to limit or completely
+disable access to it. It is also possible to pass partial-specific variables.
+See <em>&quot;Data / Pass Data to Templates&quot;</em> to know more on the topic.</p>
+<p>Partials are inserted in a template using <code>insert()</code> method.</p>
+<pre><code class="language-php">&lt;div id="sidebar"&gt;
+  &lt;?= $this-&gt;insert('partials/sidebar') ?&gt;
+&lt;/div&gt;</code></pre>
+<p><code>insert()</code> accepts as first argument the partial name to be inserted and <strong>returns</strong> its content.
+So you need to echo what is returned by <code>insert()</code> to make the content visible.</p>
+<p>Partials are searched in all registered folders, just like standard templates. All the rules that apply to Foil engine methods <code>render()</code> and <code>find()</code> are valid for <code>insert()</code> too: default extension, specific folders targeting, and so on.
+See <em>&quot;Templates / Overview&quot;</em> to know more on the topic.</p>
+<h2 id="conditional-insertion">Conditional Insertion</h2>
+<p>When you call <code>insert()</code> with a non-existent template name an exception is thrown.</p>
+<p>Sometimes may be desirable to insert a partial only if it exists, without any error if it isn't there.
+That can be done with <code>insertif()</code> that accepts exact same arguments of <code>insert()</code>.</p>
+<p>Once <code>insertif()</code> returns nothing if template is not found, it can be easily used to output a default content when the partial doesn't exist:</p>
+<pre><code class="language-php">&lt;?= $this-&gt;insertif('header') ?: 'Default Header' ?&gt;</code></pre>
+<p>Note that another partial can be used as default:</p>
+<pre><code class="language-php">&lt;?= $this-&gt;insertif('header') ?: $this-&gt;insertif('default-header') ?&gt;</code></pre>
+<h2 id="sections-definition-in-partials">Sections Definition in Partials</h2>
+<p>Foil supports sections definition in partials (See <em>&quot;Templates / Inheritance&quot;</em> to know more about sections).</p>
+<p>For example, let's assume in a layout, named <code>home.php</code>, there's the following code:</p>
+<pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;My Awesome Page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;div id="main"&gt;
+        Welcome!
+      &lt;/div&gt;
+      &lt;div id="sidebar"&gt;
+        &lt;?= $this-&gt;insert('partials/sidebar') ?&gt;
+      &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>and in the partials <code>partials/sidebar.php</code> there is the code:</p>
+<pre><code class="language-php">&lt;?php $this-&gt;section('sidebar-top') ?&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Sidebar&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;?php $this-&gt;stop() ?&gt;
+
+&lt;?php $this-&gt;section('sidebar-main') ?&gt;
+  &lt;div&gt;
+    &lt;p&gt;Default sidebar.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;?php $this-&gt;stop() ?&gt;</code></pre>
+<p>In a template that extends <code>home.php</code> is possible to extends / replace the content of <code>'sidebar-top'</code> or <code>'sidebar-main'</code>
+sections even if they were defined in a partial:</p>
+<pre><code class="language-php">&lt;?php $this-&gt;layout('home') ?&gt;
+
+&lt;?php $this-&gt;section('sidebar-main') ?&gt;
+  &lt;div&gt;
+    &lt;p&gt;Custom sidebar.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;?php $this-&gt;replace() ?&gt;</code></pre>
                     </div>
                 </div>
             </div>

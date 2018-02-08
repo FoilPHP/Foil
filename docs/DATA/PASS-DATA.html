@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Foil is a PHP template engine for native PHP templates.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Foil PHP Template Engine for native PHP Templates</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>Data / Pass Data To Templates. Foil: PHP Template Engine</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://foilphp.github.io/Foil/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -81,7 +81,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Data</a>
                       <ul>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://foilphp.github.io/Foil/docs/DATA/PASS-DATA.html">
                                       Pass Data To Templates
                                   </a>
@@ -192,53 +192,62 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                <h1 id="foil">FOIL</h1>
-<blockquote>
-<p>PHP template engine, for PHP templates.</p>
-</blockquote>
-<hr />
-<p><a href="https://travis-ci.org/FoilPHP/Foil"><img src="https://img.shields.io/travis/FoilPHP/Foil.svg?style=flat-square" alt="travis-ci status" /></a>
-<a href="http://codecov.io/github/FoilPHP/Foil?branch=master"><img src="https://img.shields.io/codecov/c/github/FoilPHP/Foil.svg?style=flat-square" alt="codecov.io" /></a>
-<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/packagist/l/foil/foil.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/FoilPHP/Foil/releases/latest"><img src="https://img.shields.io/github/release/FoilPHP/foil.svg?style=flat-square" alt="release" /></a></p>
-<hr />
-<p><strong>Foil</strong> brings all the flexibility and power of modern template engines to native PHP templates. Write simple, clean and concise templates with nothing more than PHP.</p>
-<h1 id="key-features">Key Features</h1>
+                                                <ol class="breadcrumb">
+                          <li><a href="https://foilphp.github.io/Foil">Foil</a></li>
+                          <li class="active">Data</li>
+                        </ol>
+                                                <h1 id="pass-data-to-templates">Pass Data To Templates</h1>
+<p>The most obvious and straightforward way to pass data to templates is to pass an associative array
+as second argument for <code>render()</code> engine method.</p>
+<p>Something like:</p>
+<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
+  -&gt;render(
+    'template-example',
+    [
+      'foo' =&gt; 'Bar',
+      'bar' =&gt; 'Baz',
+      'baz' =&gt; 'Foo'
+    ]
+  );</code></pre>
+<p>using code above the variables <code>'foo'</code>, <code>'bar'</code> and <code>'baz'</code> will be available in the template.</p>
+<p>Another way to pass data to templates is to use the <strong>Foil Context API</strong>. See <em>&quot;Data / Context API&quot;</em> docs section
+to know how it works.</p>
+<p>What it worth to say here is that data assigned via Context API is merged with any data passed to <code>render()</code>
+and that the latter takes precedence on the former.</p>
+<h2 id="variables-scope">Variables Scope</h2>
+<p>In Foil, layout and partials used in a template, by default, will inherit data assigned to template.
+(To know more about layouts and partials see <em>&quot;Templates&quot;</em> docs section).</p>
+<p>However, both for layouts and partials, is possible to override inherited data.</p>
+<p>That is done passing a data array as second argument to <code>layout()</code> and <code>insert()</code> methods respectively.
+(To know more about these methods see <em>&quot;Templates&quot;</em> docs section).</p>
+<p>Assuming the following code:</p>
+<pre><code class="language-php">Foil\engine(['folders' =&gt; 'path/to/templates'])
+  -&gt;render('template-example', ['foo' =&gt; 'Template Foo', 'bar' =&gt; 'Baz']);</code></pre>
+<p>and assuming that in the <code>template-example.php</code> file there is:</p>
+<pre><code class="language-php">// layout() is the method used to declare a layout
+$this-&gt;layout('layout-name', ['foo' =&gt; 'Layout Foo']);
+
+// insert() is the method used to include a partial in current template
+$this-&gt;insert('partial-name', ['foo' =&gt; 'Partial Foo']);</code></pre>
+<p>The variable &quot;foo&quot; will evaluate as:</p>
 <ul>
-<li>Templates inheritance (you'll never miss Twig or Blade)</li>
-<li>Clean, concise and DRY templates</li>
-<li>Dozen of ready-made helper functions and filters</li>
-<li>Easily extensible and customizable</li>
-<li>Multiple template folders with file auto-discover or custom picking</li>
-<li>Auto or manual data escape</li>
-<li>Powerful context API (preassign data to templates using conditions)</li>
-<li>Framework agnostic, centralized API for very easy integration</li>
-<li>Composer ready, fully unit and functional tested, PSR-1/2/4 compliant</li>
+<li>&quot;Template Foo&quot; in the <code>template-example.php</code> template file</li>
+<li>&quot;Layout Foo&quot; in the <code>layout-name.php</code> layout file</li>
+<li>&quot;Partial Foo&quot; in the <code>partial-name.php</code> partial file</li>
 </ul>
-<p>...and many more</p>
-<h1 id="why">Why?</h1>
-<p>Templates engines like Twig, or Blade are a great thing, really.</p>
-<p>However, to use them one needs to learn another <em>language</em> with its own syntax and rules.</p>
-<p>Moreover, using compiled engines to use even a simple PHP function one needs to write engine extension.</p>
-<p>On its side, PHP is already a templating language, but honestly it's not a good one, because it's missing pivotal features of modern template engines, like template inheritance.</p>
-<h2 id="why-not-plates">Why not Plates?</h2>
-<p>Then I discovered <a href="http://platesphp.com/">Plates</a>, and it was love at first sight. But, you know, that kind of love rarely lasts a lifetime.</p>
-<p>Trying to do something <em>serious</em> with Plates, I encountered several problems which I had not when using compiled template engines.</p>
-<p>I wrote <a href="http://gm.zoomlab.it/2015/template-engines-i-moved-from-love-to-meh-for-plates/">a blog post</a> to explain why I am not happy with Plates anymore and so I decided to write Foil.</p>
-<h1 id="requirements">Requirements</h1>
-<p>Foil is framework agnostic, only thing needed is PHP 5.4+ and Composer to add Foil to you PHP project.</p>
-<hr />
-<h1 id="backward-incompatibility-notice">Backward Incompatibility Notice</h1>
-<p>Foil version <strong>0.6</strong> introduced backward incompatibility changes. Internal objects mechanism changed a lot, but
-core features and especially template functions were not affected.</p>
-<p>Please see <a href="https://github.com/FoilPHP/Foil/releases/tag/0.6.0">v0.6 release notes</a> to know more on the topic.</p>
-<hr />
-<h1 id="license">License</h1>
-<p>Foil is open source and released under MIT license. See LICENSE file for more info.</p>
-<h1 id="question-issues">Question? Issues?</h1>
-<p>Foil is hosted on GitHub. Feel free to open issues there for suggestions, questions and real issues.</p>
-<h1 id="whos-behind-foil">Who's Behind Foil</h1>
-<p>I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter (<a href="https://twitter.com/gmazzap">@gmazzap</a>) or on <a href="http://chat.stackexchange.com/rooms/6/the-loop">&quot;The Loop&quot;</a> (Stack Exchange) chat. Well, it's possible I'll ignore rants.</p>
+<p>the variable &quot;bar&quot; will be &quot;Baz&quot; in all 3 files.</p>
+<p>Note that data inheritance follow template inheritance: partials will inherit data from current context,
+i.e. if a partial is included in a layout, it will inherit data from layout.</p>
+<h2 id="layout-and-partial-data-filtering">Layout and Partial Data Filtering</h2>
+<p>As said above, by default, layouts and partials will inherit all data from current context.
+However is possible to disable access to all or some context variables.
+That is done by using an array of allowed context variable names as third argument for <code>layout()</code> or <code>insert()</code>.</p>
+<p>E.g. assuming a layout is declared with following code:</p>
+<pre><code class="language-php">$this-&gt;layout('layout-name', ['var_name' =&gt; 'A variable'], ['foo']);
+
+// same goes for $this-&gt;insert('partial-name', ['var_name' =&gt; 'A variable'], ['foo']);</code></pre>
+<p>in the <code>layout-name.php</code> layout file the only available variables will be <code>'var_name'</code> (explicitly passed to layout) and <code>'foo'</code>, inherited from active context.</p>
+<p>Using an empty array as third argument only context explicitly passed variables (if any) will be available in the layout / partial.</p>
                     </div>
                 </div>
             </div>
